@@ -17,6 +17,16 @@
 
     <string name="ime_label">Scanner Keyboard</string>
 
+    <string name="scanner_hint">Point at a barcode</string>
+    <string name="scanner_close_label">✕</string>
+    <string name="scanner_close_description">Close scanner</string>
+    <string name="scanner_torch_label">Torch</string>
+    <string name="scanner_torch_description">Toggle torch</string>
+    <string name="scanner_camera_error">Camera could not start</string>
+    <string name="scanner_permission_message">Camera access is needed to scan. Open setup to grant it.</string>
+    <string name="scanner_open_setup_label">Open setup</string>
+    <string name="scanner_open_setup_description">Open setup screen</string>
+
     <string name="key_q">q</string>
     <string name="key_w">w</string>
     <string name="key_e">e</string>

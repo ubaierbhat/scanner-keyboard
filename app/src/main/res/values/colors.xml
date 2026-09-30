@@ -13,4 +13,6 @@
     <color name="status_pending_text">#FF6F00</color>
     <color name="status_pending_container">#FFECB3</color>
     <color name="chip_background">#FFFFFF</color>
+
+    <color name="scanner_preview_background">#000000</color>
 </resources>
