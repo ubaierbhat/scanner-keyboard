@@ -31,6 +31,7 @@ class ScannerView @JvmOverloads constructor(
     private var camera: Camera? = null
     private var lifecycleOwner: ScannerLifecycleOwner? = null
     private var running = false
+    private var session = 0
     private var torchOn = false
 
     private var onClose: (() -> Unit)? = null
@@ -57,12 +58,14 @@ class ScannerView @JvmOverloads constructor(
             return
         }
         running = true
+        session++
+        val currentSession = session
         showPreviewState()
         val appContext = context.applicationContext
         val providerFuture = ProcessCameraProvider.getInstance(appContext)
         providerFuture.addListener(
             {
-                if (!running) {
+                if (!running || currentSession != session) {
                     return@addListener
                 }
                 try {
@@ -85,6 +88,7 @@ class ScannerView @JvmOverloads constructor(
             return
         }
         running = false
+        session++
         torchOn = false
         torchKey.isKeyValueChecked = false
         camera?.cameraControl?.enableTorch(false)
