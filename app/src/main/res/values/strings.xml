@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">Scanner Keyboard</string>
-    <string name="setup_wizard_placeholder">Setup wizard — Task 4</string>
+
+    <string name="setup_step_camera_title">Allow camera access</string>
+    <string name="setup_step_camera_description">Scanner Keyboard uses the camera to scan barcodes and QR codes.</string>
+    <string name="setup_step_camera_action">Grant camera permission</string>
+    <string name="setup_step_ime_title">Enable the keyboard</string>
+    <string name="setup_step_ime_description">Turn on Scanner Keyboard in your input methods so you can type with it.</string>
+    <string name="setup_step_ime_action">Open keyboard settings</string>
+    <string name="status_granted">Granted</string>
+    <string name="status_not_granted">Not granted</string>
+    <string name="status_enabled">Enabled</string>
+    <string name="status_not_enabled">Not enabled</string>
+    <string name="setup_overall_ready">Scanner Keyboard ready</string>
+    <string name="setup_next_camera">Next: grant camera access</string>
+    <string name="setup_next_ime">Next: enable Scanner Keyboard in settings</string>
 
     <string name="ime_label">Scanner Keyboard</string>
 

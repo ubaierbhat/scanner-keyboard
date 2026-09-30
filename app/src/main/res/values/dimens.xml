@@ -7,4 +7,8 @@
     <dimen name="key_padding">2dp</dimen>
     <dimen name="key_corner_radius">8dp</dimen>
     <dimen name="keyboard_bottom_padding">8dp</dimen>
+
+    <dimen name="setup_screen_padding">16dp</dimen>
+    <dimen name="setup_card_spacing">12dp</dimen>
+    <dimen name="setup_card_content_padding">16dp</dimen>
 </resources>

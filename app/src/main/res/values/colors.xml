@@ -7,4 +7,10 @@
     <color name="key_text">#FFFFFF</color>
     <color name="key_text_accent">#7CADF8</color>
     <color name="key_text_accent_disabled">#667CADF8</color>
+
+    <color name="status_ok_text">#1B5E20</color>
+    <color name="status_ok_container">#C8E6C9</color>
+    <color name="status_pending_text">#FF6F00</color>
+    <color name="status_pending_container">#FFECB3</color>
+    <color name="chip_background">#FFFFFF</color>
 </resources>
