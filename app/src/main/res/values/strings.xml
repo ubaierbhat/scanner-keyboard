@@ -35,6 +35,10 @@
     <string name="key_shift_description">Shift</string>
     <string name="key_symbols_label">123</string>
     <string name="key_symbols_description">Numbers and symbols</string>
+    <string name="key_abc_label">ABC</string>
+    <string name="key_abc_description">Letters</string>
+    <string name="key_alt_label">#+=</string>
+    <string name="key_alt_description">More symbols</string>
     <string name="key_scan_label">SCAN</string>
     <string name="key_scan_description">Scan barcode or QR code</string>
     <string name="key_space_description">Space</string>
@@ -42,4 +46,48 @@
     <string name="key_enter_description">Enter</string>
     <string name="key_backspace_label">⌫</string>
     <string name="key_backspace_description">Backspace</string>
+
+    <string name="key_num_1">1</string>
+    <string name="key_num_2">2</string>
+    <string name="key_num_3">3</string>
+    <string name="key_num_4">4</string>
+    <string name="key_num_5">5</string>
+    <string name="key_num_6">6</string>
+    <string name="key_num_7">7</string>
+    <string name="key_num_8">8</string>
+    <string name="key_num_9">9</string>
+    <string name="key_num_0">0</string>
+
+    <string name="key_sym_at">@</string>
+    <string name="key_sym_hash">#</string>
+    <string name="key_sym_dollar">$</string>
+    <string name="key_sym_percent" formatted="false">%</string>
+    <string name="key_sym_ampersand">&amp;</string>
+    <string name="key_sym_hyphen">-</string>
+    <string name="key_sym_plus">+</string>
+    <string name="key_sym_open_paren">(</string>
+    <string name="key_sym_close_paren">)</string>
+    <string name="key_sym_asterisk">*</string>
+    <string name="key_sym_double_quote">\"</string>
+    <string name="key_sym_apostrophe">\'</string>
+    <string name="key_sym_colon">:</string>
+    <string name="key_sym_semicolon">;</string>
+    <string name="key_sym_comma">,</string>
+    <string name="key_sym_period">.</string>
+    <string name="key_sym_question">?</string>
+    <string name="key_sym_exclamation">!</string>
+    <string name="key_sym_slash">/</string>
+
+    <string name="key_alt_paren_open">(</string>
+    <string name="key_alt_brace_open">{</string>
+    <string name="key_alt_brace_close">}</string>
+    <string name="key_alt_bracket_open">[</string>
+    <string name="key_alt_bracket_close">]</string>
+    <string name="key_alt_backslash">\\</string>
+    <string name="key_alt_pipe">|</string>
+    <string name="key_alt_tilde">~</string>
+    <string name="key_alt_less">&lt;</string>
+    <string name="key_alt_greater">&gt;</string>
+    <string name="key_alt_equals">=</string>
+    <string name="key_alt_degree">°</string>
 </resources>

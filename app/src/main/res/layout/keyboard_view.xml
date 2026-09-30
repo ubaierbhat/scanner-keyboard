@@ -8,393 +8,1191 @@
     android:paddingBottom="@dimen/keyboard_bottom_padding">
 
     <LinearLayout
+        android:id="@+id/layer_letters"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/key_height"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_q"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_q"
-            android:text="@string/key_q" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_w"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_w"
-            android:text="@string/key_w" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_q"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_q"
+                android:text="@string/key_q" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_e"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_e"
-            android:text="@string/key_e" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_w"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_w"
+                android:text="@string/key_w" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_r"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_r"
-            android:text="@string/key_r" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_e"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_e"
+                android:text="@string/key_e" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_t"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_t"
-            android:text="@string/key_t" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_r"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_r"
+                android:text="@string/key_r" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_y"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_y"
-            android:text="@string/key_y" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_t"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_t"
+                android:text="@string/key_t" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_u"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_u"
-            android:text="@string/key_u" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_y"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_y"
+                android:text="@string/key_y" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_i"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_i"
-            android:text="@string/key_i" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_u"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_u"
+                android:text="@string/key_u" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_o"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_o"
-            android:text="@string/key_o" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_i"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_i"
+                android:text="@string/key_i" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_p"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_p"
-            android:text="@string/key_p" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_o"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_o"
+                android:text="@string/key_o" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_p"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_p"
+                android:text="@string/key_p" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_a"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_a"
+                android:text="@string/key_a" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_s"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_s"
+                android:text="@string/key_s" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_d"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_d"
+                android:text="@string/key_d" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_f"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_f"
+                android:text="@string/key_f" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_g"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_g"
+                android:text="@string/key_g" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_h"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_h"
+                android:text="@string/key_h" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_j"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_j"
+                android:text="@string/key_j" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_k"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_k"
+                android:text="@string/key_k" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_l"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_l"
+                android:text="@string/key_l" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_z"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_z"
+                android:text="@string/key_z" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_x"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_x"
+                android:text="@string/key_x" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_c"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_c"
+                android:text="@string/key_c" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_v"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_v"
+                android:text="@string/key_v" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_b"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_b"
+                android:text="@string/key_b" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_n"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_n"
+                android:text="@string/key_n" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_m"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_m"
+                android:text="@string/key_m" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_backspace"
+                style="@style/KeyGlyph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1.5"
+                android:contentDescription="@string/key_backspace_description"
+                android:text="@string/key_backspace_label" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_shift"
+                style="@style/KeyGlyph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1.5"
+                android:contentDescription="@string/key_shift_description"
+                android:text="@string/key_shift_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_symbols"
+                style="@style/KeyWordLabel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1.5"
+                android:contentDescription="@string/key_symbols_description"
+                android:text="@string/key_symbols_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_scan"
+                style="@style/KeyWordLabel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="2"
+                android:contentDescription="@string/key_scan_description"
+                android:text="@string/key_scan_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_space"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="3"
+                android:contentDescription="@string/key_space_description" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_enter"
+                style="@style/KeyGlyph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="2"
+                android:contentDescription="@string/key_enter_description"
+                android:text="@string/key_enter_label" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layer_symbols"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/key_height"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_a"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_a"
-            android:text="@string/key_a" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_1"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_1"
+                android:text="@string/key_num_1" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_s"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_s"
-            android:text="@string/key_s" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_2"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_2"
+                android:text="@string/key_num_2" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_d"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_d"
-            android:text="@string/key_d" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_3"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_3"
+                android:text="@string/key_num_3" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_f"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_f"
-            android:text="@string/key_f" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_4"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_4"
+                android:text="@string/key_num_4" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_g"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_g"
-            android:text="@string/key_g" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_5"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_5"
+                android:text="@string/key_num_5" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_h"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_h"
-            android:text="@string/key_h" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_6"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_6"
+                android:text="@string/key_num_6" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_j"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_j"
-            android:text="@string/key_j" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_7"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_7"
+                android:text="@string/key_num_7" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_k"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_k"
-            android:text="@string/key_k" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_8"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_8"
+                android:text="@string/key_num_8" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_l"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_l"
-            android:text="@string/key_l" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_9"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_9"
+                android:text="@string/key_num_9" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_num_0"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_0"
+                android:text="@string/key_num_0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_at"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_at"
+                android:text="@string/key_sym_at" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_hash"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_hash"
+                android:text="@string/key_sym_hash" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_dollar"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_dollar"
+                android:text="@string/key_sym_dollar" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_percent"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_percent"
+                android:text="@string/key_sym_percent" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_ampersand"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_ampersand"
+                android:text="@string/key_sym_ampersand" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_hyphen"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_hyphen"
+                android:text="@string/key_sym_hyphen" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_plus"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_plus"
+                android:text="@string/key_sym_plus" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_open_paren"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_open_paren"
+                android:text="@string/key_sym_open_paren" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_close_paren"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_close_paren"
+                android:text="@string/key_sym_close_paren" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_backspace_symbols"
+                style="@style/KeyGlyph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1.5"
+                android:contentDescription="@string/key_backspace_description"
+                android:text="@string/key_backspace_label" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_asterisk"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_asterisk"
+                android:text="@string/key_sym_asterisk" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_double_quote"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_double_quote"
+                android:text="@string/key_sym_double_quote" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_apostrophe"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_apostrophe"
+                android:text="@string/key_sym_apostrophe" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_colon"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_colon"
+                android:text="@string/key_sym_colon" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_semicolon"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_semicolon"
+                android:text="@string/key_sym_semicolon" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_comma"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_comma"
+                android:text="@string/key_sym_comma" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_period"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_period"
+                android:text="@string/key_sym_period" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_question"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_question"
+                android:text="@string/key_sym_question" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_exclamation"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_exclamation"
+                android:text="@string/key_sym_exclamation" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_sym_slash"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_slash"
+                android:text="@string/key_sym_slash" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_shift_symbols"
+                style="@style/KeyGlyph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1.5"
+                android:contentDescription="@string/key_shift_description"
+                android:text="@string/key_shift_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_abc_symbols"
+                style="@style/KeyWordLabel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_abc_description"
+                android:text="@string/key_abc_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt"
+                style="@style/KeyWordLabel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_description"
+                android:text="@string/key_alt_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_scan_symbols"
+                style="@style/KeyWordLabel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1.5"
+                android:contentDescription="@string/key_scan_description"
+                android:text="@string/key_scan_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_space_symbols"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="3"
+                android:contentDescription="@string/key_space_description" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_enter_symbols"
+                style="@style/KeyGlyph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="2"
+                android:contentDescription="@string/key_enter_description"
+                android:text="@string/key_enter_label" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layer_symbols_alt"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/key_height"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_z"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_z"
-            android:text="@string/key_z" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_1"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_1"
+                android:text="@string/key_num_1" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_x"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_x"
-            android:text="@string/key_x" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_2"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_2"
+                android:text="@string/key_num_2" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_c"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_c"
-            android:text="@string/key_c" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_3"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_3"
+                android:text="@string/key_num_3" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_v"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_v"
-            android:text="@string/key_v" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_4"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_4"
+                android:text="@string/key_num_4" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_b"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_b"
-            android:text="@string/key_b" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_5"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_5"
+                android:text="@string/key_num_5" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_n"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_n"
-            android:text="@string/key_n" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_6"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_6"
+                android:text="@string/key_num_6" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_m"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1"
-            android:contentDescription="@string/key_m"
-            android:text="@string/key_m" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_7"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_7"
+                android:text="@string/key_num_7" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_backspace"
-            style="@style/KeyGlyph"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1.5"
-            android:contentDescription="@string/key_backspace_description"
-            android:text="@string/key_backspace_label" />
-    </LinearLayout>
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_8"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_8"
+                android:text="@string/key_num_8" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/key_height"
-        android:orientation="horizontal">
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_9"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_9"
+                android:text="@string/key_num_9" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_shift"
-            style="@style/KeyGlyph"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1.5"
-            android:contentDescription="@string/key_shift_description"
-            android:text="@string/key_shift_label" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_num_0"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_num_0"
+                android:text="@string/key_num_0" />
+        </LinearLayout>
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_symbols"
-            style="@style/KeyWordLabel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="1.5"
-            android:contentDescription="@string/key_symbols_description"
-            android:enabled="false"
-            android:text="@string/key_symbols_label" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_scan"
-            style="@style/KeyWordLabel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="2"
-            android:contentDescription="@string/key_scan_description"
-            android:text="@string/key_scan_label" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_space"
-            style="@style/KeyLetter"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="3"
-            android:contentDescription="@string/key_space_description" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_paren_open"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_paren_open"
+                android:text="@string/key_alt_paren_open" />
 
-        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
-            android:id="@+id/key_enter"
-            style="@style/KeyGlyph"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/key_padding"
-            android:layout_marginEnd="@dimen/key_padding"
-            android:layout_weight="2"
-            android:contentDescription="@string/key_enter_description"
-            android:text="@string/key_enter_label" />
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_brace_open"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_brace_open"
+                android:text="@string/key_alt_brace_open" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_brace_close"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_brace_close"
+                android:text="@string/key_alt_brace_close" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_bracket_open"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_bracket_open"
+                android:text="@string/key_alt_bracket_open" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_bracket_close"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_bracket_close"
+                android:text="@string/key_alt_bracket_close" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_backslash"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_backslash"
+                android:text="@string/key_alt_backslash" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_pipe"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_pipe"
+                android:text="@string/key_alt_pipe" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_tilde"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_tilde"
+                android:text="@string/key_alt_tilde" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_less"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_less"
+                android:text="@string/key_alt_less" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_greater"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_greater"
+                android:text="@string/key_alt_greater" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_equals"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_equals"
+                android:text="@string/key_alt_equals" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_degree"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_degree"
+                android:text="@string/key_alt_degree" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_backspace_alt"
+                style="@style/KeyGlyph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1.5"
+                android:contentDescription="@string/key_backspace_description"
+                android:text="@string/key_backspace_label" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/key_height"
+            android:orientation="horizontal">
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_shift_alt"
+                style="@style/KeyGlyph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1.5"
+                android:contentDescription="@string/key_shift_description"
+                android:text="@string/key_shift_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_abc_alt"
+                style="@style/KeyWordLabel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_abc_description"
+                android:text="@string/key_abc_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_numbers_back"
+                style="@style/KeyWordLabel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_symbols_description"
+                android:text="@string/key_symbols_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_scan_alt"
+                style="@style/KeyWordLabel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1.5"
+                android:contentDescription="@string/key_scan_description"
+                android:text="@string/key_scan_label" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_space_alt"
+                style="@style/KeyLetter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="3"
+                android:contentDescription="@string/key_space_description" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_enter_alt"
+                style="@style/KeyGlyph"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="2"
+                android:contentDescription="@string/key_enter_description"
+                android:text="@string/key_enter_label" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
