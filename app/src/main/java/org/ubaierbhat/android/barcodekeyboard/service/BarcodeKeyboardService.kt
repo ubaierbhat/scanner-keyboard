@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.view.KeyEvent
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -186,9 +187,19 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
             setCallbacks(
                 onClose = { closeScanner() },
                 onError = { scheduleScannerDismiss() },
+                onBarcodeResult = { text -> handleBarcodeResult(text) },
             )
         }.also { scannerView = it }
     }
+
+    private fun handleBarcodeResult(text: String) {
+        currentInputConnection?.commitText(text, 1)
+        inputContainer?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        recordScan(text)
+        closeScanner()
+    }
+
+    private fun recordScan(text: String) = Unit
 
     private fun scheduleScannerDismiss() {
         handler.removeCallbacks(dismissScannerRunnable)
