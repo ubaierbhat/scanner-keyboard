@@ -8,6 +8,12 @@
     <dimen name="key_corner_radius">8dp</dimen>
     <dimen name="keyboard_bottom_padding">8dp</dimen>
 
+    <dimen name="accent_popup_candidate_width">44dp</dimen>
+    <dimen name="accent_popup_padding">6dp</dimen>
+    <dimen name="accent_popup_gap">4dp</dimen>
+    <dimen name="accent_popup_screen_margin">8dp</dimen>
+    <dimen name="accent_popup_elevation">6dp</dimen>
+
     <dimen name="setup_screen_padding">16dp</dimen>
     <dimen name="setup_card_spacing">12dp</dimen>
     <dimen name="setup_card_content_padding">16dp</dimen>
