@@ -27,6 +27,13 @@
     <string name="scanner_open_setup_label">Open setup</string>
     <string name="scanner_open_setup_description">Open setup screen</string>
 
+    <string name="history_title">History</string>
+    <string name="history_empty">No scanned or copied items yet</string>
+    <string name="history_clear_label">CLEAR</string>
+    <string name="history_clear_description">Clear history</string>
+    <string name="history_close_label">CLOSE</string>
+    <string name="history_close_description">Close history</string>
+
     <string name="key_q">q</string>
     <string name="key_w">w</string>
     <string name="key_e">e</string>
@@ -64,6 +71,8 @@
     <string name="key_alt_description">More symbols</string>
     <string name="key_scan_label">SCAN</string>
     <string name="key_scan_description">Scan barcode or QR code</string>
+    <string name="key_hist_label">HIST</string>
+    <string name="key_hist_description">Show scan history</string>
     <string name="key_space_description">Space</string>
     <string name="key_enter_label">↵</string>
     <string name="key_enter_description">Enter</string>

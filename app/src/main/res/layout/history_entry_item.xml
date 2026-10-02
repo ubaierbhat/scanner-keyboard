@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/history_entry_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/key_padding"
+    android:background="@drawable/key_background"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/key_height"
+    android:paddingStart="@dimen/history_item_padding"
+    android:paddingTop="@dimen/key_padding"
+    android:paddingEnd="@dimen/history_item_padding"
+    android:paddingBottom="@dimen/key_padding"
+    android:textColor="@color/key_text"
+    android:textSize="@dimen/history_item_text_size" />

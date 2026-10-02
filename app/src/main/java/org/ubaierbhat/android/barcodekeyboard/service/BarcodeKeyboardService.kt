@@ -1,6 +1,7 @@
 package org.ubaierbhat.android.barcodekeyboard.service
 
 import android.Manifest
+import android.content.ClipboardManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.inputmethodservice.InputMethodService
@@ -17,6 +18,8 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import org.ubaierbhat.android.barcodekeyboard.MainActivity
 import org.ubaierbhat.android.barcodekeyboard.R
+import org.ubaierbhat.android.barcodekeyboard.history.HistoryPanelView
+import org.ubaierbhat.android.barcodekeyboard.history.ScanHistoryStore
 import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterActionResolver
 import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterBehavior
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -29,6 +32,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
     private enum class Mode {
         KEYBOARD,
         SCANNER,
+        HISTORY,
     }
 
     private var inputContainer: FrameLayout? = null
@@ -36,12 +40,19 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
     private var permissionView: View? = null
     private var openSetupKey: KeyView? = null
     private var scannerView: ScannerView? = null
+    private var historyPanelView: HistoryPanelView? = null
+    private var historyStore: ScanHistoryStore? = null
     private var mode = Mode.KEYBOARD
 
     private val handler = Handler(Looper.getMainLooper())
     private val dismissScannerRunnable = Runnable { closeScanner() }
 
     private var enterBehavior: EnterBehavior = EnterBehavior.SendKeyEvent
+
+    override fun onCreate() {
+        super.onCreate()
+        historyStore = ScanHistoryStore(this)
+    }
 
     override fun onCreateInputView(): View {
         val root = LayoutInflater.from(this).inflate(R.layout.input_view, null) as FrameLayout
@@ -63,8 +74,16 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         } else {
             EnterBehavior.SendKeyEvent
         }
-        if (mode != Mode.KEYBOARD) {
+        if (!restarting) {
+            captureClipboardEntry()
+        }
+        if (mode == Mode.SCANNER) {
             closeScanner()
+        } else if (mode == Mode.HISTORY) {
+            closeHistory()
+        }
+        if (permissionView?.visibility == View.VISIBLE && isCameraGranted()) {
+            showKeyboard()
         }
     }
 
@@ -119,38 +138,44 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         if (mode == Mode.SCANNER) {
             return
         }
-        val granted = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.CAMERA,
-        ) == PackageManager.PERMISSION_GRANTED
-        if (!granted) {
+        if (!isCameraGranted()) {
             showPermissionPrompt()
             return
         }
         openScanner()
     }
 
-    override fun onHistoryRequested() = Unit
+    override fun onHistoryRequested() {
+        if (mode == Mode.HISTORY) {
+            return
+        }
+        openHistory()
+    }
 
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
         keyboardView?.resetToLetters()
         closeScanner()
+        closeHistory()
     }
 
     override fun onWindowHidden() {
         super.onWindowHidden()
         closeScanner()
+        closeHistory()
     }
 
     override fun onDestroy() {
         closeScanner()
+        closeHistory()
         scannerView = null
+        historyPanelView = null
         keyboardView?.resetToLetters()
         keyboardView = null
         openSetupKey = null
         permissionView = null
         inputContainer = null
+        historyStore = null
         super.onDestroy()
     }
 
@@ -173,6 +198,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         }
         keyboardView?.visibility = View.GONE
         permissionView?.visibility = View.GONE
+        historyPanelView?.visibility = View.GONE
         scanner.visibility = View.VISIBLE
         mode = Mode.SCANNER
         scanner.start(this)
@@ -199,7 +225,9 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         closeScanner()
     }
 
-    private fun recordScan(text: String) = Unit
+    private fun recordScan(text: String) {
+        historyStore?.add(text)
+    }
 
     private fun scheduleScannerDismiss() {
         handler.removeCallbacks(dismissScannerRunnable)
@@ -212,18 +240,104 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         showKeyboard()
     }
 
+    private fun openHistory() {
+        val container = inputContainer ?: return
+        val panel = obtainHistoryPanelView() ?: return
+        closeScanner()
+        val height = (resources.displayMetrics.heightPixels * HISTORY_HEIGHT_FRACTION).toInt()
+        if (panel.parent == null) {
+            container.addView(
+                panel,
+                FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    height,
+                ),
+            )
+        } else {
+            val params = panel.layoutParams as FrameLayout.LayoutParams
+            params.height = height
+            panel.layoutParams = params
+        }
+        panel.refresh(historyStore?.entries().orEmpty())
+        keyboardView?.visibility = View.GONE
+        permissionView?.visibility = View.GONE
+        scannerView?.visibility = View.GONE
+        panel.visibility = View.VISIBLE
+        mode = Mode.HISTORY
+    }
+
+    private fun obtainHistoryPanelView(): HistoryPanelView? {
+        historyPanelView?.let { return it }
+        if (inputContainer == null) {
+            return null
+        }
+        return HistoryPanelView(this).apply {
+            setCallbacks(
+                onEntrySelected = { text -> handleHistoryEntrySelected(text) },
+                onClose = { closeHistory() },
+                onClear = { clearHistory() },
+            )
+        }.also { historyPanelView = it }
+    }
+
+    private fun handleHistoryEntrySelected(text: String) {
+        currentInputConnection?.commitText(text, 1)
+        closeHistory()
+    }
+
+    private fun clearHistory() {
+        historyStore?.clear()
+        historyPanelView?.refresh(historyStore?.entries().orEmpty())
+    }
+
+    private fun closeHistory() {
+        if (mode == Mode.HISTORY) {
+            showKeyboard()
+        }
+    }
+
+    private fun captureClipboardEntry() {
+        val store = historyStore ?: return
+        try {
+            val clipboard = getSystemService(ClipboardManager::class.java) ?: return
+            val clip = clipboard.primaryClip ?: return
+            if (clip.itemCount == 0) {
+                return
+            }
+            val text = clip.getItemAt(0).coerceToText(this)?.toString()?.trim() ?: return
+            if (text.isEmpty() || text.length > MAX_CLIPBOARD_ENTRY_LENGTH) {
+                return
+            }
+            if (store.entries().firstOrNull() == text) {
+                return
+            }
+            store.add(text)
+        } catch (error: SecurityException) {
+            return
+        } catch (error: IllegalStateException) {
+            return
+        }
+    }
+
     private fun showKeyboard() {
         mode = Mode.KEYBOARD
         scannerView?.visibility = View.GONE
         permissionView?.visibility = View.GONE
+        historyPanelView?.visibility = View.GONE
         keyboardView?.visibility = View.VISIBLE
     }
 
     private fun showPermissionPrompt() {
         keyboardView?.visibility = View.GONE
         scannerView?.visibility = View.GONE
+        historyPanelView?.visibility = View.GONE
         permissionView?.visibility = View.VISIBLE
     }
+
+    private fun isCameraGranted(): Boolean = ContextCompat.checkSelfPermission(
+        this,
+        Manifest.permission.CAMERA,
+    ) == PackageManager.PERMISSION_GRANTED
 
     private fun openSetup() {
         val intent = Intent(this, MainActivity::class.java)
@@ -233,6 +347,8 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
 
     private companion object {
         const val SCANNER_HEIGHT_FRACTION = 0.45f
+        const val HISTORY_HEIGHT_FRACTION = 0.45f
         const val SCANNER_ERROR_DISMISS_MS = 1500L
+        const val MAX_CLIPBOARD_ENTRY_LENGTH = 500
     }
 }

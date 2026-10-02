@@ -14,4 +14,8 @@
 
     <dimen name="scanner_error_padding">24dp</dimen>
     <dimen name="scanner_open_setup_padding">16dp</dimen>
+
+    <dimen name="history_header_spacing">8dp</dimen>
+    <dimen name="history_item_padding">12dp</dimen>
+    <dimen name="history_item_text_size">16sp</dimen>
 </resources>
