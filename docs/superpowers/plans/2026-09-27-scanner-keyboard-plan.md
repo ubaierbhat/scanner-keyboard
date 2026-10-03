@@ -466,3 +466,28 @@ unusable until process restart.
    (rotate WHILE scanner open, then back, then reopen) — the exact user repro.
    Screenshots each step, save to workspace dir.
 6. Commit.
+
+## Task 12: Unify key and icon text color to white (user feedback)
+
+The user wants every keyboard glyph, special-key label, toolbar icon, and the
+scanner viewfinder's own keys (✕ CLOSE, TORCH) rendered in the same white as
+letter keys — no blue anywhere in the IME surface.
+
+1. Rescope the accent usages to white text:
+   - styles.xml KeyGlyph textColor -> white (letter-key text color resource)
+   - ic_scan_barcode.xml and ic_history_clipboard.xml vector android:tint -> white
+   - key_background.xml checked-state stroke color -> white
+   - color/key_glyph_text.xml selector: every state (enabled, checked,
+     state_enabled=false) resolves to white text; disabled shift may use a
+     40% white (#66FFFFFF) instead of the blue fade.
+   - key_text_accent and key_text_accent_disabled: after the above there must be
+     ZERO remaining references (grep to prove); then DELETE both resources.
+   - Scanner viewfinder ✕/Torch labels already use KeyGlyph — verify, do not
+     double-change.
+2. Letter keys, period, ENTER, shift unchanged (already white).
+3. ./gradlew test assembleDebug green (41 tests).
+4. Device verification (R58RB1N07TD; re-run ime enable/set after install):
+   screenshots of letters layer, symbols layer (ABC/#+= keys now white),
+   toolbar (white icons), scanner open (white ✕/Torch), and caps-locked shift
+   (white border stroke) — save to the SDD workspace dir.
+5. Commit: `fix: render all keyboard keys and icons in white`
