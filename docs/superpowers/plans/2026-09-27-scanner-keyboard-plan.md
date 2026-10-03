@@ -423,3 +423,46 @@ the bottom row reduced to the standard ?123 / SPACE / . / ENTER.
    commits; ENTER action still fires in a search field; long-press 'z' popup
    renders at its new position. ./gradlew test assembleDebug green (39 tests).
 9. Commit.
+
+## Task 11: Fix rotation zombie — orphaned scanner/history views (user-reported bug)
+
+Root cause (established by device repro + code trace): rotation recreates the IME
+input view; onCreateInputView replaces inputContainer, but scannerView/
+historyPanelView fields still reference views parented to the OLD detached
+container. openScanner/openHistory then take the `parent != null` branch, SKIP
+addView into the live container, hide the keyboard and show the orphan view —
+zombie empty window, camera binds to a surfaceless view and dies, scanner is
+unusable until process restart.
+
+1. Failing test first (TDD RED): Robolectric test in
+   service/BarcodeKeyboardServiceRotationTest.kt:
+   - grant CAMERA permission via Shadow (ShadowApplication grantPermissions)
+   - containerA = service.onCreateInputView()
+   - service.onScanRequested() (wrap the call in try/catch — CameraX may throw
+     under Robolectric AFTER addView; placement happens inside openScanner BEFORE
+     scanner.start, per current code order)
+   - assert containerA has a visible ScannerView descendant
+   - containerB = service.onCreateInputView() (simulates rotation)
+   - service.onScanRequested() again (same try/catch)
+   - assert containerB now has a visible ScannerView descendant — MUST FAIL on
+     current code (zombie) and pass after the fix
+   - add the same rotation-cycle assertion for HISTORY (containerB gets a visible
+     HistoryPanelView) — same defect
+2. Fix at the source: in onCreateInputView, before inflating the new container:
+   stop the camera via scannerView?.stop(); set scannerView = null and
+   historyPanelView = null; set mode = Mode.KEYBOARD — cached views from a dead
+   window must never survive into a live one.
+3. Defense-in-depth in openScanner and openHistory: replace the
+   `parent == null` skip-branch — if parent != null, detach first
+   ((parent as ViewGroup).removeView(view)) and ALWAYS addView to the current
+   container with the height LayoutParams; keep visibility/mode lines intact.
+4. GREEN: new tests pass; full ./gradlew test assembleDebug green (41+ tests).
+5. Device verification (R58RB1N07TD — no aiming needed): open keyboard in
+   Settings search, SCAN (confirm scanner UI + dumpsys media.camera shows our
+   client), rotate landscape, rotate back (keyboard shown), tap SCAN — scanner
+   UI must be visible and dumpsys must show camera open; close via ✕ → camera
+   list empty; repeat once for HISTORY panel (open → rotate → rotate back → HIST
+   → panel visible). Also one full sequence starting from scanner-open rotation
+   (rotate WHILE scanner open, then back, then reopen) — the exact user repro.
+   Screenshots each step, save to workspace dir.
+6. Commit.
