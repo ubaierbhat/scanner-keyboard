@@ -378,3 +378,48 @@ sweep, fixing small in-scope issues found (bigger issues → report, do not hack
 
 Final whole-branch review → fix wave → scoped re-review → adjudicate → delete SDD
 workspace → finishing-a-development-branch.
+
+## Task 10: Samsung-style toolbar and uncrowded bottom row (user feedback change)
+
+User-approved design: a persistent function toolbar above the letter rows, with
+SCAN and HISTORY moved into it; shift moved to the start of the letters row 3;
+the bottom row reduced to the standard ?123 / SPACE / . / ENTER.
+
+1. keyboard_view.xml: add a top toolbar strip (height 40dp) ABOVE the letters
+   area, visible on ALL three layers (letters, symbols, alt-symbols) — a single
+   shared row outside the layer stack. Right-aligned in the toolbar: two icon
+   keys, SCAN first then HISTORY (order left-to-right: SCAN, HISTORY at the far
+   right edge), each 40dp-high, tap target at least 48dp wide.
+2. Icon keys are KeyViews with drawableStart/vector icons (no text labels):
+   res/drawable/ic_scan_barcode.xml (barcode glyph, 24dp viewport, accent tint
+   from existing accent color resource) and
+   res/drawable/ic_history_clipboard.xml (clipboard-list glyph). Labels removed
+   but contentDescription strings ("Scan barcode", "Clipboard and scan history").
+3. Row 3 becomes SHIFT + Z X C V B N M + BACKSPACE (shift moves from the old
+   bottom row to the start of row 3 — Samsung/Gboard convention; caps-lock
+   long-press behavior and checked visual unchanged).
+4. Bottom row (letters layer): ?123 toggle, SPACE, PERIOD, ENTER with width
+   weights approximately 1.2 : 4 : 1 : 1.6 — period commits "."; ENTER keeps
+   Task 3 dispatch. Same pattern on symbols layers: ABC toggle, space, period,
+   ENTER; shift stays disabled-position equivalent — shift row is row 3 on
+   letters; on symbols layers row 3 first slot is the CAPS-to-letters style
+   arrangement already present — preserve existing symbol-layer structure for
+   rows 2-3 and only strip bottom-row SCAN/HIST/shift remnants.
+5. Remove the old bottom-row SCAN, HIST, and SHIFT entries from ALL layers
+   (Task 7 added HIST between SCAN and SPACE on every layer — none of those
+   three keys remains in bottom rows after this task).
+6. KeyboardView wiring: update key-id groupings (SHIFT_IDS, BACKSPACE_IDS,
+   LETTER_IDS, SCAN/HIST routing) so the toolbar icons call
+   listener.onScanRequested() / onHistoryRequested(), shift long-press keeps
+   toggleLock, and HIST/SCAN remain inert to shift casing. Service and
+   KeyboardActionListener contract unchanged.
+7. Accent popups must still anchor correctly (row 3 letters shifted left by the
+   new shift key) — popup positioning reads live rects, so verify on device.
+8. Device verification (physical R58RB1N07TD, remember ime enable/set after
+   install): screenshots of letters + both symbol layers showing the toolbar and
+   new bottom row; tap SHIFT toggles casing from its row-3 position; long-press
+   SHIFT caps-locks; toolbar SCAN opens viewfinder (granted) and permission
+   prompt (revoked); toolbar HIST opens panel and tap-insert works; bottom '.'
+   commits; ENTER action still fires in a search field; long-press 'z' popup
+   renders at its new position. ./gradlew test assembleDebug green (39 tests).
+9. Commit.

@@ -70,10 +70,9 @@
     <string name="key_abc_description">Letters</string>
     <string name="key_alt_label">#+=</string>
     <string name="key_alt_description">More symbols</string>
-    <string name="key_scan_label">SCAN</string>
-    <string name="key_scan_description">Scan barcode or QR code</string>
-    <string name="key_hist_label">HIST</string>
-    <string name="key_hist_description">Show scan history</string>
+    <string name="key_scan_description">Scan barcode</string>
+    <string name="key_hist_description">Clipboard and scan history</string>
+    <string name="key_period_description">Period</string>
     <string name="key_space_description">Space</string>
     <string name="key_enter_label">↵</string>
     <string name="key_enter_description">Enter</string>

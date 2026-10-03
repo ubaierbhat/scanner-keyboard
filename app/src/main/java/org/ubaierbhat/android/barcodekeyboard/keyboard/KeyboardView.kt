@@ -291,16 +291,16 @@ class KeyboardView @JvmOverloads constructor(
             R.id.key_n, R.id.key_m,
         )
         private val SHIFT_IDS = intArrayOf(
-            R.id.key_shift, R.id.key_shift_symbols, R.id.key_shift_alt,
+            R.id.key_shift,
         )
         private val BACKSPACE_IDS = intArrayOf(
             R.id.key_backspace, R.id.key_backspace_symbols, R.id.key_backspace_alt,
         )
         private val SCAN_IDS = intArrayOf(
-            R.id.key_scan, R.id.key_scan_symbols, R.id.key_scan_alt,
+            R.id.key_scan,
         )
         private val HIST_IDS = intArrayOf(
-            R.id.key_hist, R.id.key_hist_symbols, R.id.key_hist_alt,
+            R.id.key_hist,
         )
         private val SPACE_IDS = intArrayOf(
             R.id.key_space, R.id.key_space_symbols, R.id.key_space_alt,
@@ -320,6 +320,7 @@ class KeyboardView @JvmOverloads constructor(
             R.id.key_sym_asterisk, R.id.key_sym_double_quote, R.id.key_sym_apostrophe,
             R.id.key_sym_colon, R.id.key_sym_semicolon, R.id.key_sym_comma, R.id.key_sym_period,
             R.id.key_sym_question, R.id.key_sym_exclamation, R.id.key_sym_slash,
+            R.id.key_period_letters, R.id.key_period_symbols, R.id.key_period_alt,
             R.id.key_alt_num_1, R.id.key_alt_num_2, R.id.key_alt_num_3, R.id.key_alt_num_4,
             R.id.key_alt_num_5, R.id.key_alt_num_6, R.id.key_alt_num_7, R.id.key_alt_num_8,
             R.id.key_alt_num_9, R.id.key_alt_num_0,
