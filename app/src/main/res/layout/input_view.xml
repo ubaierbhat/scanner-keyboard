@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/input_mode_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/keyboard_background">
+
+    <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyboardView
+        android:id="@+id/keyboard_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/scanner_permission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/key_gutter"
+        android:paddingEnd="@dimen/key_gutter"
+        android:paddingBottom="@dimen/keyboard_bottom_padding"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/scanner_permission_message"
+            style="@style/ScannerText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/scanner_permission_message" />
+
+        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+            android:id="@+id/scanner_open_setup_key"
+            style="@style/KeyWordLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/key_height"
+            android:layout_marginStart="@dimen/key_padding"
+            android:contentDescription="@string/scanner_open_setup_description"
+            android:paddingStart="@dimen/scanner_open_setup_padding"
+            android:paddingEnd="@dimen/scanner_open_setup_padding"
+            android:text="@string/scanner_open_setup_label" />
+    </LinearLayout>
+</FrameLayout>

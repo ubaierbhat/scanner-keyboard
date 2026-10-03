@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/scanner_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/scanner_preview_background" />
+
+    <TextView
+        android:id="@+id/scanner_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/scanner_preview_background"
+        android:gravity="center"
+        android:padding="@dimen/scanner_error_padding"
+        android:text="@string/scanner_camera_error"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/scanner_hint"
+        style="@style/ScannerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/scanner_hint" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/key_gutter"
+        android:paddingEnd="@dimen/key_gutter">
+
+        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+            android:id="@+id/scanner_close_key"
+            style="@style/KeyWordLabel"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/key_height"
+            android:layout_marginStart="@dimen/key_padding"
+            android:layout_marginEnd="@dimen/key_padding"
+            android:layout_weight="1"
+            android:contentDescription="@string/scanner_close_description"
+            android:text="@string/scanner_close_label" />
+
+        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+            android:id="@+id/scanner_torch_key"
+            style="@style/KeyWordLabel"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/key_height"
+            android:layout_marginStart="@dimen/key_padding"
+            android:layout_marginEnd="@dimen/key_padding"
+            android:layout_weight="1"
+            android:contentDescription="@string/scanner_torch_description"
+            android:text="@string/scanner_torch_label" />
+    </LinearLayout>
+</merge>

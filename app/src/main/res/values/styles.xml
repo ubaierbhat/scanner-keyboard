@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="KeyLetter">
+        <item name="android:textSize">@dimen/key_text_size</item>
+        <item name="android:textColor">@color/key_text</item>
+    </style>
+    <style name="KeyGlyph">
+        <item name="android:textSize">@dimen/key_text_size</item>
+        <item name="android:textColor">@color/key_glyph_text</item>
+    </style>
+    <style name="KeySymbol">
+        <item name="android:textSize">@dimen/key_text_size</item>
+        <item name="android:textColor">@color/key_text</item>
+    </style>
+    <style name="KeyWordLabel">
+        <item name="android:textSize">@dimen/key_label_text_size</item>
+        <item name="android:textColor">@color/key_text_accent</item>
+    </style>
+    <style name="ScannerText">
+        <item name="android:textSize">@dimen/key_label_text_size</item>
+        <item name="android:textColor">@color/key_text</item>
+    </style>
+</resources>
