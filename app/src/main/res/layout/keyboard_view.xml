@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/keyboard_total_height"
     android:orientation="vertical"
     android:paddingStart="@dimen/key_gutter"
     android:paddingEnd="@dimen/key_gutter"
+    android:paddingTop="@dimen/keyboard_top_padding"
     android:paddingBottom="@dimen/keyboard_bottom_padding">
 
     <LinearLayout
@@ -40,12 +41,14 @@
     <LinearLayout
         android:id="@+id/layer_letters"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -161,7 +164,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <View
@@ -276,7 +280,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -381,7 +386,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -432,13 +438,15 @@
     <LinearLayout
         android:id="@+id/layer_symbols"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         android:orientation="vertical"
         android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -554,7 +562,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -670,7 +679,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -786,7 +796,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -848,13 +859,15 @@
     <LinearLayout
         android:id="@+id/layer_symbols_alt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         android:orientation="vertical"
         android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -970,7 +983,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <View
@@ -1041,7 +1055,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <View
@@ -1140,7 +1155,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/key_height"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
