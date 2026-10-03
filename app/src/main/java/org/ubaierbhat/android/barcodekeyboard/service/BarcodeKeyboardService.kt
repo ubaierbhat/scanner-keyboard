@@ -55,6 +55,10 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
     }
 
     override fun onCreateInputView(): View {
+        scannerView?.stop()
+        scannerView = null
+        historyPanelView = null
+        mode = Mode.KEYBOARD
         val root = LayoutInflater.from(this).inflate(R.layout.input_view, null) as FrameLayout
         inputContainer = root
         keyboardView = root.findViewById<KeyboardView>(R.id.keyboard_view).apply {
@@ -183,19 +187,16 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         val container = inputContainer ?: return
         val scanner = obtainScannerView() ?: return
         val height = (resources.displayMetrics.heightPixels * SCANNER_HEIGHT_FRACTION).toInt()
-        if (scanner.parent == null) {
-            container.addView(
-                scanner,
-                FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    height,
-                ),
-            )
-        } else {
-            val params = scanner.layoutParams as FrameLayout.LayoutParams
-            params.height = height
-            scanner.layoutParams = params
+        if (scanner.parent != null) {
+            (scanner.parent as ViewGroup).removeView(scanner)
         }
+        container.addView(
+            scanner,
+            FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                height,
+            ),
+        )
         keyboardView?.visibility = View.GONE
         permissionView?.visibility = View.GONE
         historyPanelView?.visibility = View.GONE
@@ -248,19 +249,16 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         val panel = obtainHistoryPanelView() ?: return
         closeScanner()
         val height = (resources.displayMetrics.heightPixels * HISTORY_HEIGHT_FRACTION).toInt()
-        if (panel.parent == null) {
-            container.addView(
-                panel,
-                FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    height,
-                ),
-            )
-        } else {
-            val params = panel.layoutParams as FrameLayout.LayoutParams
-            params.height = height
-            panel.layoutParams = params
+        if (panel.parent != null) {
+            (panel.parent as ViewGroup).removeView(panel)
         }
+        container.addView(
+            panel,
+            FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                height,
+            ),
+        )
         panel.refresh(historyStore?.entries().orEmpty())
         keyboardView?.visibility = View.GONE
         permissionView?.visibility = View.GONE
