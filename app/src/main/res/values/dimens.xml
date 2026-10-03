@@ -8,7 +8,8 @@
     <dimen name="key_corner_radius">8dp</dimen>
     <dimen name="keyboard_bottom_padding">8dp</dimen>
     <dimen name="keyboard_top_padding">8dp</dimen>
-    <dimen name="keyboard_total_height">264dp</dimen>
+    <dimen name="keyboard_total_height">272dp</dimen>
+    <dimen name="keyboard_row_spacing">2dp</dimen>
     <dimen name="keyboard_toolbar_height">40dp</dimen>
     <dimen name="keyboard_toolbar_key_width">56dp</dimen>
 

@@ -49,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -166,6 +167,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <View
@@ -282,6 +284,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -388,6 +391,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -447,6 +451,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -564,6 +569,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -681,6 +687,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -798,6 +805,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -868,6 +876,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
@@ -985,6 +994,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <View
@@ -1057,6 +1067,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <View
@@ -1157,6 +1168,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
