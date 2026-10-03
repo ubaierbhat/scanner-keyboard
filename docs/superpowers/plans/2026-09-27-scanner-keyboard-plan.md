@@ -538,3 +538,37 @@ with screenshots and the icon.
    commitText→history→close), testing summary (41 unit tests + device sweep),
    screenshot gallery, icon showcase (launcher + adaptive + store 512).
 7. Commit: `feat: barcode-keyboard launcher and store icons, architecture document`
+
+## Task 15: Proportional keyboard height, top gap, fix clipped toolbar (user feedback from S22)
+
+User report (Galaxy S22 / One UI 8, Android 16): keys should scale, there is no
+gap above the key rows, and the toolbar icon keys are clipped at the top. Code
+cause: keyboard_view.xml root has no paddingTop and every row is a fixed 52dp
+stack — when the IME window is shorter than the stack, Android crops the top.
+
+1. keyboard_view.xml root LinearLayout:
+   - add android:paddingTop="@dimen/keyboard_top_padding" (new dimen 8dp)
+   - set android:layout_height="@dimen/keyboard_total_height" (new dimen) equal
+     to the CURRENT natural total (toolbar 40 + 4x52 rows + existing bottom
+     padding + row margins — MEASURE the rendered total from the pre-fix
+     XCover5 screenshot ratio, do not guess; adjust so the letters layout on
+     XCover5 stays visually identical)
+2. Rows: toolbar stays fixed 40dp; the four key rows become layout_height=0dp
+   with layout_weight (letters rows 1f each, bottom row 1f) so key heights
+   scale proportionally inside the bounded total instead of overflowing.
+   Apply the same conversion to ALL THREE layers (letters, symbols, alt-symbols)
+   — they share the row geometry pattern.
+3. KeyView text sizing stays as-is (labels are center-gravity; shorter rows on
+   constrained devices are the desired behavior).
+4. Verify on R58RB1N07TD (XCover5, has room — must look unchanged EXCEPT the
+   new top gap): screenshots letters + symbols layers + toolbar close-up;
+   measure with python3 stdlib PNG reader: gap pixels of surface color between
+   IME window top and toolbar key tops > 0; row heights equal within 2px.
+5. Simulate a constrained window on XCover5: temporarily nothing — instead
+   verify robustness by rendering: rotate to landscape (IME window shorter!)
+   and screenshot: on landscape the keyboard must show ALL FIVE rows with no
+   top clipping (this is the same failure class as the S22 portrait cap; if
+   landscape still clips, escalate the approach in the report rather than
+   guessing a second fix).
+6. ./gradlew test assembleDebug green (41). Commit:
+   `fix: bounded keyboard height with proportional rows and top gap`
