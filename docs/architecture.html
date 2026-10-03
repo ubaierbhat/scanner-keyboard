@@ -191,6 +191,7 @@
       <text x="36" y="298" class="t" font-weight="bold">KeyboardView.kt</text>
       <text x="36" y="316" class="s">letters · symbols · alt</text>
       <text x="36" y="332" class="s">accent PopupWindow</text>
+      <text x="36" y="346" class="s">ScaledKeyboardLayout root</text>
       <rect x="260" y="274" width="190" height="76" rx="9" class="box"/>
       <text x="276" y="298" class="t" font-weight="bold">KeyView.kt</text>
       <text x="276" y="316" class="s">press · long-press</text>
@@ -290,6 +291,16 @@
       cycle (rotation, quick scan→close→scan) can therefore never resurrect a dead camera.</p>
     </div>
     <div class="card">
+      <h4>Bounded keyboard that scales to the window</h4>
+      <p>The keyboard's total height is a single bounded dimension
+      (<code>@dimen/keyboard_total_height</code>, 264 dp) whose four key rows are
+      weight-proportioned, wrapped in <code>ScaledKeyboardLayout</code>
+      (<code>keyboard/ScaledKeyboardLayout.kt</code>) which clamps its measured height to
+      <code>min(desired, parent spec)</code>. When an OEM IME frame grants less room than the
+      keyboard wants (measured on One UI), rows shrink proportionally instead of the window
+      cropping the toolbar from the top.</p>
+    </div>
+    <div class="card">
       <h4>KEEP_ONLY_LATEST backpressure</h4>
       <p>Image analysis uses <code>STRATEGY_KEEP_ONLY_LATEST</code> on a dedicated single-thread
       executor (<code>ScannerView.bindPreview()</code>). ML Kit never sees queued-up stale frames;
@@ -375,6 +386,7 @@
   <div class="gallery">
     <figure><img src="images/keyboard.png" alt="QWERTY keyboard with scan and history toolbar keys"><figcaption>Keyboard — QWERTY with the scan/history toolbar (top-right icons)</figcaption></figure>
     <figure><img src="images/symbols.png" alt="Numbers and symbols layer"><figcaption>Symbols layer (123 → #+=)</figcaption></figure>
+    <figure><img src="images/keyboard-landscape.png" alt="Landscape keyboard with proportional rows"><figcaption>Landscape — proportional weighted rows inside the bounded total; under a window deficit the rows shrink instead of the toolbar cropping (verified with a forced-deficit build)</figcaption></figure>
     <figure><img src="images/scanner.png" alt="Scanner viewfinder with hint, close and torch keys"><figcaption>Scanner viewfinder — “Point at a barcode”, ✕ and Torch (camera face-down here)</figcaption></figure>
     <figure><img src="images/accent-popup.png" alt="Accent popup over the e key"><figcaption>Long-press accents — e è é ê ë ė ē, slide to select</figcaption></figure>
     <figure><img src="images/history-panel.png" alt="History panel with an entry"><figcaption>History — tap to insert, CLEAR, CLOSE</figcaption></figure>
@@ -412,7 +424,7 @@
   </div>
 
   <footer>
-    Scanner Keyboard · architecture document · generated 2026-10-03 · commit e9795e2 + icon task ·
+    Scanner Keyboard · architecture document · updated 2026-10-03 · current <code>main</code> head ·
     repo paths are relative to the project root.
   </footer>
 </div>
