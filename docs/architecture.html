@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scanner Keyboard — Architecture</title>
+<style>
+  :root {
+    --bg: #16161a;
+    --surface: #1b1b1f;
+    --card: #232329;
+    --line: #34343c;
+    --text: #e8e8ea;
+    --muted: #9c9ca5;
+    --accent: #00c853;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding: 40px 24px 32px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 72px; }
+  header .wrap { padding-bottom: 0; }
+  h1 { margin: 0 0 4px; font-size: 32px; letter-spacing: -0.5px; }
+  h1 .accent { color: var(--accent); }
+  .sub { color: var(--muted); margin: 0; }
+  .iconrow { display: flex; align-items: center; gap: 20px; margin: 22px 0 6px; }
+  .iconrow img { border-radius: 18px; width: 88px; height: 88px; }
+  .iconrow .mono { border-radius: 50%; }
+  h2 {
+    font-size: 22px;
+    margin: 52px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  h3 { font-size: 17px; margin: 28px 0 8px; color: var(--white); }
+  p, li { color: var(--text); }
+  code {
+    font: 13.5px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--card);
+   border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 1px 6px;
+    color: #d7e8dc;
+    white-space: nowrap;
+  }
+  .pill {
+    display: inline-block;
+    background: rgba(0, 200, 83, 0.14);
+    color: var(--accent);
+    border: 1px solid rgba(0, 200, 83, 0.4);
+    border-radius: 999px;
+    padding: 2px 12px;
+    font-size: 13px;
+    margin-right: 6px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 14px 0;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .grid .card { margin: 0; }
+  .card h4 { margin: 0 0 6px; font-size: 15.5px; color: var(--white); }
+  .card p { margin: 0; font-size: 14.5px; color: var(--muted); }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .flow { counter-reset: step; list-style: none; padding: 0; margin: 18px 0; }
+  .flow li {
+    counter-increment: step;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 16px 12px 54px;
+    margin: 8px 0;
+    position: relative;
+    font-size: 15px;
+  }
+  .flow li::before {
+    content: counter(step);
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: #08210f;
+    font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 18px; }
+  figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  figure img { width: 100%; display: block; }
+  figcaption { padding: 10px 14px; font-size: 13.5px; color: var(--muted); }
+  .svgbox { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; overflow-x: auto; }
+  svg text { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  .store { display: flex; gap: 26px; align-items: flex-start; flex-wrap: wrap; }
+  .store figure { width: 300px; }
+  .ok { color: var(--accent); }
+  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); margin-top: 64px; padding: 18px 0 40px; }
+  a { color: #7fd4a0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="iconrow">
+      <img src="store/icon-512.png" alt="Scanner Keyboard launcher icon: barcode bars flowing into a key grid with a green scan key">
+      <div>
+        <h1>Scanner <span class="accent">Keyboard</span></h1>
+        <p class="sub">An Android IME with a built-in, fully offline barcode &amp; QR scanner.</p>
+        <p class="sub"><code>org.ubaierbhat.android.barcodekeyboard</code></p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <h2>1 · Overview</h2>
+  <p>
+    Scanner Keyboard is a custom input method (an <code>InputMethodService</code>) that pairs a
+    QWERTY keyboard with a live camera viewfinder <em>inside the keyboard window itself</em>.
+    Tapping the scan key swaps the keys for a viewfinder; when a code is detected, the decoded
+    text is committed at the cursor of whatever app owns the focused field, the phone buzzes,
+    and the view returns to the keyboard — no app-switching, no clipboard round-trips.
+  </p>
+  <div class="card">
+    <span class="pill">Offline</span><span class="pill">No INTERNET permission</span><span class="pill">Bundled ML Kit</span>
+    <h3 style="margin-top:10px">Privacy posture</h3>
+    <p style="color:var(--text)">
+      The manifest (<code>app/src/main/AndroidManifest.xml</code>) declares a single permission —
+      <code>CAMERA</code> — and <em>no</em> <code>INTERNET</code> permission, so the OS itself makes
+      network I/O impossible rather than merely unused. Barcode decoding runs entirely on-device via
+      ML Kit's bundled <code>barcode-scanning</code> model
+      (<code>com.google.mlkit:barcode-scanning:17.3.0</code>, <code>gradle/libs.versions.toml</code>),
+      with <code>Barcode.FORMAT_ALL_FORMATS</code> enabled
+      (<code>app/src/main/java/org/ubaierbhat/android/barcodekeyboard/scanner/BarcodeAnalyzer.kt</code>).
+      <code>allowBackup="false"</code> keeps scan history out of cloud/device-transfer backups, the
+      camera is released as soon as the scanner closes or the IME hides, and history lives only in the
+      app's private <code>SharedPreferences</code>. Haptics use
+      <code>View.performHapticFeedback</code> only — no <code>VIBRATE</code> permission.
+    </p>
+  </div>
+
+  <h2>2 · Component map</h2>
+  <div class="svgbox">
+    <svg viewBox="0 0 1040 668" width="1040" height="668" role="img" aria-label="Component diagram">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0L10 5L0 10z" fill="#9c9ca5"/>
+        </marker>
+      </defs>
+      <style>
+        .box { fill:#232329; stroke:#4a4a55; stroke-width:1.2; }
+        .svc { fill:#1d2b22; stroke:#00c853; stroke-width:1.4; }
+        .t { fill:#e8e8ea; font-size:14px; }
+        .s { fill:#9c9ca5; font-size:11.5px; }
+        .h { fill:#00c853; font-size:12px; letter-spacing:1.5px; }
+        .lbl { fill:#c9c9d1; font-size:11px; }
+        .ln { stroke:#9c9ca5; stroke-width:1.2; fill:none; }
+      </style>
+
+      <text x="20" y="26" class="h">SYSTEM</text>
+      <rect x="20" y="36" width="240" height="52" rx="9" class="box"/>
+      <text x="40" y="58" class="t">Focused app field</text>
+      <text x="40" y="76" class="s">InputConnection</text>
+      <rect x="300" y="36" width="240" height="52" rx="9" class="box"/>
+      <text x="320" y="58" class="t">Android IME host</text>
+      <text x="320" y="76" class="s">binds via BIND_INPUT_METHOD</text>
+      <rect x="600" y="36" width="420" height="52" rx="9" class="box"/>
+      <text x="620" y="58" class="t" font-weight="bold">MainActivity.kt — setup wizard</text>
+      <text x="620" y="76" class="s">camera grant · IME enable · live status chips</text>
+
+      <text x="20" y="128" class="h">IME SERVICE</text>
+      <rect x="20" y="138" width="1000" height="84" rx="9" class="box svc"/>
+      <text x="40" y="164" class="t" font-weight="bold">service/BarcodeKeyboardService.kt — mode state machine</text>
+      <text x="40" y="184" class="s">KEYBOARD / SCANNER / HISTORY · inline permission-prompt state · commitText · enter behaviors · clipboard capture · haptics</text>
+      <text x="40" y="202" class="s">owns the swap of KeyboardView / ScannerView / HistoryPanelView inside res/layout/input_view.xml FrameLayout</text>
+
+      <text x="20" y="264" class="h">KEYBOARD — org.ubaierbhat.android.barcodekeyboard.keyboard</text>
+      <rect x="20" y="274" width="220" height="76" rx="9" class="box"/>
+      <text x="36" y="298" class="t" font-weight="bold">KeyboardView.kt</text>
+      <text x="36" y="316" class="s">letters · symbols · alt</text>
+      <text x="36" y="332" class="s">accent PopupWindow</text>
+      <rect x="260" y="274" width="190" height="76" rx="9" class="box"/>
+      <text x="276" y="298" class="t" font-weight="bold">KeyView.kt</text>
+      <text x="276" y="316" class="s">press · long-press</text>
+      <text x="276" y="332" class="s">auto-repeat · checked</text>
+      <rect x="470" y="274" width="190" height="76" rx="9" class="box"/>
+      <text x="486" y="298" class="t" font-weight="bold">KeyboardState.kt</text>
+      <text x="486" y="316" class="s">pure shift machine</text>
+      <text x="486" y="332" class="s">OFF · ON · LOCKED</text>
+      <rect x="680" y="274" width="150" height="76" rx="9" class="box"/>
+      <text x="696" y="298" class="t" font-weight="bold">AccentMap</text>
+      <text x="696" y="316" class="s">letter → variants</text>
+      <rect x="850" y="274" width="170" height="76" rx="9" class="box"/>
+      <text x="862" y="298" class="t" font-weight="bold">EnterActionResolver</text>
+      <text x="862" y="316" class="s">EditorInfo → action</text>
+      <text x="862" y="332" class="s">/ newline / key event</text>
+
+      <text x="20" y="404" class="h">SCANNER — ....barcodekeyboard.scanner</text>
+      <rect x="20" y="414" width="220" height="76" rx="9" class="box"/>
+      <text x="36" y="438" class="t" font-weight="bold">ScannerView.kt</text>
+      <text x="36" y="456" class="s">CameraX bind · session</text>
+      <text x="36" y="472" class="s">guard · torch · close</text>
+      <rect x="260" y="414" width="220" height="76" rx="9" class="box"/>
+      <text x="276" y="438" class="t" font-weight="bold">ScannerLifecycleOwner.kt</text>
+      <text x="276" y="456" class="s">LifecycleRegistry:</text>
+      <text x="276" y="472" class="s">RESUMED ⇄ DESTROYED</text>
+      <rect x="500" y="414" width="240" height="76" rx="9" class="box"/>
+      <text x="516" y="438" class="t" font-weight="bold">BarcodeAnalyzer.kt</text>
+      <text x="516" y="456" class="s">ML Kit FORMAT_ALL_FORMATS</text>
+      <text x="516" y="472" class="s">KEEP_ONLY_LATEST frames</text>
+      <rect x="760" y="414" width="260" height="76" rx="9" class="box"/>
+      <text x="776" y="438" class="t" font-weight="bold">ScanThrottle.kt</text>
+      <text x="776" y="456" class="s">1000 ms cooldown guard</text>
+      <text x="776" y="472" class="s">(pure, injectable clock)</text>
+
+      <text x="20" y="544" class="h">HISTORY — ....barcodekeyboard.history</text>
+      <rect x="20" y="554" width="300" height="76" rx="9" class="box"/>
+      <text x="36" y="578" class="t" font-weight="bold">HistoryPanelView.kt</text>
+      <text x="36" y="596" class="s">RecyclerView · CLEAR · close</text>
+      <text x="36" y="612" class="s">empty state · tap to insert</text>
+      <rect x="340" y="554" width="300" height="76" rx="9" class="box"/>
+      <text x="356" y="578" class="t" font-weight="bold">ScanHistoryStore.kt</text>
+      <text x="356" y="596" class="s">SharedPreferences JSON array</text>
+      <text x="356" y="612" class="s">newest-first · dedup · cap 20</text>
+      <text x="664" y="580" class="s">scans + clipboard captures</text>
+      <text x="664" y="596" class="s">feed the store; the panel</text>
+      <text x="664" y="612" class="s">reads entries() via service</text>
+
+      <path class="ln" d="M140 88 V138" marker-end="url(#arr)"/>
+      <text x="148" y="118" class="lbl">commitText / sendKeyEvent</text>
+      <path class="ln" d="M420 88 V138" marker-end="url(#arr)"/>
+      <path class="ln" d="M810 138 V88" marker-end="url(#arr)"/>
+      <text x="818" y="118" class="lbl">permission prompt → openSetup()</text>
+      <path class="ln" d="M120 222 V274" marker-end="url(#arr)"/>
+      <text x="128" y="252" class="lbl">implements KeyboardActionListener</text>
+      <path class="ln" d="M60 274 V222" marker-end="url(#arr)"/>
+      <path class="ln" d="M460 414 V222" marker-end="url(#arr)"/>
+      <text x="466" y="244" class="lbl">onScanRequested / throttled result → service</text>
+      <path class="ln" d="M480 452 H500" marker-end="url(#arr)"/>
+      <text x="482" y="446" class="lbl">bind</text>
+      <path class="ln" d="M740 452 H760" marker-end="url(#arr)"/>
+      <text x="704" y="446" class="lbl">allow?</text>
+    </svg>
+  </div>
+
+  <h3>Mode state machine — BarcodeKeyboardService</h3>
+  <p>
+    A private <code>enum class Mode { KEYBOARD, SCANNER, HISTORY }</code>
+    (<code>app/src/main/java/org/ubaierbhat/android/barcodekeyboard/service/BarcodeKeyboardService.kt</code>)
+    drives which child of the root <code>FrameLayout</code>
+    (<code>app/src/main/res/layout/input_view.xml</code>) is visible: the
+    <code>KeyboardView</code>, the <code>ScannerView</code> (45 % of screen height), or the
+    <code>HistoryPanelView</code> (45 %). A fifth UI state — the inline camera
+    <em>permission prompt</em> — is shown when SCAN is tapped without the CAMERA grant; its
+    <em>Open setup</em> button launches <code>MainActivity</code> with
+    <code>FLAG_ACTIVITY_NEW_TASK</code> (<code>openSetup()</code>).
+    <code>onStartInputView</code> forces the mode back to KEYBOARD (closing any scanner/history),
+    resolves the Enter behavior, and captures the clipboard;
+    <code>onFinishInputView</code> / <code>onWindowHidden</code> / <code>onDestroy</code> unconditionally
+    release the camera (and reset the keyboard layer, which also dismisses the accent popup).
+  </p>
+
+  <h2>3 · Key design decisions</h2>
+  <div class="grid">
+    <div class="card">
+      <h4>CameraX inside an IME via a custom LifecycleOwner</h4>
+      <p>An <code>InputMethodService</code> is not a <code>LifecycleOwner</code>, so CameraX cannot bind
+      to it. <code>ScannerLifecycleOwner</code> (<code>scanner/ScannerLifecycleOwner.kt</code>) wraps a
+      <code>LifecycleRegistry</code>: <code>start()</code> → <code>RESUMED</code> when the viewfinder opens,
+      <code>destroy()</code> → <code>DESTROYED</code> on stop, guaranteeing the camera is unbound and the
+      hardware released the moment the keyboard comes back.</p>
+    </div>
+    <div class="card">
+      <h4>Session-generation guard</h4>
+      <p><code>ScannerView.start()</code> bumps a <code>session</code> counter and the async
+      <code>ProcessCameraProvider</code> callback re-checks it before binding
+      (<code>currentSession != session → return</code>). Stale provider results from a stop/start
+      cycle (rotation, quick scan→close→scan) can therefore never resurrect a dead camera.</p>
+    </div>
+    <div class="card">
+      <h4>KEEP_ONLY_LATEST backpressure</h4>
+      <p>Image analysis uses <code>STRATEGY_KEEP_ONLY_LATEST</code> on a dedicated single-thread
+      executor (<code>ScannerView.bindPreview()</code>). ML Kit never sees queued-up stale frames;
+      each <code>ImageProxy</code> is closed in the completion listener. A <code>ScanThrottle</code>
+      (1000 ms) guards re-fires at the analyzer level.</p>
+    </div>
+    <div class="card">
+      <h4>Auto-insert + auto-close detection UX</h4>
+      <p>First non-null <code>rawValue</code> wins: <code>handleBarcodeResult()</code> commits the text
+      to the focused field, fires a <code>VIRTUAL_KEY</code> haptic, records history, and closes the
+      scanner — one code in, back to typing, no dialog, no confirmation tap.</p>
+    </div>
+    <div class="card">
+      <h4>allowBackup=false privacy posture</h4>
+      <p>Scan history can contain URLs, IDs, and product data, so the manifest sets
+      <code>android:allowBackup="false"</code> — history and preferences never leave the device via
+      adb backup or transfer. Combined with the absent <code>INTERNET</code> permission, the only way
+      text leaves the app is through the field the user is typing in.</p>
+    </div>
+    <div class="card">
+      <h4>Rotation reparent fix</h4>
+      <p>On configuration change the framework rebuilds the input view while the service instance
+      survives. Without care, the cached <code>ScannerView</code>/<code>HistoryPanelView</code> stay
+      attached to the <em>old, dead</em> container (a zombie preview). Both open paths now detach
+      (<code>if (view.parent != null) removeView(view)</code>) and re-attach to the live container;
+      <code>onCreateInputView</code> additionally stops any camera owned by the previous view.
+      Pinned by <code>BarcodeKeyboardServiceRotationTest.scannerReattachesToNewContainerAfterRotation</code>.</p>
+    </div>
+  </div>
+
+  <h2>4 · Data flow of one scan</h2>
+  <ol class="flow">
+    <li><strong>Frame</strong> — CameraX <code>ImageAnalysis</code> delivers the latest
+      <code>ImageProxy</code> to <code>BarcodeAnalyzer.analyze()</code> on the scanner's single-thread
+      executor (<code>scanner/BarcodeAnalyzer.kt</code>).</li>
+    <li><strong>Decode</strong> — the frame becomes an ML Kit <code>InputImage</code> (with
+      <code>rotationDegrees</code>) and is processed with <code>FORMAT_ALL_FORMATS</code>; on the success
+      listener the first non-null <code>rawValue</code> is taken, and the proxy is always closed in
+      <code>addOnCompleteListener</code>.</li>
+    <li><strong>Throttle</strong> — <code>ScanThrottle.allow()</code> (1000 ms window) must approve the
+      result before it is posted to the main thread
+      (<code>scanner/ScanThrottle.kt</code>).</li>
+    <li><strong>Insert</strong> — <code>BarcodeKeyboardService.handleBarcodeResult()</code> re-checks
+      <code>mode == SCANNER</code>, null-checks <code>currentInputConnection</code>, then
+      <code>commitText(text, 1)</code> + haptic buzz.</li>
+    <li><strong>History</strong> — the value is recorded into <code>ScanHistoryStore</code>
+      (newest-first, deduped, capped at 20 — <code>history/ScanHistoryStore.kt</code>).</li>
+    <li><strong>Close</strong> — <code>closeScanner()</code> stops the camera
+      (<code>ScannerLifecycleOwner.destroy()</code> → <code>unbindAll()</code>) and the view swaps back
+      to the keyboard.</li>
+  </ol>
+  <p>
+    The same <code>commitText</code> path serves history re-insertion
+    (<code>handleHistoryEntrySelected()</code>), and clipboard text captured on keyboard show
+    (<code>captureClipboardEntry()</code>, ≤500 chars, deduped, exceptions swallowed) feeds the same
+    store — while Scanner Keyboard is your active IME, copied codes land in history automatically.
+  </p>
+
+  <h2>5 · Testing summary</h2>
+  <p>
+    <strong>41 JVM unit tests</strong> (Robolectric + JUnit) run green under
+    <code>./gradlew test</code>, covering the pure logic and the lifecycle edge cases:
+  </p>
+  <table>
+    <tr><th>Suite</th><th>File</th><th>Pins</th></tr>
+    <tr><td><code>KeyboardStateTest</code></td><td><code>app/src/test/.../keyboard/KeyboardStateTest.kt</code></td><td>shift OFF→ON→auto-off, caps lock toggle, case application</td></tr>
+    <tr><td><code>EnterActionResolverTest</code></td><td><code>app/src/test/.../keyboard/EnterActionResolverTest.kt</code></td><td>editor action vs newline vs raw ENTER key event</td></tr>
+    <tr><td><code>AccentMapTest</code></td><td><code>app/src/test/.../keyboard/AccentMapTest.kt</code></td><td>variant tables, case-insensitive lookup, unknown letters empty</td></tr>
+    <tr><td><code>ScanThrottleTest</code></td><td><code>app/src/test/.../scanner/ScanThrottleTest.kt</code></td><td>first pass, 1000 ms window, expiry, reset (injected clock)</td></tr>
+    <tr><td><code>ScanHistoryStoreTest</code></td><td><code>app/src/test/.../history/ScanHistoryStoreTest.kt</code></td><td>newest-first, dedup move, cap 20, trim/blank rules, corrupt-data reset</td></tr>
+    <tr><td><code>BarcodeKeyboardServiceRotationTest</code></td><td><code>app/src/test/.../service/BarcodeKeyboardServiceRotationTest.kt</code></td><td>scanner/history views reparent to the rebuilt input container, camera stopped</td></tr>
+  </table>
+  <p>
+    <strong>On-device sweep</strong> (Samsung Galaxy A10s — SM-G525F, Android 14): live QR + EAN-13 aim-and-insert
+    with haptic and auto-close, airplane-mode decode proving offline operation, mid-stream permission
+    revoke without FATAL, torch toggle, back-to-back scan sessions, accent drag-to-select, history
+    insert, rotation closing the camera. The remaining aim-dependent steps are listed in
+    <code>docs/acceptance/manual-checklist.md</code> with fresh test-code assets in
+    <code>docs/acceptance/</code>.
+  </p>
+
+  <h2>6 · Screens</h2>
+  <div class="gallery">
+    <figure><img src="images/keyboard.png" alt="QWERTY keyboard with scan and history toolbar keys"><figcaption>Keyboard — QWERTY with the scan/history toolbar (top-right icons)</figcaption></figure>
+    <figure><img src="images/symbols.png" alt="Numbers and symbols layer"><figcaption>Symbols layer (123 → #+=)</figcaption></figure>
+    <figure><img src="images/scanner.png" alt="Scanner viewfinder with hint, close and torch keys"><figcaption>Scanner viewfinder — “Point at a barcode”, ✕ and Torch (camera face-down here)</figcaption></figure>
+    <figure><img src="images/accent-popup.png" alt="Accent popup over the e key"><figcaption>Long-press accents — e è é ê ë ė ē, slide to select</figcaption></figure>
+    <figure><img src="images/history-panel.png" alt="History panel with an entry"><figcaption>History — tap to insert, CLEAR, CLOSE</figcaption></figure>
+    <figure><img src="images/wizard-pending.png" alt="Setup wizard with camera not granted"><figcaption>Setup wizard — pending state (Not granted)</figcaption></figure>
+    <figure><img src="images/wizard-ready.png" alt="Setup wizard fully ready"><figcaption>Setup wizard — ready (Granted + Enabled)</figcaption></figure>
+  </div>
+
+  <h2>7 · Icon</h2>
+  <p>
+    The store/launcher mark is a barcode flowing into a keyboard: variable-width scan bars hang
+    above a 4×3 grid of blank keys, and exactly one key — wide, bottom-right, in scanner green
+    <code>#00C853</code> — carries a tiny barcode glyph. White on keyboard-surface charcoal
+    <code>#1B1B1F</code>, no letters, legible at 48 dp. Every asset (legacy PNGs per density,
+    square + round-masked, adaptive foreground previews, 512 px store art, and the adaptive
+    foreground/monochrome vectors) is rendered deterministically by
+    <code>tools/generate_icons.py</code> — pure stdlib PNG writer, one shared unit-grid geometry.
+  </p>
+  <div class="store">
+    <figure><img src="store/icon-512.png" alt="512px store icon"><figcaption>Store icon — <code>docs/store/icon-512.png</code></figcaption></figure>
+    <figure><img src="images/launcher-icon.png" alt="Launcher icon close-up from the device app drawer"><figcaption>On-device app-drawer close-up (adaptive, system-masked)</figcaption></figure>
+    <figure><img src="store/adaptive-foreground-216.png" alt="Adaptive foreground layer preview" style="background:#1B1B1F"><figcaption>Adaptive foreground layer — <code>store/adaptive-foreground-216.png</code> (shown on charcoal; layer itself is transparent)</figcaption></figure>
+  </div>
+
+  <h2>8 · Verification</h2>
+  <div class="card">
+    <h4>How this build was verified</h4>
+    <ul>
+      <li><span class="ok">✓</span> <code>./gradlew test</code> — 41/41 unit tests green (see §5).</li>
+      <li><span class="ok">✓</span> <code>./gradlew assembleDebug</code> + install on device R58RB1N07TD; IME re-enabled and selected via <code>ime enable</code>/<code>ime set</code>.</li>
+      <li><span class="ok">✓</span> Launcher icon observed in the app drawer — adaptive foreground vector + charcoal background color, system-masked to the device shape, no icon-load errors in logcat; legacy <code>ic_launcher_round</code> renders the same mark circular-masked.</li>
+      <li><span class="ok">✓</span> Every screenshot in §6 was captured fresh from this build on that device.</li>
+      <li><span class="ok">✓</span> Generator determinism: two consecutive runs produce byte-identical PNGs and XMLs.</li>
+      <li><span class="ok">✓</span> Acceptance sweep items (live QR/EAN-13 insert, airplane-mode, revoke-mid-use, rotation, torch, accents, history) as described in <code>docs/acceptance/manual-checklist.md</code> — aim-dependent steps require a human and that file is the running checklist.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Scanner Keyboard · architecture document · generated 2026-10-03 · commit e9795e2 + icon task ·
+    repo paths are relative to the project root.
+  </footer>
+</div>
+</body>
+</html>

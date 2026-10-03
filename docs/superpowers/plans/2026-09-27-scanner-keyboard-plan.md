@@ -491,3 +491,50 @@ letter keys — no blue anywhere in the IME surface.
    toolbar (white icons), scanner open (white ✕/Torch), and caps-locked shift
    (white border stroke) — save to the SDD workspace dir.
 5. Commit: `fix: render all keyboard keys and icons in white`
+
+## Task 14: Launcher/store icon (barcode + keyboard) + architecture HTML document
+
+User request: a proper launcher icon AND a store icon showing a mix of a
+barcode and a keyboard, plus an HTML document explaining the app architecture
+with screenshots and the icon.
+
+1. Design (user-approved brief): a barcode-into-keyboard mark — variable-width
+   vertical barcode bars flowing down into a grid of keyboard keys; exactly one
+   key is a SCAN key carrying a tiny barcode glyph as the single accent; no
+   letters, no text, must read cleanly at 48dp. Monochrome white glyph on the
+   keyboard-surface charcoal background (#1B1B1F); the scan-key accent may use
+   one brand color (choose a scanner-green, NOT blue).
+2. tools/generate_icons.py: PURE Python stdlib (zlib+struct PNG writer,
+   rectangle paint list; NO Pillow) — parametric render of the same design at
+   all sizes: legacy mipmap PNGs (mdpi 48, hdpi 72, xhdpi 96, xxhdpi 144,
+   xxxhdpi 192 — square and round-masked variants), adaptive foreground PNG
+   previews, and docs/store/icon-512.png + icon-192.png store assets.
+   Deterministic: same input -> same bytes. Commit the script (reproducible).
+3. Adaptive icon: res/drawable/ic_launcher_foreground.xml (vector, 108dp
+   viewport, content inside the 66dp safe zone, bars+keys paths, white fill +
+   accent scan key), res/drawable/ic_launcher_monochrome.xml (themed icons),
+   background color resource, and mipmap-anydpi-v26 ic_launcher.xml +
+   ic_launcher_round.xml wired (replace template robot assets completely:
+   delete ic_launcher_background/foreground template drawables and old webp
+   pngs per density before regenerating).
+4. Verify wiring: ./gradlew test assembleDebug green; install on R58RB1N07TD;
+   confirm new launcher icon on the home screen/app drawer (screenshot, crop
+   the icon region; cite what you see); also verify adaptive round + themed
+   (monochrome) variants render (app drawer long-press or theme check).
+5. Fresh screenshots (current build) to docs/images/: keyboard (centered
+   toolbar icons), symbols layer, scanner viewfinder, history panel, accent
+   popup open, setup wizard states, launcher icon close-up.
+6. docs/architecture.html: single self-contained file (inline CSS, inline SVG
+   architecture diagram; images via relative paths): overview + privacy
+   statement (offline, bundled ML Kit, no INTERNET), component map
+   (BarcodeKeyboardService mode state machine KEYBOARD/SCANNER/HISTORY +
+   permission-prompt state; KeyboardView/KeyView/KeyboardState/
+   EnterActionResolver/AccentMap; ScannerView/ScannerLifecycleOwner/
+   BarcodeAnalyzer/ScanThrottle; ScanHistoryStore/HistoryPanelView;
+   MainActivity wizard), key design decisions (CameraX-in-IME custom
+   lifecycle owner, session-generation guard, KEEP_ONLY_LATEST backpressure,
+   auto-insert+auto-close detection UX, allowBackup=false privacy posture,
+   rotation reparent fix), data-flow of a scan (frame→analyzer→throttle→
+   commitText→history→close), testing summary (41 unit tests + device sweep),
+   screenshot gallery, icon showcase (launcher + adaptive + store 512).
+7. Commit: `feat: barcode-keyboard launcher and store icons, architecture document`
