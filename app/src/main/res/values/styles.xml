@@ -14,7 +14,7 @@
     </style>
     <style name="KeyWordLabel">
         <item name="android:textSize">@dimen/key_label_text_size</item>
-        <item name="android:textColor">@color/key_text_accent</item>
+        <item name="android:textColor">@color/key_text</item>
     </style>
     <style name="ScannerText">
         <item name="android:textSize">@dimen/key_label_text_size</item>

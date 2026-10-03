@@ -12,7 +12,7 @@
             <corners android:radius="@dimen/key_corner_radius" />
             <stroke
                 android:width="2dp"
-                android:color="@color/key_text_accent" />
+                android:color="@color/key_text" />
         </shape>
     </item>
     <item>

@@ -3,7 +3,7 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24"
-    android:tint="@color/key_text_accent">
+    android:tint="@color/key_text">
     <path
         android:fillColor="#FFFFFFFF"
         android:pathData="M2,2h4v1.5H3.5V6H2V2zM22,2h-4v1.5h2.5V6H22V2zM2,22h4v-1.5H3.5V18H2v4zM22,22h-4v-1.5h2.5V18H22v4z" />
