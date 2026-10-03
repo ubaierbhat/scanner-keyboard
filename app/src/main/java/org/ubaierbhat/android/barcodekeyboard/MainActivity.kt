@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imeStatusChip: TextView
     private lateinit var imeActionButton: MaterialButton
     private lateinit var overallStatus: TextView
+    private var cameraPermissionRequested = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,11 +36,16 @@ class MainActivity : AppCompatActivity() {
         overallStatus = findViewById(R.id.overall_status)
 
         cameraActionButton.setOnClickListener {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.CAMERA),
-                REQUEST_CAMERA
-            )
+            if (isCameraPermanentlyDenied()) {
+                openAppSettings()
+            } else {
+                cameraPermissionRequested = true
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CAMERA),
+                    REQUEST_CAMERA
+                )
+            }
         }
         imeActionButton.setOnClickListener {
             startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS))
@@ -60,10 +67,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshStatus() {
-        val cameraGranted = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
+        val cameraGranted = isCameraGranted()
         val imeEnabled = isImeEnabled()
 
         if (cameraGranted) {
@@ -72,6 +76,12 @@ class MainActivity : AppCompatActivity() {
         } else {
             cameraStatusChip.setText(R.string.status_not_granted)
             styleChip(cameraStatusChip, R.color.status_pending_text, R.color.status_pending_container)
+        }
+
+        if (isCameraPermanentlyDenied()) {
+            cameraActionButton.setText(R.string.setup_step_camera_action_settings)
+        } else {
+            cameraActionButton.setText(R.string.setup_step_camera_action)
         }
 
         if (imeEnabled) {
@@ -87,6 +97,23 @@ class MainActivity : AppCompatActivity() {
             !cameraGranted -> overallStatus.setText(R.string.setup_next_camera)
             else -> overallStatus.setText(R.string.setup_next_ime)
         }
+    }
+
+    private fun isCameraGranted(): Boolean = ContextCompat.checkSelfPermission(
+        this,
+        Manifest.permission.CAMERA,
+    ) == PackageManager.PERMISSION_GRANTED
+
+    private fun isCameraPermanentlyDenied(): Boolean = !isCameraGranted() &&
+        cameraPermissionRequested &&
+        !ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)
+
+    private fun openAppSettings() {
+        val intent = Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.fromParts("package", packageName, null),
+        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun isImeEnabled(): Boolean {

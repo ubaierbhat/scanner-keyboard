@@ -24,8 +24,9 @@ class BarcodeAnalyzer(
             imageProxy.close()
             return
         }
-        val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
         try {
+            val image =
+                InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             scanner.process(image)
                 .addOnSuccessListener { barcodes ->
                     val text = barcodes.firstNotNullOfOrNull { it.rawValue }

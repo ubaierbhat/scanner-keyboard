@@ -219,6 +219,9 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
     }
 
     private fun handleBarcodeResult(text: String) {
+        if (mode != Mode.SCANNER) {
+            return
+        }
         currentInputConnection?.commitText(text, 1)
         inputContainer?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         recordScan(text)
@@ -291,6 +294,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
     }
 
     private fun closeHistory() {
+        historyPanelView?.visibility = View.GONE
         if (mode == Mode.HISTORY) {
             showKeyboard()
         }

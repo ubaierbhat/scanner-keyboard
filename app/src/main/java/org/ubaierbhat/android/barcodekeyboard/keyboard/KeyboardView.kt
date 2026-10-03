@@ -205,8 +205,8 @@ class KeyboardView @JvmOverloads constructor(
     private fun releaseAccentPopup(rawX: Float, rawY: Float) {
         val index = accentIndexAt(rawX, rawY)
         val text = when {
-            index >= 0 -> accentCandidates[index].text.toString()
             isOverOriginKey(rawX, rawY) -> accentOriginKey?.text?.toString()
+            index >= 0 -> accentCandidates[index].text.toString()
             else -> null
         }
         dismissAccentPopup()

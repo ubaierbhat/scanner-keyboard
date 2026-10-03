@@ -4,6 +4,7 @@
     <string name="setup_step_camera_title">Allow camera access</string>
     <string name="setup_step_camera_description">Scanner Keyboard uses the camera to scan barcodes and QR codes.</string>
     <string name="setup_step_camera_action">Grant camera permission</string>
+    <string name="setup_step_camera_action_settings">Open app settings</string>
     <string name="setup_step_ime_title">Enable the keyboard</string>
     <string name="setup_step_ime_description">Turn on Scanner Keyboard in your input methods so you can type with it.</string>
     <string name="setup_step_ime_action">Open keyboard settings</string>

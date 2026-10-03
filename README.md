@@ -1,7 +1,8 @@
 # Scanner Keyboard
 
-An open-source Android keyboard (IME) with a built-in, fully offline barcode and QR
-code scanner. Tap **SCAN** and the keyboard swaps to a live camera viewfinder; when a
+A source-available Android keyboard (IME) with a built-in, fully offline barcode
+and QR code scanner (license pending — see [License](#license)). Tap **SCAN** and
+the keyboard swaps to a live camera viewfinder; when a
 code is detected, the decoded text is inserted at the cursor of the field you are
 typing in, the phone buzzes, and the scanner closes back to the keyboard.
 
@@ -35,9 +36,9 @@ Scanning is 100% on-device:
   r, s, t, u, y, z) to pop up its accented variants; slide to one and release to
   insert it (uppercase when shift/caps is active).
 - **History** — the last 20 scanned and copied texts (newest first, deduplicated).
-  Copying text with any app feeds the history while Scanner Keyboard is your default
-  keyboard; tap a history entry to re-insert it at the cursor. Clearable with one
-  tap.
+  While Scanner Keyboard is your default keyboard, copied text is picked up into
+  history the next time the keyboard opens; tap a history entry to re-insert it at the
+  cursor. Clearable with one tap.
 - **Setup wizard** — first-run screen with live status for camera permission and
   keyboard enablement.
 
