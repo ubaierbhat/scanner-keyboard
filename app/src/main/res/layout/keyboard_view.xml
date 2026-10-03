@@ -25,7 +25,7 @@
             android:layout_marginStart="@dimen/key_padding"
             android:layout_marginEnd="@dimen/key_padding"
             android:contentDescription="@string/key_scan_description"
-            android:drawableStart="@drawable/ic_scan_barcode" />
+            android:drawableTop="@drawable/ic_scan_barcode" />
 
         <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
             android:id="@+id/key_hist"
@@ -34,7 +34,7 @@
             android:layout_marginStart="@dimen/key_padding"
             android:layout_marginEnd="@dimen/key_padding"
             android:contentDescription="@string/key_hist_description"
-            android:drawableStart="@drawable/ic_history_clipboard" />
+            android:drawableTop="@drawable/ic_history_clipboard" />
     </LinearLayout>
 
     <LinearLayout
