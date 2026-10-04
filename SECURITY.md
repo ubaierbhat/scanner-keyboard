@@ -40,3 +40,5 @@ what the app can see, and how to report a problem safely.
 - A fix ships in a release before any public disclosure of the problem.
 - If 90 days pass without a fix, we coordinate the timeline with the reporter.
   Nothing becomes public without that agreement.
+
+Our OWASP MASVS v2.1 compliance record: [docs/security/masvs-compliance.md](docs/security/masvs-compliance.md).

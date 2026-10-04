@@ -149,6 +149,7 @@ tools/            icon generator scripts
 ## Documentation
 
 - Architecture: [docs/architecture.html](docs/architecture.html)
+- Security assessment (MASVS v2.1): [docs/security/masvs-compliance.md](docs/security/masvs-compliance.md)
 - Privacy policy: <https://ubaierbhat.github.io/scanner-keyboard/privacy.html>
 - Third-party licenses: <https://ubaierbhat.github.io/scanner-keyboard/licenses.html>
 
