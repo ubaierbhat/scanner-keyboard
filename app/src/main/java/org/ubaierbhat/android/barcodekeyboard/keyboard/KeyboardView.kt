@@ -92,9 +92,7 @@ class KeyboardView @JvmOverloads constructor(
         findViewById<KeyView>(R.id.key_abc_alt).onPress = { showLayer(KeyboardLayer.LETTERS) }
         findViewById<KeyView>(R.id.key_numbers_back).onPress = { showLayer(KeyboardLayer.SYMBOLS) }
         findViewById<KeyView>(R.id.key_abc_phone).onPress = { showLayer(KeyboardLayer.LETTERS) }
-        findViewById<KeyView>(R.id.key_alt_phone).onPress = { showLayer(KeyboardLayer.SYMBOLS_ALT) }
         findViewById<KeyView>(R.id.key_abc_number).onPress = { showLayer(KeyboardLayer.LETTERS) }
-        findViewById<KeyView>(R.id.key_alt_number).onPress = { showLayer(KeyboardLayer.SYMBOLS_ALT) }
         layers = LAYER_IDS.map { id -> findViewById<View>(id) }
         showLayer(KeyboardLayer.LETTERS)
     }
@@ -325,7 +323,7 @@ class KeyboardView @JvmOverloads constructor(
         )
         private val SPACE_IDS = intArrayOf(
             R.id.key_space, R.id.key_space_symbols, R.id.key_space_alt,
-            R.id.key_space_phone, R.id.key_space_number,
+            R.id.key_space_phone,
         )
         private val ENTER_IDS = intArrayOf(
             R.id.key_enter, R.id.key_enter_symbols, R.id.key_enter_alt,
@@ -345,25 +343,16 @@ class KeyboardView @JvmOverloads constructor(
             R.id.key_sym_colon, R.id.key_sym_semicolon, R.id.key_sym_comma, R.id.key_sym_period,
             R.id.key_sym_question, R.id.key_sym_exclamation, R.id.key_sym_slash,
             R.id.key_period_letters, R.id.key_period_symbols, R.id.key_period_alt,
-            R.id.key_period_phone, R.id.key_period_number,
             R.id.key_ph_num_1, R.id.key_ph_num_2, R.id.key_ph_num_3, R.id.key_ph_num_4,
             R.id.key_ph_num_5, R.id.key_ph_num_6, R.id.key_ph_num_7, R.id.key_ph_num_8,
             R.id.key_ph_num_9, R.id.key_ph_num_0,
             R.id.key_ph_open_paren, R.id.key_ph_close_paren, R.id.key_ph_plus,
-            R.id.key_ph_hyphen, R.id.key_ph_period, R.id.key_ph_comma, R.id.key_ph_colon,
-            R.id.key_ph_semicolon, R.id.key_ph_exclamation,
-            R.id.key_ph_asterisk, R.id.key_ph_hash, R.id.key_ph_apostrophe,
-            R.id.key_ph_double_quote, R.id.key_ph_at, R.id.key_ph_ampersand,
-            R.id.key_ph_percent, R.id.key_ph_slash, R.id.key_ph_underscore, R.id.key_ph_tilde,
+            R.id.key_ph_hyphen, R.id.key_ph_asterisk, R.id.key_ph_hash,
             R.id.key_nm_num_1, R.id.key_nm_num_2, R.id.key_nm_num_3, R.id.key_nm_num_4,
             R.id.key_nm_num_5, R.id.key_nm_num_6, R.id.key_nm_num_7, R.id.key_nm_num_8,
             R.id.key_nm_num_9, R.id.key_nm_num_0,
-            R.id.key_nm_hyphen, R.id.key_nm_slash, R.id.key_nm_colon, R.id.key_nm_semicolon,
-            R.id.key_nm_open_paren, R.id.key_nm_close_paren, R.id.key_nm_dollar,
-            R.id.key_nm_ampersand, R.id.key_nm_at,
-            R.id.key_nm_period, R.id.key_nm_comma, R.id.key_nm_question,
-            R.id.key_nm_exclamation, R.id.key_nm_apostrophe, R.id.key_nm_equals,
-            R.id.key_nm_plus, R.id.key_nm_underscore, R.id.key_nm_hash, R.id.key_nm_percent,
+            R.id.key_nm_period, R.id.key_nm_comma, R.id.key_nm_hyphen, R.id.key_nm_slash,
+            R.id.key_nm_colon, R.id.key_nm_open_paren, R.id.key_nm_close_paren,
             R.id.key_alt_num_1, R.id.key_alt_num_2, R.id.key_alt_num_3, R.id.key_alt_num_4,
             R.id.key_alt_num_5, R.id.key_alt_num_6, R.id.key_alt_num_7, R.id.key_alt_num_8,
             R.id.key_alt_num_9, R.id.key_alt_num_0,
