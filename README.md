@@ -1,7 +1,7 @@
 # Scanner Keyboard
 
-A source-available Android keyboard (IME) with a built-in, fully offline barcode
-and QR code scanner (license pending — see [License](#license)). Tap **SCAN** and
+An open-source Android keyboard (IME) with a built-in, fully offline barcode
+and QR code scanner (Apache-2.0 — see [License](#license)). Tap **SCAN** and
 the keyboard swaps to a live camera viewfinder; when a
 code is detected, the decoded text is inserted at the cursor of the field you are
 typing in, the phone buzzes, and the scanner closes back to the keyboard.
@@ -112,5 +112,18 @@ keyboard — this is intentional, so no camera ever stays open "by surprise".
 
 ## License
 
-License: not yet chosen (see project tracker). No `LICENSE` file is present until
-one is picked; until then all rights are reserved by the author.
+Copyright 2026 ubaierbhat.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at <http://www.apache.org/licenses/LICENSE-2.0>.
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+
+Bundled third-party components and their licenses:
+
+- ML Kit Barcode Scanning (bundled): Google, Apache-2.0 — see its project terms.
+- CameraX, androidx.*, Material Components: Google, Apache-2.0.
