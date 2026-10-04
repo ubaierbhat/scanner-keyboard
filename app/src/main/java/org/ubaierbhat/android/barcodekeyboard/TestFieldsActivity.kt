@@ -9,6 +9,7 @@ class TestFieldsActivity : AppCompatActivity() {
 
     private lateinit var logView: TextView
     private val entries = mutableListOf<String>()
+    private var logField: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +35,7 @@ class TestFieldsActivity : AppCompatActivity() {
             }
             field.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    appendLog("$name:focus")
+                    recordFocus(name)
                 }
             }
         }
@@ -42,10 +43,18 @@ class TestFieldsActivity : AppCompatActivity() {
             keepCaretVisible(this)
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    appendLog("multiline:focus")
+                    recordFocus("multiline")
                 }
             }
         }
+    }
+
+    private fun recordFocus(name: String) {
+        if (logField != name) {
+            logField = name
+            entries.clear()
+        }
+        appendLog("$name:focus")
     }
 
     private fun keepCaretVisible(field: EditText) {
@@ -67,10 +76,10 @@ class TestFieldsActivity : AppCompatActivity() {
         while (entries.size > MAX_LOG_ENTRIES) {
             entries.removeAt(0)
         }
-        logView.text = entries.joinToString("|")
+        logView.text = entries.joinToString("  ")
     }
 
     companion object {
-        private const val MAX_LOG_ENTRIES = 20
+        private const val MAX_LOG_ENTRIES = 6
     }
 }

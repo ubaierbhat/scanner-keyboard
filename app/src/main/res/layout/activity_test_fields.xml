@@ -12,6 +12,8 @@
         android:padding="8dp"
         android:textSize="12sp"
         android:textColor="#000000"
+        android:maxLines="2"
+        android:ellipsize="start"
         android:text="@string/test_fields_log_initial" />
 
     <ScrollView
