@@ -96,6 +96,9 @@ Requirements: JDK 17 and an Android SDK (minSdk 24, compileSdk 36). Point
 ./gradlew installDebug         # build + install on a connected device/emulator
 ```
 
+The Pages workflow publishes only this site. It has no Android CI job. Unit tests
+run on your machine. Run `./gradlew test` before you push.
+
 If you use the [Android CLI](https://developer.android.com/studio), `android run`
 also deploys the app to a connected device; Gradle is the only hard requirement.
 
