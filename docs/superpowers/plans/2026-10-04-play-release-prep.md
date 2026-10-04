@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make Scanner Keyboard publishable on Google Play (API-36 target, clean release artifact, privacy/licenses pages on GitLab Pages, Console checklist) and presentable as a trustworthy open-source project (STE-100 docs, community files, tagged v1.0.0), with a written OWASP MASVS v2.1 compliance record.
+**Goal:** Make Scanner Keyboard publishable on Google Play (API-36 target, clean release artifact, privacy/licenses pages on GitHub Pages, Console checklist) and presentable as a trustworthy open-source project (STE-100 docs, community files, tagged v1.0.0), with a written OWASP MASVS v2.1 compliance record.
 
-**Architecture:** Config-only release hardening in Gradle (R8 + signing from an untracked properties file), source-set isolation moves the debug-only field tester out of the release APK, a committed static `public/` site published by one GitLab Pages CI job, and new docs under `docs/` written in ASD-STE100-adapted Simplified English. Play Console forms are answered from a checked-in declaration sheet so every claim is auditable from the repo.
+**Architecture:** Config-only release hardening in Gradle (R8 + signing from an untracked properties file), source-set isolation moves the debug-only field tester out of the release APK, a committed static `public/` site published by one GitHub Pages workflow, and new docs under `docs/` written in ASD-STE100-adapted Simplified English. Play Console forms are answered from a checked-in declaration sheet so every claim is auditable from the repo.
 
-**Tech Stack:** Kotlin, AGP 9.0.1 (built-in Kotlin), Gradle 9.1, CameraX 1.6.2, ML Kit barcode-scanning 17.3.0, Robolectric/JUnit, GitLab CI (`pages` job), Apache-2.0.
+**Tech Stack:** Kotlin, AGP 9.0.1 (built-in Kotlin), Gradle 9.1, CameraX 1.6.2, ML Kit barcode-scanning 17.3.0, Robolectric/JUnit, GitHub Pages Actions workflow, Apache-2.0.
 
 ## Global Constraints
 
@@ -401,11 +401,11 @@ git add docs/play && git commit -m "docs: Play Console declaration and store-lis
 - Create: `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md`, `.github/ISSUE_TEMPLATE/bug_report.yml`, `.github/PULL_REQUEST_TEMPLATE.md`
 
 **Interfaces:**
-- Consumes: GitLab URL (Task 4 Step 1 answer), Pages URLs.
+- Consumes: GitHub Pages URLs (Task 4): https://ubaierbhat.github.io/scanner-keyboard/.
 - Produces: first impression a reviewer needs for a security-sensitive app (an IME).
 
 - [ ] **Step 1: README rework** (keep current structure — it's good; add/replace):
-  - Top badge line: `![License](https://img.shields.io/badge/license-Apache--2.0-green)` · `![minSdk](https://img.shields.io/badge/Android-7.0%2B-blue)` · `![network](https://img.shields.io/badge/network-none-brightgreen)` · pipeline badge `<gitlab url>/badges/main/pipeline.svg`.
+  - Top badge line: `![License](https://img.shields.io/badge/license-Apache--2.0-green)` · `![minSdk](https://img.shields.io/badge/Android-7.0%2B-blue)` · `![network](https://img.shields.io/badge/network-none-brightgreen)`. No CI badge (no Android CI).
   - Screenshot strip from `docs/images/` (keyboard, phone-dialpad, scanner, history) after the intro.
   - New **Project layout** section: `app/src/{main,test,debug}`, `docs/` (architecture.html, acceptance, play, security), `public/` (pages site), `tools/` (icon generator).
   - New **Contributing / Security / Changelog** links to the three new files; **Documentation** line → architecture.html + privacy URL. Badges: license, minSdk, network-none only (no CI badge).
