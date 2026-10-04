@@ -79,6 +79,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         } else {
             EnterBehavior.SendKeyEvent
         }
+        keyboardView?.applyInputType(info?.inputType ?: android.text.InputType.TYPE_NULL)
         if (!restarting) {
             captureClipboardEntry()
         }

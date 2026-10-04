@@ -27,6 +27,7 @@
         <activity
             android:name=".TestFieldsActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/open_test_fields" />
 
         <service

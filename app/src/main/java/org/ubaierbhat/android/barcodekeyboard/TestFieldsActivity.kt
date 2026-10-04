@@ -27,6 +27,7 @@ class TestFieldsActivity : AppCompatActivity() {
         )
         for ((id, name) in actionTargets) {
             val field = findViewById<EditText>(id)
+            keepCaretVisible(field)
             field.setOnEditorActionListener { _, actionId, _ ->
                 appendLog("$name:action$actionId")
                 true
@@ -38,12 +39,27 @@ class TestFieldsActivity : AppCompatActivity() {
             }
         }
         findViewById<EditText>(R.id.field_multiline).apply {
+            keepCaretVisible(this)
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     appendLog("multiline:focus")
                 }
             }
         }
+    }
+
+    private fun keepCaretVisible(field: EditText) {
+        field.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+            override fun afterTextChanged(s: android.text.Editable?) {
+                field.post {
+                    field.bringPointIntoView(field.selectionEnd)
+                }
+            }
+        })
     }
 
     private fun appendLog(entry: String) {
