@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | App | Scanner Keyboard (`org.ubaierbhat.android.barcodekeyboard`) |
-| Version assessed | 1.0.0 (versionCode 1), repo commit `1a573bd` |
-| Artifact assessed | `app/build/outputs/apk/release/app-release.apk` — R8-minified, resource-shrunk, signed with the upload key (`apksigner verify`: `CN=Scanner Keyboard`, per task-3 report) |
+| Version assessed | 1.0.0 (versionCode 1), audit baseline commit `1a573bd`; Rev 2 remediation follows (Finding 5) |
+| Artifact assessed | `app/build/outputs/apk/release/app-release.apk` — R8-minified, resource-shrunk, signed with the upload key (`apksigner verify`: `CN=Scanner Keyboard`, per task-3 report); rebuilt after the Finding-5 fix with only `CAMERA` + the androidx.core signature permission |
 | Date | 2026-10-04 |
 | Assessor | Maintainer, AI-assisted static audit (no third-party pen test) |
 | Framework | OWASP MASVS v2.1 |
@@ -15,7 +15,9 @@
 draft topic is retained below, renumbered to the canonical v2.1 controls
 (verification: mas.owasp.org, repo tag `v2.1.0`), with the draft reference in
 parentheses. The draft's Step-1 expectation "only `CAMERA`, no `INTERNET` line" was
-**not confirmed** — see the PRIVACY-1 row and Finding 5.
+**violated by the initially audited artifact** and subsequently **fixed** — the plan
+constraint "the app must never declare INTERNET" is now true of the packaged APK
+(Rev 2, Finding 5).
 
 ## Scope and app model
 
@@ -25,10 +27,10 @@ moment the keyboard opens — this is inherent to the platform role, identical f
 third-party keyboards (see `SECURITY.md`). The app's own code contains **no networking
 API usage** (Appendix A2) and no dynamic/native code execution (A6); barcode decoding
 runs fully on-device with the ML Kit *bundled* model. The only data the app keeps is
-the scan/copy history (max 20 entries) in app-private storage. One caveat against a
-clean "OS-enforced offline" claim: the **packaged** APK inherits `INTERNET` and
-`ACCESS_NETWORK_STATE` from third-party library manifests even though no app code uses
-them (Finding 5, open at assessment time).
+the scan/copy history (max 20 entries) in app-private storage. Offline-ness is
+**OS-enforced at the artifact level**: the packaged APK holds no `INTERNET` permission
+(Finding 5 remediated — the Rev 1 audit had found one inherited transitively; the
+build now strips it via manifest-merger override).
 
 ## Verdict table
 
@@ -40,17 +42,17 @@ deviation or risk-acceptance · **N/A** — control has no subject matter in thi
 |---|---|---|
 | MASVS-STORAGE-1 — the app securely stores sensitive data (draft STORAGE-1) | PASS | Sole persistence mechanism: app-private `SharedPreferences` with `MODE_PRIVATE` — `ScanHistoryStore.kt:11`. No external storage, no plaintext files, no DB (A5). |
 | MASVS-STORAGE-1, encryption-at-rest sub-point (draft STORAGE-4) | INFO | History (scans + clipboard captures) is stored **plaintext, deliberately**. Threat model: entries are re-enterable public codes (barcode values, URLs, copied text) the user can regenerate by scanning again — not account credentials. Encryption at rest needs a KeyStore key the app itself always holds, so an attacker able to read the file (root, or `adb` as a rooted/`run-as`-able debuggable build) is equally able to read it through the app's own APIs; encryption would add key management without removing a realistic threat. Residual risk, stated plainly: **adb backup is closed** (`allowBackup=false`), but **root/`run-as` still reads `shared_prefs/scan_history.xml` verbatim** on an attacker-controlled device. Mitigations: one-tap in-app CLEAR (`BarcodeKeyboardService.kt:283-300`), uninstall wipe, FOSS auditability. |
-| MASVS-STORAGE-2 — the app prevents leakage of sensitive data (draft STORAGE-2 + STORAGE-3) | PASS | `android:allowBackup="false"` (`AndroidManifest.xml:11`) — no cloud auto-restore, no `adb backup` path. No export/share/sync/upload code path exists (A2). Keystrokes never persist (Finding 1). Logging: exactly three `Log.e` call sites, fixed error strings only, no data payloads (`ScannerView.kt:96,99,149`); v/d/i logging is compile-time stripped as future insurance (`proguard-rules.pro:1-5`). |
+| MASVS-STORAGE-2 — the app prevents leakage of sensitive data (draft STORAGE-2 + STORAGE-3) | PASS | `android:allowBackup="false"` (`AndroidManifest.xml:19`) — no cloud auto-restore, no `adb backup` path. No export/share/sync/upload code path exists (A2). Keystrokes never persist (Finding 1). Logging: exactly three `Log.e` call sites, fixed error strings only, no data payloads (`ScannerView.kt:96,99,149`); v/d/i logging is compile-time stripped as future insurance (`proguard-rules.pro:1-5`). |
 | MASVS-AUTH-1..3 — authentication & authorization (draft AUTH/SESSION) | N/A | No accounts, tokens, sessions, or privileged app functionality. Camera access uses the standard Android runtime-permission flow only (`MainActivity.kt:55-66,119-126`). |
-| MASVS-NETWORK-1..2 — secure network communication (added: mandatory given Finding 5) | N/A | No network communication is initiated by app code (A2: zero matches for http/socket/url APIs). Packaging caveat: the inherited `INTERNET` permission is assessed under PRIVACY-1 below, not as network *usage*. |
-| MASVS-PLATFORM-1 — the app uses IPC mechanisms securely (draft PLATFORM-1) | PASS | App-authored exported components: exactly two — `MainActivity` (MAIN/LAUNCHER only, `AndroidManifest.xml:18-25`) and the IME service, reachable only by the system via `android:permission="android.permission.BIND_INPUT_METHOD"` (`AndroidManifest.xml:27-38`). The only other exported entry is the library `androidx.profileinstaller.ProfileInstallReceiver`, gated by the system-held `android.permission.DUMP` (see below). The release APK carries no field-tester activity: merged release manifest `TestFieldsActivity` count **0** (A4; task-2 dex/`resources.arsc` checks). Device `dumpsys package` (A8; captured while the debug variant was installed — release differs only by the non-exported debug activity): 1 exported launcher activity, 1 IME service, and library-supplied components only — `androidx.startup.InitializationProvider` + `MlKitInitProvider` (`exported=false`, A4), `GoogleApiActivity` (`exported=false`), `ProfileInstallReceiver` (exported, `DUMP`-gated). No app-defined receivers/providers. No data-scheme intent-filters → no incoming deep links (A6: `<data` count 0). No `PendingIntent`, no `registerReceiver`, no `file://` URI handoffs (A6). Outbound intents — full inventory, 4 total: (1) `MainActivity.kt:42-51` explicit `ComponentName` to the debug-only field tester, `BuildConfig.DEBUG`-guarded, `try/catch ActivityNotFoundException`; (2) `MainActivity.kt:68` `Settings.ACTION_INPUT_METHOD_SETTINGS` (implicit, system settings); (3) `MainActivity.kt:129-133` `Settings.ACTION_APPLICATION_DETAILS_SETTINGS` with own package URI + `NEW_TASK` (system settings, used after permanent camera denial); (4) `BarcodeKeyboardService.kt:353-357` explicit `Intent(this, MainActivity::class)` + `NEW_TASK or REORDER_TO_FRONT` (the toolbar gear). No intent carries user data extras. |
+| MASVS-NETWORK-1..2 — secure network communication (added: mandatory given Finding 5) | N/A | No network communication is initiated by app code (A2: zero matches for http/socket/url APIs) **and** the packaged APK no longer even holds the `INTERNET` capability (A1-before/after; Finding 5 remediated) — the control has no subject matter, enforced by the platform. |
+| MASVS-PLATFORM-1 — the app uses IPC mechanisms securely (draft PLATFORM-1) | PASS | App-authored exported components: exactly two — `MainActivity` (MAIN/LAUNCHER only, `AndroidManifest.xml:26-33`) and the IME service, reachable only by the system via `android:permission="android.permission.BIND_INPUT_METHOD"` (`AndroidManifest.xml:35-46`). The only other exported entry is the library `androidx.profileinstaller.ProfileInstallReceiver`, gated by the system-held `android.permission.DUMP` (see below). The release APK carries no field-tester activity: merged release manifest `TestFieldsActivity` count **0** (A4; task-2 dex/`resources.arsc` checks). Device `dumpsys package` (A8; captured while the debug variant was installed — release differs only by the non-exported debug activity): 1 exported launcher activity, 1 IME service, and library-supplied components only — `androidx.startup.InitializationProvider` + `MlKitInitProvider` (`exported=false`, A4), `GoogleApiActivity` (`exported=false`), `ProfileInstallReceiver` (exported, `DUMP`-gated). No app-defined receivers/providers. No data-scheme intent-filters → no incoming deep links (A6: `<data` count 0). No `PendingIntent`, no `registerReceiver`, no `file://` URI handoffs (A6). Outbound intents — full inventory, 4 total: (1) `MainActivity.kt:42-51` explicit `ComponentName` to the debug-only field tester, `BuildConfig.DEBUG`-guarded, `try/catch ActivityNotFoundException`; (2) `MainActivity.kt:68` `Settings.ACTION_INPUT_METHOD_SETTINGS` (implicit, system settings); (3) `MainActivity.kt:129-133` `Settings.ACTION_APPLICATION_DETAILS_SETTINGS` with own package URI + `NEW_TASK` (system settings, used after permanent camera denial); (4) `BarcodeKeyboardService.kt:353-357` explicit `Intent(this, MainActivity::class)` + `NEW_TASK or REORDER_TO_FRONT` (the toolbar gear). No intent carries user data extras. |
 | MASVS-PLATFORM-2 — the app uses WebViews securely (draft PLATFORM-3) | PASS | No WebView anywhere in `app/src/main` (A6). No JS bridges, no `file://` URIs, no URL loading. |
 | MASVS-PLATFORM-3 — the app uses the user interface securely (added row) | PASS | History entries are the user's own captured codes, rendered inside the IME overlay on explicit user tap (`BarcodeKeyboardService.kt:255-276`); no notifications, no share sheets, no secondary displays. `FLAG_SECURE` is not set — accepted: nothing shown meets the "sensitive data" bar beyond what the user just scanned/copied on their own screen. |
 | MASVS-CODE-1 — the app requires an up-to-date platform version (added row) | INFO | `minSdk = 24` (Android 7.0, 2016) is a deliberate reach decision, not a security claim; `targetSdk = 36` keeps the app on the current Play behavior baseline (`build.gradle.kts:17-18`). L1 platform-currency expectation partially met via targetSdk only; documented trade-off. |
 | MASVS-CODE-2 — mechanism for enforcing app updates (added row) | N/A | Distribution is Play-managed (and self-build for the audit crowd); no in-app update channels exist, so no update-enforcement surface to secure. |
-| MASVS-CODE-3 — only components without known vulnerabilities (draft CODE-2 + CODE-3 + PLATFORM-4) | PASS | Dependencies catalog-pinned and current at build time: AGP 9.0.1, CameraX 1.6.2, ML Kit barcode 17.3.0 (bundled), appcompat 1.8.0, core 1.18.0, Material 1.14.0 (`gradle/libs.versions.toml`). Wrapper pinned (`gradle-9.1.0-bin.zip`, `gradle/wrapper/gradle-wrapper.properties`). Only tracked binary in the repo is the Gradle wrapper jar itself (A6); no native libs, no `Runtime.exec`/`ProcessBuilder`/`DexClassLoader` (A6). Release build is R8-minified + `shrinkResources`, non-debuggable, signed (`build.gradle.kts:39-44`; signature + 58-test evidence in task-3 report). Library supply-chain caveat (ML Kit transport/media3 manifests) is Finding 5. |
+| MASVS-CODE-3 — only components without known vulnerabilities (draft CODE-2 + CODE-3 + PLATFORM-4) | PASS | Dependencies catalog-pinned and current at build time: AGP 9.0.1, CameraX 1.6.2, ML Kit barcode 17.3.0 (bundled), appcompat 1.8.0, core 1.18.0, Material 1.14.0 (`gradle/libs.versions.toml`). Wrapper pinned (`gradle-9.1.0-bin.zip`, `gradle/wrapper/gradle-wrapper.properties`). Only tracked binary in the repo is the Gradle wrapper jar itself (A6); no native libs, no `Runtime.exec`/`ProcessBuilder`/`DexClassLoader` (A6). Release build is R8-minified + `shrinkResources`, non-debuggable, signed (`build.gradle.kts:39-44`; signature + 58-test evidence in task-3 report). Library supply-chain caveat (ML Kit transport/media3 manifests) resolved via Finding 5 remediation (`tools:node="remove"`, A1/A4b/A10). |
 | MASVS-RESILIENCE-1..4 — reverse-engineering & tampering resistance (draft RESILIENCE) | INFO — not adopted, deliberate | The entire family is L2-only; not adopted for an offline FOSS utility (header rationale). Honesty note: R8 name-minification is on (`build.gradle.kts:40`) as a by-product of the standard release pipeline, and it also carries the ML Kit `ComponentRegistrar` keep rule that fixed a real R8 breakage (`proguard-rules.pro:8-14`, task-3 report) — but no *intentional* anti-RE defenses (root/emulator/attestation checks) exist. `v/d/i` log stripping (`proguard-rules.pro:1-5`) is future-proofing; current code logs only 3 `Log.e` error paths. |
-| MASVS-PRIVACY-1 — the app minimizes access to sensitive data and resources: **declared capabilities** (draft STORAGE-3 header claim "no network") | **OPEN** | Own manifest declares exactly one dangerous permission: `CAMERA` (`AndroidManifest.xml:4`; `uses-feature` not-required, `:6-8`). **But the merged release artifact also carries** `android.permission.INTERNET` (blame: `transport-backend-cct:2.3.3`, pulled by `com.google.mlkit:barcode-scanning` → `mlkit:common` → `datatransport`) and `android.permission.ACCESS_NETWORK_STATE` (blame: `androidx.media3:media3-common:1.9.0`, pulled via `camera-view` → `camera-video`), plus androidx.core's self-defined signature-level `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` (A1, A4, A7). No app code uses these; the capability is nevertheless present, so "offline is OS-enforced" is **false as packaged**. Remediation decision required before upload — Finding 5. |
+| MASVS-PRIVACY-1 — the app minimizes access to sensitive data and resources: **declared capabilities** (draft STORAGE-3 header claim "no network") | **RESOLVED** (was OPEN at Rev 1) | Own manifest declares exactly one dangerous permission: `CAMERA` (`AndroidManifest.xml:5`; `uses-feature` not-required, `:14-16`), and explicitly **strips** the two transitively inherited network permissions via manifest-merger `tools:node="remove"` overrides (`AndroidManifest.xml:7-12`). Post-fix `aapt2 dump badging` of both release and debug APKs: only `CAMERA` + `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` — the latter is androidx.core 1.18.0's *self-defined, signature-level* permission that guards its non-exported dynamic-receiver plumbing; it is not a network permission and grants no external access to the app (see appendix note under A1). The merged-release blame file now has **0** `INTERNET`/`ACCESS_NETWORK_STATE` entries (A4). Post-fix device QA: scanner preview + camera CONNECT + typing + gear all pass with no crash-loop (A10) — ML Kit bundled decoding does not need the network; its telemetry transport now fails silently into a queue, which changes no user-visible behavior. Offline claim is once again (and now genuinely) platform-enforced. |
 | MASVS-PRIVACY-1 — runtime minimization: camera & clipboard scope (draft PLATFORM-2 + PRIVACY-2) | PASS | Camera is requested only at the point of first scan use with a graceful inline denial path (`BarcodeKeyboardService.kt:144-153`, `MainActivity.kt:55-66`); while the scanner shows, frames are analyzed in-memory only — nothing is written to disk. Camera is bound only while the preview is on screen (`ScannerView.kt:72-106`) and released on every exit path: close ✕, error auto-dismiss, keyboard hide, input-view finish, rotation, service destroy — `ScannerView.stop()` (torch off, `unbindAll()`, lifecycle destroy, `ScannerView.kt:108-127`) called from `BarcodeKeyboardService.kt:86-90,167-178,249-253,180-192`. Device-verified on the XCover5: `dumpsys media.camera` `CONNECT device 0` during preview → `Active Camera Clients: []` after close (task-1 report, QA item 5; task-3 report, QA item 4). Clipboard: `captureClipboardEntry()` (`BarcodeKeyboardService.kt:309-330`) reads only the **first clip item** of the primary clip, via `coerceToText`, trimmed, rejects empty and **>500 chars** (`MAX_CLIPBOARD_ENTRY_LENGTH`, `:364`), **dedups against the newest entry** (`:321-323`), stores via `ScanHistoryStore` (`:324`); runs once per fresh keyboard session (`:83-85`), and swallows `SecurityException`/`IllegalStateException` rather than retrying. |
 | MASVS-PRIVACY-2 — the app prevents identification of the user (added row) | PASS | No identifiers, analytics, advertising IDs, or fingerprinting in app code. The bundled telemetry transport that ships with ML Kit has no data to identify anyone with (offline app, Finding 5 covers its permission). |
 | MASVS-PRIVACY-3 — the app is transparent about data collection and usage (draft PRIVACY-1, half) | PASS | Keystrokes are never stored (only scans and first-clip-item clipboard captures enter History, per the mechanism described above); this behavior is disclosed in the published privacy policy (`public/privacy.html`) and README Privacy section. **Consistency caveat:** those documents' "declares no INTERNET permission" sentence is inaccurate as packaged — see Finding 5 for the required wording/remediation decision. |
@@ -80,30 +82,44 @@ deviation or risk-acceptance · **N/A** — control has no subject matter in thi
    (task-3 report, concern 1; ML Kit init itself is proven working post-keep-rule).
    (b) Runtime QA ran on the API-34 XCover5; targetSdk 36 (Android 16) behavior is
    unverified on a real API-36 device (task-3 report, concern 2).
-5. **OPEN — inherited `INTERNET`/`ACCESS_NETWORK_STATE` in the packaged APK.** The app
-   declares neither, and no app code uses the network, but library manifests merge
-   them in (A1/A4/A7). Consequences: the "cannot make network calls — platform
-   enforced" sentence shipped in README (`README.md:26-27` and the network badge),
-   `SECURITY.md:13-14`, `public/privacy.html:37`, and `docs/play/console-checklist.md`
-   (lines 74, 99, 111, 157) is not accurate as packaged. Options for the maintainer
-   before 1.0.0 upload: (i) add manifest-merger removal overrides for both permissions
-   (`tools:node="remove"`), re-run the task-3 device QA (ML Kit bundled decoding has no
-   runtime network dependency), or (ii) keep the artifact and reword the four documents
-   to "no network code; inherited permission noted" — (i) is preferred because the
-   stronger claim is the better privacy posture and the store-listing checklist already
-   promises it. The four public documents are intentionally left unedited in this
-   commit pending that decision.
+5. **RESOLVED (Rev 2) — inherited `INTERNET`/`ACCESS_NETWORK_STATE` in the packaged
+   APK.** The Rev 1 audit found that the app declares neither, and no app code uses
+   the network, but library manifests merged them in (A1-before/A4/A7), making the
+   "platform-enforced offline" sentences in `README.md`, `SECURITY.md`,
+   `public/privacy.html`, and `docs/play/console-checklist.md` inaccurate *as
+   packaged*. Controller ruling: the plan constraint is "the app must never declare
+   INTERNET" → fix the artifact, not the claim. **Remediation:** manifest-merger
+   overrides in `app/src/main/AndroidManifest.xml:7-12`
+   (`<uses-permission android:name="android.permission.INTERNET" tools:node="remove"/>`
+   + same for `ACCESS_NETWORK_STATE`, `xmlns:tools` added). Evidence chain: blame
+   identified the source (A4 Rev 1) → overrides added → full rebuild
+   (`testDebugUnitTest assembleDebug assembleRelease bundleRelease`, 58/58 green) →
+   `aapt2` badging on release AND debug shows only `CAMERA` + the androidx.core
+   signature permission (A1-after) → blame now 0 network-permission hits (A4b) →
+   on-device QA of the stripped signed release passed (A10): typing, scanner preview
+   with live camera CONNECT, camera release on close, gear→setup, and a 2-minute
+   soak with **zero** `FATAL`/`SecurityException` log lines — ML Kit telemetry events
+   now fail silently into a never-drained queue (expected, no behavior change).
+   The four public documents were re-checked against `aapt2` and left unedited:
+   their "declares no INTERNET / platform-enforced" statements are now TRUE of the
+   shipped artifact. Residual: the signature-level self-defined
+   `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` remains (androidx.core plumbing, grants
+   nothing external — documented in A1 notes).
 
 ## Method note
 
 Static audit against the working tree at commit `1a573bd` plus the built release APK,
-run 2026-10-04. No dynamic instrumentation, no pen test; device-behavior claims are
-sourced from the recorded task-1/task-2/task-3 QA evidence. All Step-1/Step-2 probe
-commands and raw outputs are pasted below verbatim as the audit trail.
+run 2026-10-04. Rev 2 (same day): Finding 5 remediated via manifest-merger removal,
+full rebuild (unit tests green), artifact re-probed (A1-before/after, A4b) and
+re-QA'd on-device (A10). No dynamic instrumentation, no pen test; device-behavior
+claims are sourced from the recorded task-1/task-2/task-3 QA evidence plus A10. All
+Step-1/Step-2 probe commands and raw outputs are pasted below as the audit trail.
 
 ## Appendix — probe outputs (2026-10-04)
 
-### A1. Signed release APK badging (permissions/features)
+### A1. Release APK badging — BEFORE vs AFTER the Finding-5 fix
+
+**Rev 1 (commit `1a573bd` build) — finding:**
 
 ```
 $ SDK=$(grep sdk.dir local.properties | cut -d= -f2); echo "SDK=$SDK"
@@ -118,11 +134,32 @@ uses-permission: name='android.permission.INTERNET'
   uses-feature: name='android.hardware.faketouch'
 ```
 
-(`build-tools/*` globs two installed versions — 35.0.0 and 36.0.0 — so 36.0.0 is
-pinned explicitly.)
+**Rev 2 (after `tools:node="remove"` overrides + full rebuild) — resolved:**
 
-Draft expectation "only CAMERA, no INTERNET" — **failed**; see Finding 5.
-(`faketouch` is auto-added by the platform tooling, harmless.)
+```
+$ "$SDK"/build-tools/36.0.0/aapt2 dump badging app/build/outputs/apk/release/app-release.apk | grep uses-permission
+uses-permission: name='android.permission.CAMERA'
+uses-permission: name='org.ubaierbhat.android.barcodekeyboard.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
+
+$ "$SDK"/build-tools/36.0.0/aapt2 dump badging app/build/outputs/apk/debug/app-debug.apk | grep uses-permission
+uses-permission: name='android.permission.CAMERA'
+uses-permission: name='org.ubaierbhat.android.barcodekeyboard.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
+```
+
+Notes for the record:
+
+- `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` is **androidx.core 1.18.0's self-defined,
+  signature-level permission** (see A4 blame: `<permission … protectionLevel="signature"/>`
+  from `core-1.18.0/AndroidManifest.xml`). It exists so `RECEIVER_NOT_EXPORTED`
+  registrations stay race-free on API < 33; only apps signed with this key can hold it.
+  It is **not a network permission** and grants nothing to outsiders.
+- With `INTERNET` gone, ML Kit's datatransport telemetry backend cannot upload:
+  events fail silently into an on-device queue that is never drained to the network.
+  Device QA (A10) observed **zero** `SecurityException`/`FATAL` lines and no user-
+  visible behavior change; bundled-model barcode decoding has no runtime network
+  dependency.
+- (`faketouch` is auto-added by the platform tooling, harmless. `build-tools/*` globs
+  two installed versions — 35.0.0 and 36.0.0 — so 36.0.0 is pinned explicitly.)
 
 ### A2. Network APIs / URI leakage in app source — none
 
@@ -188,6 +225,27 @@ $ sed -n '11,23p' app/build/intermediates/manifest_merge_blame_file/release/proc
 (Excerpt of the blame report; repeated second attribution lines for the same entry
 omitted. Full file: `app/build/intermediates/manifest_merge_blame_file/release/processReleaseMainManifest/manifest-merger-blame-release-report.txt`.)
 
+> **The blame excerpt above is from the Rev 1 build** (pre-fix): it is what exposed
+> the inherited `INTERNET` (transport-backend-cct) and `ACCESS_NETWORK_STATE`
+> (media3-common) entries, and the CAMERA attribution cites the pre-fix manifest
+> line 4. Rev 2 evidence below.
+
+**A4b — post-fix (Rev 2) merged manifest + blame:**
+
+```
+$ grep -n "uses-permission" app/build/intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml
+11:    <uses-permission android:name="android.permission.CAMERA" />
+21:    <uses-permission android:name="org.ubaierbhat.android.barcodekeyboard.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+
+$ grep -cE "android.permission.INTERNET|ACCESS_NETWORK_STATE" app/build/intermediates/manifest_merge_blame_file/release/processReleaseMainManifest/manifest-merger-blame-release-report.txt
+0
+$ grep -c TestFieldsActivity app/build/intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml   # re-checked after rebuild
+0
+```
+
+Library component export flags are unchanged by the fix (re-verified): both providers
+`exported=false`, `ProfileInstallReceiver` `exported=true` + `android.permission.DUMP`.
+
 ### A5. Persistence surface
 
 ```
@@ -241,8 +299,11 @@ $ ./gradlew -q app:dependencies --configuration releaseRuntimeClasspath | grep -
 |    +--- com.google.firebase:firebase-components:16.1.0
 ```
 
-### A8. Device component & permission view (`dumpsys package`, R58RB1N07TD)
+### A8. Device component & permission view (`dumpsys package`, R58RB1N07TD) — Rev 1 capture
 
+**This dumpsys predates the Finding-5 fix** (its requested-permission list shows the
+inherited network permissions); the Rev 2 on-device state is recorded in A10 + the
+A1-after debug/release badging.
 Captured while the **debug** variant was installed (`flags=[ DEBUGGABLE … ]`, API 34;
 the default IME meanwhile reverted to Honeyboard). The release variant's component set
 is identical except the non-exported debug activity, which the release merged manifest
@@ -334,3 +395,43 @@ app/src/main/java/…/keyboard/KeyboardView.kt:201:            accentCandidates.
 Typing paths (`onText`/`onBackspace`/`onEnter`, `BarcodeKeyboardService.kt:98-142`)
 touch only `InputConnection`. The only other `.add(` in main is
 `KeyboardView.kt:201 accentCandidates.add(...)` — an in-memory popup list.
+
+### A10. Post-fix device QA of the signed, INTERNET-stripped release (R58RB1N07TD, 2026-10-04)
+
+```
+$ adb uninstall / adb install app-release.apk → Success, Success
+$ adb shell ime enable|set …BarcodeKeyboardService → "selected for user #0"
+$ adb shell settings get secure default_input_method
+org.ubaierbhat.android.barcodekeyboard/.service.BarcodeKeyboardService
+
+# Typing: Samsung Contacts name field (uiautomator), keys per task-1 geometry (t=322,1000 e=182,1000 s=145,1100)
+text="test" resource-id="com.samsung.android.app.contacts:id/nameEdit"     ← PASS
+
+# Scanner: pm grant CAMERA (fresh install) → tap scan (530,895)
+$ adb shell dumpsys media.camera | grep CONNECT | head -2
+  10-04 20:57:13 : CONNECT device 0 client for package org.ubaierbhat.android.barcodekeyboard (PID 19695, priority 100)
+# on-screen: hint "Point at a barcode" + ✕/Torch visible (error string
+# "Camera could not start" absent) → preview state live, PASS
+$ adb shell input tap 183 1341   # ✕ close
+$ adb shell dumpsys media.camera | grep -A2 "Active Camera Clients"
+Active Camera Clients:
+[]                                                                              ← released, PASS
+
+# Gear (62,895) → MainActivity:
+  mCurrentFocus=Window{… org.ubaierbhat.android.barcodekeyboard/…MainActivity}  ← PASS
+# Back → ContactEditorActivity                                                  ← PASS
+
+# Soak: keyboard kept up 130 s (mInputShown=true), logcat cleared at session start
+$ adb logcat -d | grep -cE "FATAL EXCEPTION"
+0
+$ adb logcat -d | grep -E "barcodekeyboard|TransportBackend|datatransport|GoogleApiService|mlkit" | grep -cE "SecurityException"
+0
+$ adb logcat -d | grep -E "SecurityException" | grep -v "at "        # no output at all
+
+# Cleanup: editor DISCARD (no test contact saved — content query count 0),
+# device returned to debug variant (uninstall release → install debug → ime set).
+```
+
+Decode-by-aim remains the standing human-only caveat (unchanged from task-3): the
+insert-on-decode flow could not be aimed by automation; ML Kit client init, camera
+frame flow, and analyzer wiring are proven live here (post-R8, post-permission-strip).
