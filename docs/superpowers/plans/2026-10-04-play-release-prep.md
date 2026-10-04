@@ -17,7 +17,7 @@
 - Never commit keystores, passwords, or `local.properties`. Test device is XCover5 `R58RB1N07TD` only; after every `adb install -r` re-run `ime enable` + `ime set`; never `am force-stop` the IME package.
 - Test suite currently 58 green (`./gradlew testDebugUnitTest`); it must stay green in every task.
 - Release signing = local **upload key** + Play App Signing (Play holds the release key). Keystore lives outside git.
-- Runtime input needed from the user before Tasks 4/6/8 (ask via question tool): GitLab project URL/namespace, public contact email, desired release name "1.0.0".
+- Hosting is **GitHub** (user decision 2026-10-04): repo `https://github.com/ubaierbhat/scanner-keyboard`, Pages site `https://ubaierbhat.github.io/scanner-keyboard/`, contact channel = GitHub issues (no published email).
 
 ---
 
@@ -266,18 +266,16 @@ git add -A && git commit -m "build: release R8 with shrink, upload-key signing, 
 
 ---
 
-### Task 4: GitLab Pages site — privacy policy + third-party licenses
+### Task 4: GitHub Pages site — privacy policy + third-party licenses
 
 **Files:**
-- Create: `public/privacy.html`, `public/licenses.html`, `public/index.html`, `.gitlab-ci.yml`
+- Create: `public/privacy.html`, `public/licenses.html`, `public/index.html`, `public/.nojekyll`, `.github/workflows/pages.yml`
 
 **Interfaces:**
-- Produces: `https://<namespace>.gitlab.io/scanner-keyboard/privacy.html` — the URL pasted into Play Console (Privacy Policy field, both store listing and Data safety); `licenses.html` satisfies ML Kit/Apache attribution links referenced from README §Licenses.
-- Consumes: user's GitLab namespace (ask before filling absolute links; relative links inside the site regardless).
+- Produces: `https://ubaierbhat.github.io/scanner-keyboard/privacy.html` — the URL pasted into Play Console (Privacy Policy field, store listing and Data safety); `licenses.html` satisfies ML Kit/Apache attribution links referenced from README §License.
+- Consumes: nothing further; absolute URLs above are final.
 
-- [ ] **Step 1: Ask the user for the namespace + contact email** (question tool)
-
-- [ ] **Step 2: `public/privacy.html`** — plain HTML, no JS, no tracking, STE-100 sentences. Required content (all facts below are verifiable in this repo):
+- [ ] **Step 1: `public/privacy.html`** — plain HTML, no JS, no tracking, STE-100 sentences. Required content (all facts below are verifiable in this repo):
 
 ```
 Privacy Policy — Scanner Keyboard · Last updated: 2026-10-04
@@ -309,11 +307,12 @@ Children
 The app is not directed to children and collects nothing.
 
 Contact
-Email <USER CONTACT EMAIL>. You can also open an issue at <GITLAB PROJECT URL>.
+Open an issue on the project page:
+https://github.com/ubaierbhat/scanner-keyboard/issues
 Changes: we will post the new policy here and show the new date above.
 ```
 
-- [ ] **Step 3: `public/licenses.html`** — project Apache-2.0 (link `LICENSE` raw URL) plus a table; each row: artifact · version · license · link.
+- [ ] **Step 2: `public/licenses.html`** — project Apache-2.0 (link `LICENSE` raw URL) plus a table; each row: artifact · version · license · link.
 
 | Artifact | Version | License |
 |---|---|---|
@@ -325,31 +324,45 @@ Changes: we will post the new policy here and show the new date above.
 | org.jetbrains.kotlin:kotlin-stdlib | (via AGP 9.0.1) | Apache-2.0 |
 | Test-only: junit 4.13.2 (EPL-1.0), robolectric 4.17 (MIT), androidx.test:core 1.7.0 (Apache-2.0) | | |
 
-- [ ] **Step 4: `public/index.html`** — five lines: app name, what it is, links to privacy + licenses + repo. And `.gitlab-ci.yml`:
+- [ ] **Step 3: `public/index.html`** — five lines: app name, what it is, links to privacy + licenses + repo. Also create empty `public/.nojekyll`. And `.github/workflows/pages.yml`:
 
 ```yaml
-stages:
-  - deploy
-
-pages:
-  stage: deploy
-  script:
-    - echo "Publishing static site from public/"
-  artifacts:
-    paths:
-      - public
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+name: Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - id: deployment
+        uses: actions/deploy-pages@v4
 ```
 
-(No Android CI job: runners lack the SDK; unit tests stay local/pre-push. Say so in a README CI note.)
+(No Android CI job: unit tests stay local/pre-push; say so in a README note.)
 
-- [ ] **Step 5: Validate and commit**
+- [ ] **Step 4: Validate and commit**
 
 Open both HTML files locally (they must render offline, contain zero external `<script>`, and every relative link resolves). 
 
 ```bash
-git add public .gitlab-ci.yml && git commit -m "docs: privacy policy, license list and GitLab Pages site"
+git add public .github && git commit -m "docs: privacy policy, license list and GitLab Pages site"
 ```
 
 ---
@@ -363,13 +376,14 @@ git add public .gitlab-ci.yml && git commit -m "docs: privacy policy, license li
 - Consumes: privacy URL from Task 4, AAB from Task 3.
 - Produces: verbatim answers for every Console form so the human session is copy-paste.
 
-- [ ] **Step 1: Write the sheet** — one section per Console form, exact STE wording:
+- [ ] **Step 1: Write the sheet** — one section per Console form, exact STE wording; Privacy Policy URL to use everywhere: `https://ubaierbhat.github.io/scanner-keyboard/privacy.html`:
   - App access: "This is a keyboard IME. Testers must enable it in system settings; no login." (Play reviewer can enable IME via Settings > System > Languages > On-screen keyboard.)
   - Ads: no ads.
   - Target audience & content: everyone; no UGC, no chat.
   - IARC questionnaire suggested answers with one-line justification each (no violence/sexual/ gambling etc.; camera = utility).
   - Data safety form: "No data collected / no data shared" with the repo evidence pointers (no INTERNET permission, MODE_PRIVATE prefs, allowBackup=false); ML Kit/CameraX/AndroidX SDK declarations each "does not share data".
   - Sensitive permission justification text for CAMERA (reuse README Privacy bullets; state on-device, no persistence, user-initiated).
+  - Data-safety evidence note: JDK-21 test fork in CI-free workflow is irrelevant to the APK; ignore.
   - Store listing: title ≤30 chars "Scanner Keyboard"; short description ≤80 ("Offline barcode and QR scanner built into your keyboard."); full description = README Features+Privacy in STE; screenshot list = `docs/images/keyboard.png`, `phone-dialpad.png`, `scanner.png`, `history-panel.png`, `settings-key.png` (phone frame, ≥2 required); icon = `docs/store/icon-512.png`; feature graphic optional.
   - Testing: personal account → closed test, email list ≥12 testers, 14 continuous opted-in days, then Apply for production (review ≤7 days). Internal track recommended for the same build first.
   - Upload: `bundleRelease` AAB, Play App Signing enroll with upload key from Task 3.
@@ -385,7 +399,7 @@ git add docs/play && git commit -m "docs: Play Console declaration and store-lis
 
 **Files:**
 - Modify: `README.md`
-- Create: `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md`, `.gitlab/issue_templates/Bug.md`, `.gitlab/merge_request_templates/Default.md`
+- Create: `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md`, `.github/ISSUE_TEMPLATE/bug_report.yml`, `.github/PULL_REQUEST_TEMPLATE.md`
 
 **Interfaces:**
 - Consumes: GitLab URL (Task 4 Step 1 answer), Pages URLs.
@@ -395,11 +409,11 @@ git add docs/play && git commit -m "docs: Play Console declaration and store-lis
   - Top badge line: `![License](https://img.shields.io/badge/license-Apache--2.0-green)` · `![minSdk](https://img.shields.io/badge/Android-7.0%2B-blue)` · `![network](https://img.shields.io/badge/network-none-brightgreen)` · pipeline badge `<gitlab url>/badges/main/pipeline.svg`.
   - Screenshot strip from `docs/images/` (keyboard, phone-dialpad, scanner, history) after the intro.
   - New **Project layout** section: `app/src/{main,test,debug}`, `docs/` (architecture.html, acceptance, play, security), `public/` (pages site), `tools/` (icon generator).
-  - New **Contributing / Security / Changelog** links to the three new files; **Documentation** line → architecture.html + privacy URL.
+  - New **Contributing / Security / Changelog** links to the three new files; **Documentation** line → architecture.html + privacy URL. Badges: license, minSdk, network-none only (no CI badge).
   - STE pass over whole file: split any sentence >20 words; commands stay exact.
 - [ ] **Step 2: CONTRIBUTING.md** — setup (JDK 17, SDK 36, local.properties), run tests, "no code comments; strings in XML", style: device QA required for keyboard changes (link the XCover5 IME re-select rule), ASD-STE100 rule for docs, PR/commit-message conventions matching the repo log.
 - [ ] **Step 3: SECURITY.md** — this app sees every keystroke and clipboard copy of the user: state threat model in 6 bullet lines (data never leaves device; history cleared in-app), report by email, 90-day disclosure, no public issue for vulnerabilities.
-- [ ] **Step 4: CHANGELOG.md** (Keep a Changelog, ISO dates) + templates: Bug template (steps / expected / actual / device + Android version + IME screenshot); MR template (checklist: tests green, device QA done, STE for docs).
+- [ ] **Step 4: CHANGELOG.md** (Keep a Changelog, ISO dates) + templates: GitHub issue-form `bug_report.yml` (fields: steps, expected, actual, device + Android version + IME screenshot; labels: bug); PR template (checklist: tests green, device QA done, STE for docs). Also SECURITY.md contact = GitHub private vuln reporting / issue disclosure policy (no email).
 - [ ] **Step 5: Commit** `git add -A && git commit -m "docs: community files and README presentation pass"`
 
 ---
@@ -463,13 +477,15 @@ git add docs/security README.md && git commit -m "docs: OWASP MASVS v2.1 complia
 **Files:**
 - Modify: `.git/config` (remote), tags
 
-- [ ] **Step 1: Add the remote and push** (URL from Task 4 Step 1)
+- [ ] **Step 1: Add the remote and push**
 
 ```bash
-git remote add origin <GITLAB URL> && git push -u origin main
+git remote add origin git@github.com:ubaierbhat/scanner-keyboard.git
+git push -u origin main
 ```
+(The repo must already exist on GitHub with that SSH remote reachable; if `git push` says not found, ask the user to create it — no auto `gh repo create` without asking.)
 
-- [ ] **Step 2: Confirm Pages job ran** — pipelines page shows `pages` success; open the privacy URL; `curl -s <pages url>/privacy.html | head -3` returns markup (proves anonymous reachability — Pages access control must stay OFF).
+- [ ] **Step 2: Confirm Pages deploy** — `gh run list --workflow Pages` shows success (or Actions page); if the site 404s, ask the user to set Settings → Pages → Source to "GitHub Actions" once; then `curl -s https://ubaierbhat.github.io/scanner-keyboard/privacy.html | head -3` returns markup (proves anonymous reachability).
 - [ ] **Step 3: Tag the release**
 
 ```bash
