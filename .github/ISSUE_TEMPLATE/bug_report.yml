@@ -1,0 +1,77 @@
+name: Bug report
+description: Report a problem with Scanner Keyboard
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filling out this report. Keyboard and scanner bugs usually
+        need a real device to reproduce. Please give exact details.
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Tell us how to make the problem happen.
+      placeholder: |
+        1. Select Scanner Keyboard as the active IME.
+        2. Open a text field in any app.
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened?
+      placeholder: The keyboard should ...
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead?
+      placeholder: The keyboard actually ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part is affected?
+      description: Pick the closest area.
+      options:
+        - Keyboard / typing
+        - Barcode scanner
+        - History / clipboard
+        - Setup / permissions
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device model
+      description: For example, Samsung Galaxy XCover5.
+      placeholder: Device model
+    validations:
+      required: true
+  - type: input
+    id: android-version
+    attributes:
+      label: Android version
+      description: Android version, and build number if you know it.
+      placeholder: "Android 14"
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: |
+        Attach a screenshot of the keyboard or the scanner view. An IME
+        screenshot helps a lot: bring the keyboard up, take the system
+        screenshot, and drag the file into this box. Remove or blur personal
+        data from the field text before you attach it.
+      placeholder: Attach screenshots here.
