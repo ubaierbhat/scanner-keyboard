@@ -1,7 +1,7 @@
 # Scanner Keyboard
 
 An open-source Android keyboard (IME) with a built-in, fully offline barcode
-and QR code scanner (Apache-2.0 — see [License](#license)). Tap **SCAN** and
+and QR code scanner (Apache-2.0 — see [License](#license)). Tap the scan key and
 the keyboard swaps to a live camera viewfinder; when a
 code is detected, the decoded text is inserted at the cursor of the field you are
 typing in, the phone buzzes, and the scanner closes back to the keyboard.
@@ -39,6 +39,8 @@ Scanning is 100% on-device:
   While Scanner Keyboard is your default keyboard, copied text is picked up into
   history the next time the keyboard opens; tap a history entry to re-insert it at the
   cursor. Clearable with one tap.
+- **Function toolbar** — a row above the keys with the scanner, history, and a
+  settings key that jumps straight to the app's setup screen.
 - **Setup wizard** — first-run screen with live status for camera permission and
   keyboard enablement.
 
@@ -63,21 +65,25 @@ No account, no network, no configuration — you're done.
 ## Usage
 
 - **Typing** — standard QWERTY; `123` switches to numbers/punctuation, `#+=` to
-  more symbols, `ABC` returns to letters.
+  more symbols, `ABC` returns to letters. Phone and number fields automatically get a
+  Samsung-style dialpad instead of the letter grid.
 - **Shift / caps** — tap ⇧ to capitalize the next letter; long-press ⇧ to lock caps
   (the key stays lit); tap again to unlock.
 - **Accents** — press and hold a letter, slide to a variant in the popup strip, and
   release to insert it. Release back over the original key to type the plain letter,
   or outside the strip to cancel.
-- **Scanning** — tap **SCAN** in the bottom row. Point the back camera at a code; the
+- **Scanning** — tap the scan icon in the toolbar (top-left row). Point the back camera at a code; the
   live preview shows what the camera sees (aim so the code fits the frame). Tap
   **Torch** to fire the LED
   in low light. On detection the code text is inserted and the view closes. Tap ✕ to
-  close without scanning. If camera access was revoked, SCAN shows an inline prompt
+  close without scanning. If camera access was revoked, the scan key shows an inline prompt
   with an *Open setup* button.
-- **History** — tap **HIST** to browse recent scans and copies. Tap an entry to
+- **History** — tap the clipboard icon in the toolbar to browse recent scans and copies. Tap an entry to
   insert it (the panel closes); CLEAR empties the list; CLOSE returns to the
   keyboard.
+- **Settings** — tap the gear icon (toolbar, left corner) to open the app's setup
+  screen. The keyboard closes; pressing Back returns you to the text field you were
+  typing in, with your place kept.
 
 ## Build
 
