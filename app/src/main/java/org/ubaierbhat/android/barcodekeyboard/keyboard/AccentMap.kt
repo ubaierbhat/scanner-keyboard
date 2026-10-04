@@ -20,6 +20,9 @@ object AccentMap {
         'g' to listOf('ĝ', 'ğ'),
         'h' to listOf('ĥ'),
         'j' to listOf('ĵ'),
+        '-' to listOf('_'),
+        '$' to listOf('€', '£', '¥'),
+        '%' to listOf('‰', '¢'),
     )
 
     fun variants(letter: Char): List<Char> = variantsByLetter[letter.lowercaseChar()] ?: emptyList()

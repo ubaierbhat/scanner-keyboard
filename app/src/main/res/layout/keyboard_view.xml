@@ -1012,7 +1012,7 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.5" />
+                android:layout_weight="1.5" />
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
                 android:id="@+id/key_alt_paren_open"
@@ -1069,10 +1069,32 @@
                 android:contentDescription="@string/key_alt_bracket_close"
                 android:text="@string/key_alt_bracket_close" />
 
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_underscore"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_sym_underscore"
+                android:text="@string/key_sym_underscore" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_euro"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_euro"
+                android:text="@string/key_alt_euro" />
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.5" />
+                android:layout_weight="1.5" />
         </LinearLayout>
 
         <LinearLayout

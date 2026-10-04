@@ -35,4 +35,19 @@ class AccentMapTest {
         assertEquals(listOf('ĵ'), AccentMap.variants('j'))
         assertEquals(listOf('ÿ', 'ý'), AccentMap.variants('y'))
     }
+
+    @Test
+    fun hyphenOffersUnderscore() {
+        assertEquals(listOf('_'), AccentMap.variants('-'))
+    }
+
+    @Test
+    fun dollarOffersCurrencyVariants() {
+        assertEquals(listOf('€', '£', '¥'), AccentMap.variants('$'))
+    }
+
+    @Test
+    fun percentOffersCurrencyAndMathVariants() {
+        assertEquals(listOf('‰', '¢'), AccentMap.variants('%'))
+    }
 }

@@ -79,6 +79,12 @@ class KeyboardView @JvmOverloads constructor(
         SYMBOL_TEXT_IDS.map { id -> findViewById<KeyView>(id) }.forEach { key ->
             key.onPress = { listener?.onText(key.text.toString()) }
         }
+        SYMBOL_LONGPRESS_IDS.map { id -> findViewById<KeyView>(id) }.forEach { key ->
+            key.longPressTimeoutMs = ACCENT_HOLD_TIMEOUT_MS
+            key.dragHoldEnabled = true
+            key.onLongPress = { showAccentPopup(key) }
+            key.onHoldTouch = { event -> dispatchToAccentPopup(event) }
+        }
         PH_DIGIT_IDS.forEachIndexed { index, id ->
             val key = findViewById<KeyView>(id)
             val digit = if (index == PH_DIGIT_IDS.size - 1) "0" else (index + 1).toString()
@@ -376,6 +382,9 @@ class KeyboardView @JvmOverloads constructor(
             R.id.layer_letters, R.id.layer_symbols, R.id.layer_symbols_alt,
             R.id.layer_phone, R.id.layer_number,
         )
+        private val SYMBOL_LONGPRESS_IDS = intArrayOf(
+            R.id.key_sym_hyphen, R.id.key_sym_dollar, R.id.key_sym_percent,
+        )
         private val SYMBOL_TEXT_IDS = intArrayOf(
             R.id.key_num_1, R.id.key_num_2, R.id.key_num_3, R.id.key_num_4, R.id.key_num_5,
             R.id.key_num_6, R.id.key_num_7, R.id.key_num_8, R.id.key_num_9, R.id.key_num_0,
@@ -385,6 +394,7 @@ class KeyboardView @JvmOverloads constructor(
             R.id.key_sym_asterisk, R.id.key_sym_double_quote, R.id.key_sym_apostrophe,
             R.id.key_sym_colon, R.id.key_sym_semicolon, R.id.key_sym_comma, R.id.key_sym_period,
             R.id.key_sym_question, R.id.key_sym_exclamation, R.id.key_sym_slash,
+            R.id.key_alt_underscore, R.id.key_alt_euro,
             R.id.key_period_letters, R.id.key_period_symbols, R.id.key_period_alt,
             R.id.key_ph_period, R.id.key_ph_asterisk, R.id.key_ph_hash,
             R.id.key_nm_num_1, R.id.key_nm_num_2, R.id.key_nm_num_3, R.id.key_nm_num_4,
