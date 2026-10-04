@@ -109,6 +109,9 @@ class KeyboardView @JvmOverloads constructor(
         HIST_IDS.map { id -> findViewById<KeyView>(id) }.forEach { key ->
             key.onPress = { listener?.onHistoryRequested() }
         }
+        SETTINGS_IDS.map { id -> findViewById<KeyView>(id) }.forEach { key ->
+            key.onPress = { listener?.onSettingsRequested() }
+        }
         SPACE_IDS.map { id -> findViewById<KeyView>(id) }.forEach { key ->
             key.onPress = { listener?.onText(SPACE_TEXT) }
         }
@@ -357,6 +360,9 @@ class KeyboardView @JvmOverloads constructor(
         )
         private val HIST_IDS = intArrayOf(
             R.id.key_hist,
+        )
+        private val SETTINGS_IDS = intArrayOf(
+            R.id.key_settings,
         )
         private val SPACE_IDS = intArrayOf(
             R.id.key_space, R.id.key_space_symbols, R.id.key_space_alt,

@@ -15,6 +15,15 @@
         android:layout_height="@dimen/keyboard_toolbar_height"
         android:orientation="horizontal">
 
+        <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+            android:id="@+id/key_settings"
+            android:layout_width="@dimen/keyboard_toolbar_key_width"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/key_padding"
+            android:layout_marginEnd="@dimen/key_padding"
+            android:contentDescription="@string/key_settings_description"
+            app:keyIcon="@drawable/ic_settings_gear" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"

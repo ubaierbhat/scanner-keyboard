@@ -6,4 +6,5 @@ interface KeyboardActionListener {
     fun onEnter()
     fun onScanRequested()
     fun onHistoryRequested()
+    fun onSettingsRequested()
 }
