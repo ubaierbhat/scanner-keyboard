@@ -290,7 +290,6 @@ None. The app does not collect data about you.
 Data the app stores on your device
 - The last 20 scanned or copied texts (scan history).
 - Text you copy while this keyboard is active. The app saves it so you can re-use it.
-- Two settings: camera permission state.
 This data never leaves your device. You can clear the history in the app at any time.
 Uninstalling the app deletes it. The app blocks cloud and device-to-device backup
 (AndroidManifest.xml: allowBackup="false").
