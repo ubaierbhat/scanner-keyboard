@@ -8,9 +8,9 @@ android {
     defaultConfig {
         applicationId = "org.ubaierbhat.android.barcodekeyboard"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
     }
 
     buildFeatures {
@@ -36,6 +36,14 @@ android {
 
 kotlin {
     jvmToolchain(17)
+}
+
+tasks.withType<Test>().configureEach {
+    val javaToolchains = project.extensions.getByType<JavaToolchainService>()
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    })
+    jvmArgs("--add-exports=java.base/jdk.internal.access=ALL-UNNAMED")
 }
 
 dependencies {
