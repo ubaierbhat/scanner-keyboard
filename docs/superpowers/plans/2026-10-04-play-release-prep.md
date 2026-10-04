@@ -361,7 +361,7 @@ jobs:
 Open both HTML files locally (they must render offline, contain zero external `<script>`, and every relative link resolves). 
 
 ```bash
-git add public .github && git commit -m "docs: privacy policy, license list and GitLab Pages site"
+git add public .github && git commit -m "docs: privacy policy, license list and GitHub Pages site"
 ```
 
 ---
