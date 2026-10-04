@@ -112,7 +112,7 @@ keyboard — this is intentional, so no camera ever stays open "by surprise".
 
 ## License
 
-Copyright 2026 ubaierbhat.
+Copyright 2026 Ubaier Bhat.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
