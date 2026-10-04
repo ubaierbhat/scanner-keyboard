@@ -1,6 +1,8 @@
 package org.ubaierbhat.android.barcodekeyboard.keyboard
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
@@ -23,6 +25,13 @@ class KeyView @JvmOverloads constructor(
     var onHoldTouch: ((MotionEvent) -> Unit)? = null
 
     var dragHoldEnabled: Boolean = false
+
+    var keyIcon: Drawable? = null
+        set(value) {
+            field = value
+            value?.setBounds(0, 0, value.intrinsicWidth, value.intrinsicHeight)
+            invalidate()
+        }
 
     var isKeyValueChecked: Boolean = false
         set(value) {
@@ -57,6 +66,21 @@ class KeyView @JvmOverloads constructor(
         maxLines = 1
         isClickable = true
         setBackgroundResource(R.drawable.key_background)
+        val a = context.obtainStyledAttributes(attrs, R.styleable.KeyView, defStyleAttr, 0)
+        keyIcon = a.getDrawable(R.styleable.KeyView_keyIcon)
+        a.recycle()
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        val icon = keyIcon ?: return
+        canvas.save()
+        canvas.translate(
+            (width - icon.bounds.width()) / 2f,
+            (height - icon.bounds.height()) / 2f,
+        )
+        icon.draw(canvas)
+        canvas.restore()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

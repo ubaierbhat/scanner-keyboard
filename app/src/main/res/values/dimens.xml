@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="key_text_size">22sp</dimen>
+    <dimen name="key_enter_text_size">30sp</dimen>
     <dimen name="key_label_text_size">16sp</dimen>
     <dimen name="key_height">52dp</dimen>
     <dimen name="key_gutter">4dp</dimen>

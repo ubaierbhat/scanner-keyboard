@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <org.ubaierbhat.android.barcodekeyboard.keyboard.ScaledKeyboardLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -26,7 +27,7 @@
             android:layout_marginStart="@dimen/key_padding"
             android:layout_marginEnd="@dimen/key_padding"
             android:contentDescription="@string/key_scan_description"
-            android:drawableTop="@drawable/ic_scan_barcode" />
+            app:keyIcon="@drawable/ic_scan_barcode" />
 
         <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
             android:id="@+id/key_hist"
@@ -35,7 +36,7 @@
             android:layout_marginStart="@dimen/key_padding"
             android:layout_marginEnd="@dimen/key_padding"
             android:contentDescription="@string/key_hist_description"
-            android:drawableTop="@drawable/ic_history_clipboard" />
+            app:keyIcon="@drawable/ic_history_clipboard" />
     </LinearLayout>
 
     <LinearLayout
@@ -434,6 +435,7 @@
                 android:layout_marginStart="@dimen/key_padding"
                 android:layout_marginEnd="@dimen/key_padding"
                 android:layout_weight="1.6"
+                android:textSize="@dimen/key_enter_text_size"
                 android:contentDescription="@string/key_enter_description"
                 android:text="@string/key_enter_label" />
         </LinearLayout>
@@ -859,6 +861,7 @@
                 android:layout_marginStart="@dimen/key_padding"
                 android:layout_marginEnd="@dimen/key_padding"
                 android:layout_weight="1.6"
+                android:textSize="@dimen/key_enter_text_size"
                 android:contentDescription="@string/key_enter_description"
                 android:text="@string/key_enter_label" />
         </LinearLayout>
@@ -1222,6 +1225,7 @@
                 android:layout_marginStart="@dimen/key_padding"
                 android:layout_marginEnd="@dimen/key_padding"
                 android:layout_weight="1.6"
+                android:textSize="@dimen/key_enter_text_size"
                 android:contentDescription="@string/key_enter_description"
                 android:text="@string/key_enter_label" />
         </LinearLayout>
