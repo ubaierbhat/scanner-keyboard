@@ -26,6 +26,22 @@ class EnterActionResolverTest {
     }
 
     @Test
+    fun noEnterActionFlagWithDoneResolvesToHardwareParityKeyEvent() {
+        val imeOptions = EditorInfo.IME_ACTION_DONE or EditorInfo.IME_FLAG_NO_ENTER_ACTION
+        val behavior = EnterActionResolver.resolve(editorInfo(imeOptions = imeOptions))
+        assertEquals(EnterBehavior.SendKeyEvent, behavior)
+    }
+
+    @Test
+    fun noEnterActionFlagWithNextResolvesToHardwareParityKeyEvent() {
+        val imeOptions = EditorInfo.IME_ACTION_NEXT or
+            EditorInfo.IME_FLAG_NO_ENTER_ACTION or
+            EditorInfo.IME_FLAG_NAVIGATE_NEXT
+        val behavior = EnterActionResolver.resolve(editorInfo(imeOptions = imeOptions))
+        assertEquals(EnterBehavior.SendKeyEvent, behavior)
+    }
+
+    @Test
     fun nextActionResolvesToPerformAction() {
         val behavior = EnterActionResolver.resolve(editorInfo(imeOptions = EditorInfo.IME_ACTION_NEXT))
         assertEquals(EnterBehavior.PerformAction(EditorInfo.IME_ACTION_NEXT), behavior)

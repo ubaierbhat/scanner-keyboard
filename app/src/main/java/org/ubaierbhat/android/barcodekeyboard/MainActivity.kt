@@ -35,6 +35,14 @@ class MainActivity : AppCompatActivity() {
         imeActionButton = findViewById(R.id.ime_action_button)
         overallStatus = findViewById(R.id.overall_status)
 
+        val testFieldsButton = findViewById<MaterialButton>(R.id.open_test_fields_button)
+        if (BuildConfig.DEBUG) {
+            testFieldsButton.visibility = android.view.View.VISIBLE
+            testFieldsButton.setOnClickListener {
+                startActivity(android.content.Intent(this, TestFieldsActivity::class.java))
+            }
+        }
+
         cameraActionButton.setOnClickListener {
             if (isCameraPermanentlyDenied()) {
                 openAppSettings()

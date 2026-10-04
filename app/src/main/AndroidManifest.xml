@@ -24,6 +24,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".TestFieldsActivity"
+            android:exported="false"
+            android:label="@string/open_test_fields" />
+
         <service
             android:name=".service.BarcodeKeyboardService"
             android:label="@string/ime_label"

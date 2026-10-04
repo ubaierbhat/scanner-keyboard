@@ -22,6 +22,7 @@ import org.ubaierbhat.android.barcodekeyboard.history.HistoryPanelView
 import org.ubaierbhat.android.barcodekeyboard.history.ScanHistoryStore
 import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterActionResolver
 import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterBehavior
+import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterDispatcher
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyboardActionListener
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyboardView
@@ -119,10 +120,11 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
 
     override fun onEnter() {
         val inputConnection = currentInputConnection ?: return
-        when (val behavior = enterBehavior) {
-            is EnterBehavior.PerformAction -> inputConnection.performEditorAction(behavior.actionId)
-            EnterBehavior.Newline -> sendKeyChar('\n')
-            EnterBehavior.SendKeyEvent -> {
+        EnterDispatcher.dispatch(
+            enterBehavior,
+            { actionId -> inputConnection.performEditorAction(actionId) },
+            { sendKeyChar('\n') },
+            {
                 val down = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER)
                 inputConnection.sendKeyEvent(down)
                 inputConnection.sendKeyEvent(
@@ -134,8 +136,8 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
                         0,
                     ),
                 )
-            }
-        }
+            },
+        )
     }
 
     override fun onScanRequested() {

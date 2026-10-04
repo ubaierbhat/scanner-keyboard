@@ -122,4 +122,15 @@
     <string name="key_alt_greater">&gt;</string>
     <string name="key_alt_equals">=</string>
     <string name="key_alt_degree">°</string>
+    <string name="test_fields_log_initial">LOG:</string>
+    <string name="test_field_multiline">multiline</string>
+    <string name="test_field_done">single line, actionDone</string>
+    <string name="test_field_search">single line, actionSearch</string>
+    <string name="test_field_next">single line, actionNext</string>
+    <string name="test_field_go">single line, actionGo</string>
+    <string name="test_field_email">email</string>
+    <string name="test_field_phone">phone</string>
+    <string name="test_field_number">number</string>
+    <string name="test_field_password">password</string>
+    <string name="open_test_fields">Open field tester</string>
 </resources>
