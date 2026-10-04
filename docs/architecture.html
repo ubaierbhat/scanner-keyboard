@@ -178,18 +178,18 @@
       <text x="320" y="76" class="s">binds via BIND_INPUT_METHOD</text>
       <rect x="600" y="36" width="420" height="52" rx="9" class="box"/>
       <text x="620" y="58" class="t" font-weight="bold">MainActivity.kt — setup wizard</text>
-      <text x="620" y="76" class="s">camera grant · IME enable · live status chips</text>
+      <text x="620" y="76" class="s">camera grant · IME enable · also the toolbar settings target</text>
 
       <text x="20" y="128" class="h">IME SERVICE</text>
       <rect x="20" y="138" width="1000" height="84" rx="9" class="box svc"/>
       <text x="40" y="164" class="t" font-weight="bold">service/BarcodeKeyboardService.kt — mode state machine</text>
-      <text x="40" y="184" class="s">KEYBOARD / SCANNER / HISTORY · inline permission-prompt state · commitText · enter behaviors · clipboard capture · haptics</text>
+      <text x="40" y="184" class="s">KEYBOARD / SCANNER / HISTORY · inline permission prompt · commitText · enter policy · clipboard capture · haptics</text>
       <text x="40" y="202" class="s">owns the swap of KeyboardView / ScannerView / HistoryPanelView inside res/layout/input_view.xml FrameLayout</text>
 
       <text x="20" y="264" class="h">KEYBOARD — org.ubaierbhat.android.barcodekeyboard.keyboard</text>
       <rect x="20" y="274" width="220" height="76" rx="9" class="box"/>
       <text x="36" y="298" class="t" font-weight="bold">KeyboardView.kt</text>
-      <text x="36" y="316" class="s">letters · symbols · alt</text>
+      <text x="36" y="316" class="s">letters · symbols · dialpads</text>
       <text x="36" y="332" class="s">accent PopupWindow</text>
       <text x="36" y="346" class="s">ScaledKeyboardLayout root</text>
       <rect x="260" y="274" width="190" height="76" rx="9" class="box"/>
@@ -207,6 +207,7 @@
       <text x="862" y="298" class="t" font-weight="bold">EnterActionResolver</text>
       <text x="862" y="316" class="s">EditorInfo → action</text>
       <text x="862" y="332" class="s">/ newline / key event</text>
+      <text x="862" y="346" class="s">EnterDispatcher fallback</text>
 
       <text x="20" y="404" class="h">SCANNER — ....barcodekeyboard.scanner</text>
       <rect x="20" y="414" width="220" height="76" rx="9" class="box"/>
@@ -243,7 +244,7 @@
       <text x="148" y="118" class="lbl">commitText / sendKeyEvent</text>
       <path class="ln" d="M420 88 V138" marker-end="url(#arr)"/>
       <path class="ln" d="M810 138 V88" marker-end="url(#arr)"/>
-      <text x="818" y="118" class="lbl">permission prompt → openSetup()</text>
+      <text x="818" y="118" class="lbl">settings key / prompt → openSetup()</text>
       <path class="ln" d="M120 222 V274" marker-end="url(#arr)"/>
       <text x="128" y="252" class="lbl">implements KeyboardActionListener</text>
       <path class="ln" d="M60 274 V222" marker-end="url(#arr)"/>
@@ -264,11 +265,18 @@
     (<code>app/src/main/res/layout/input_view.xml</code>) is visible: the
     <code>KeyboardView</code>, the <code>ScannerView</code> (45 % of screen height), or the
     <code>HistoryPanelView</code> (45 %). A fifth UI state — the inline camera
-    <em>permission prompt</em> — is shown when SCAN is tapped without the CAMERA grant; its
-    <em>Open setup</em> button launches <code>MainActivity</code> with
-    <code>FLAG_ACTIVITY_NEW_TASK</code> (<code>openSetup()</code>).
+    <em>permission prompt</em> — is shown when SCAN is tapped without the CAMERA grant.
+    Both the prompt's <em>Open setup</em> button and the toolbar's <strong>settings key</strong>
+    (<code>KeyboardActionListener.onSettingsRequested()</code>) route through
+    <code>openSetup()</code>, which launches <code>MainActivity</code> with
+    <code>FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_REORDER_TO_FRONT</code> — the reorder flag is
+    what makes the wizard surface even when it already sits mid-stack in its own task; the
+    settings key also calls <code>requestHideSelf()</code> after starting the activity, and
+    Back returns the user to the exact field they were typing in.
     <code>onStartInputView</code> forces the mode back to KEYBOARD (closing any scanner/history),
-    resolves the Enter behavior, and captures the clipboard;
+    resolves the Enter behavior, applies the input-type-driven layer via
+    <code>KeyboardView.applyInputType()</code> (phone → dialpad, number/date → number pad,
+    otherwise letters — see <code>keyboard/InputTypeLayouts.kt</code>), and captures the clipboard;
     <code>onFinishInputView</code> / <code>onWindowHidden</code> / <code>onDestroy</code> unconditionally
     release the camera (and reset the keyboard layer, which also dismisses the accent popup).
   </p>
@@ -299,6 +307,25 @@
       <code>min(desired, parent spec)</code>. When an OEM IME frame grants less room than the
       keyboard wants (measured on One UI), rows shrink proportionally instead of the window
       cropping the toolbar from the top.</p>
+    </div>
+    <div class="card">
+      <h4>Input-type aware layers — Samsung-style dialpads</h4>
+      <p><code>InputTypeLayouts.layerFor()</code> maps the field's <code>inputType</code> class:
+      PHONE gets a 4×4 dialpad with T9-style mini letter labels (<code>2 ABC</code> …, long-press
+      <code>0</code> yields <code>+</code>, digits commit their first letter); NUMBER/DATETIME gets a
+      plain 4×4 digit pad with <code>+ - . ,</code> controls. Both match the reference layout shipped
+      by Samsung's own keyboard (captured from Honeyboard on the test device). Letter keys are one
+      tap away because leaving a phone/number field restores the letters layer automatically.</p>
+    </div>
+    <div class="card">
+      <h4>Enter key that respects the field, not the OEM rewrite</h4>
+      <p>Samsung's autofill rewrites incoming <code>EditorInfo</code> — it strips
+      <code>TYPE_TEXT_FLAG_MULTI_LINE</code> and sets <code>IME_FLAG_NO_ENTER_ACTION</code>, so trusting
+      the editor info alone breaks newlines in note fields. <code>EnterActionResolver</code> decodes the
+      flags: with <code>NO_ENTER_ACTION</code> the key sends a raw ENTER key event (hardware parity —
+      single-line TextViews self-trigger their Done action, multiline fields insert a newline); an
+      explicit Search/Go/Next action is performed via <code>performEditorAction</code>, and
+      <code>EnterDispatcher</code> falls back to the raw key event when the app does not consume it.</p>
     </div>
     <div class="card">
       <h4>KEEP_ONLY_LATEST backpressure</h4>
@@ -361,30 +388,40 @@
 
   <h2>5 · Testing summary</h2>
   <p>
-    <strong>41 JVM unit tests</strong> (Robolectric + JUnit) run green under
+    <strong>58 JVM unit tests</strong> (Robolectric + JUnit) run green under
     <code>./gradlew test</code>, covering the pure logic and the lifecycle edge cases:
   </p>
   <table>
     <tr><th>Suite</th><th>File</th><th>Pins</th></tr>
     <tr><td><code>KeyboardStateTest</code></td><td><code>app/src/test/.../keyboard/KeyboardStateTest.kt</code></td><td>shift OFF→ON→auto-off, caps lock toggle, case application</td></tr>
     <tr><td><code>EnterActionResolverTest</code></td><td><code>app/src/test/.../keyboard/EnterActionResolverTest.kt</code></td><td>editor action vs newline vs raw ENTER key event</td></tr>
+    <tr><td><code>EnterDispatcherTest</code></td><td><code>app/src/test/.../keyboard/EnterDispatcherTest.kt</code></td><td>performEditorAction, unhandled action falls back to ENTER key event</td></tr>
+    <tr><td><code>InputTypeLayoutsTest</code></td><td><code>app/src/test/.../keyboard/InputTypeLayoutsTest.kt</code></td><td>inputType class → letters / phone dialpad / number pad mapping</td></tr>
     <tr><td><code>AccentMapTest</code></td><td><code>app/src/test/.../keyboard/AccentMapTest.kt</code></td><td>variant tables, case-insensitive lookup, unknown letters empty</td></tr>
+    <tr><td><code>ScaledKeyboardLayoutTest</code></td><td><code>app/src/test/.../keyboard/ScaledKeyboardLayoutTest.kt</code></td><td>height clamped to min(desired, window), rows keep weight ratios</td></tr>
     <tr><td><code>ScanThrottleTest</code></td><td><code>app/src/test/.../scanner/ScanThrottleTest.kt</code></td><td>first pass, 1000 ms window, expiry, reset (injected clock)</td></tr>
     <tr><td><code>ScanHistoryStoreTest</code></td><td><code>app/src/test/.../history/ScanHistoryStoreTest.kt</code></td><td>newest-first, dedup move, cap 20, trim/blank rules, corrupt-data reset</td></tr>
     <tr><td><code>BarcodeKeyboardServiceRotationTest</code></td><td><code>app/src/test/.../service/BarcodeKeyboardServiceRotationTest.kt</code></td><td>scanner/history views reparent to the rebuilt input container, camera stopped</td></tr>
   </table>
   <p>
-    <strong>On-device sweep</strong> (Samsung Galaxy A10s — SM-G525F, Android 14): live QR + EAN-13 aim-and-insert
-    with haptic and auto-close, airplane-mode decode proving offline operation, mid-stream permission
-    revoke without FATAL, torch toggle, back-to-back scan sessions, accent drag-to-select, history
-    insert, rotation closing the camera. The remaining aim-dependent steps are listed in
+    <strong>On-device sweeps</strong> ran on a Samsung Galaxy XCover5 (Android 11, 720×1480) — the
+    primary test target — and earlier on a Galaxy A10s (SM-G525F, Android 14). The A10s pass covered:
+    live QR + EAN-13 aim-and-insert with haptic and auto-close, airplane-mode decode proving offline
+    operation, mid-stream permission revoke without FATAL, torch toggle, back-to-back scan sessions,
+    accent drag-to-select, history insert, rotation closing the camera. On the XCover5 a scripted
+    field matrix (9 field types in <code>TestFieldsActivity</code>, driven over adb) verified the
+    per-field Enter policy, the phone/number dialpads, and the toolbar settings key opening the app
+    with focus restored on Back — and Honeyboard's own phone/number pads were captured on the same
+    device as the layout reference. The remaining aim-dependent steps are listed in
     <code>docs/acceptance/manual-checklist.md</code> with fresh test-code assets in
     <code>docs/acceptance/</code>.
   </p>
 
   <h2>6 · Screens</h2>
   <div class="gallery">
-    <figure><img src="images/keyboard.png" alt="QWERTY keyboard with scan and history toolbar keys"><figcaption>Keyboard — QWERTY with the scan/history toolbar (top-right icons)</figcaption></figure>
+    <figure><img src="images/keyboard.png" alt="QWERTY keyboard with settings, scan and history toolbar keys"><figcaption>Keyboard — QWERTY with the function toolbar (settings left; scan · history right)</figcaption></figure>
+    <figure><img src="images/phone-dialpad.png" alt="Phone dialpad layer with T9 mini letter labels"><figcaption>Phone field — 4×4 dialpad with T9 mini labels, long-press 0 for +, ⌫ · ␣ · . · ↵ control column</figcaption></figure>
+    <figure><img src="images/settings-key.png" alt="Setup wizard reached from the keyboard settings key"><figcaption>Toolbar gear → setup wizard (Back returns to the field being edited)</figcaption></figure>
     <figure><img src="images/symbols.png" alt="Numbers and symbols layer"><figcaption>Symbols layer (123 → #+=)</figcaption></figure>
     <figure><img src="images/keyboard-landscape.png" alt="Landscape keyboard with proportional rows"><figcaption>Landscape — proportional weighted rows inside the bounded total; under a window deficit the rows shrink instead of the toolbar cropping (verified with a forced-deficit build)</figcaption></figure>
     <figure><img src="images/scanner.png" alt="Scanner viewfinder with hint, close and torch keys"><figcaption>Scanner viewfinder — “Point at a barcode”, ✕ and Torch (camera face-down here)</figcaption></figure>
@@ -414,8 +451,9 @@
   <div class="card">
     <h4>How this build was verified</h4>
     <ul>
-      <li><span class="ok">✓</span> <code>./gradlew test</code> — 41/41 unit tests green (see §5).</li>
-      <li><span class="ok">✓</span> <code>./gradlew assembleDebug</code> + install on device R58RB1N07TD; IME re-enabled and selected via <code>ime enable</code>/<code>ime set</code>.</li>
+      <li><span class="ok">✓</span> <code>./gradlew test</code> — 58/58 unit tests green (see §5).</li>
+      <li><span class="ok">✓</span> <code>./gradlew assembleDebug</code> + install on device R58RB1N07TD (Galaxy XCover5); IME re-enabled and selected via <code>ime enable</code>/<code>ime set</code>.</li>
+      <li><span class="ok">✓</span> 9-field input matrix green on-device: per-field editor actions, phone/number dialpad commits, settings key opens the wizard and hides the keyboard, Back restores focus to the exact field.</li>
       <li><span class="ok">✓</span> Launcher icon observed in the app drawer — adaptive foreground vector + charcoal background color, system-masked to the device shape, no icon-load errors in logcat; legacy <code>ic_launcher_round</code> renders the same mark circular-masked.</li>
       <li><span class="ok">✓</span> Every screenshot in §6 was captured fresh from this build on that device.</li>
       <li><span class="ok">✓</span> Generator determinism: two consecutive runs produce byte-identical PNGs and XMLs.</li>
@@ -424,7 +462,7 @@
   </div>
 
   <footer>
-    Scanner Keyboard · architecture document · updated 2026-10-03 · current <code>main</code> head ·
+    Scanner Keyboard · architecture document · updated 2026-10-04 · current <code>main</code> head ·
     repo paths are relative to the project root.
   </footer>
 </div>
