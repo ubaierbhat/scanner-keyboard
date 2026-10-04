@@ -1,6 +1,11 @@
 package org.ubaierbhat.android.barcodekeyboard.keyboard
 
 import android.content.Context
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -74,6 +79,30 @@ class KeyboardView @JvmOverloads constructor(
         SYMBOL_TEXT_IDS.map { id -> findViewById<KeyView>(id) }.forEach { key ->
             key.onPress = { listener?.onText(key.text.toString()) }
         }
+        PH_DIGIT_IDS.forEachIndexed { index, id ->
+            val key = findViewById<KeyView>(id)
+            val digit = if (index == PH_DIGIT_IDS.size - 1) "0" else (index + 1).toString()
+            val mini = PH_MINIS[index]
+            if (mini.isNotEmpty()) {
+                val label = SpannableString("$digit $mini")
+                label.setSpan(
+                    RelativeSizeSpan(MINI_TEXT_SCALE),
+                    digit.length,
+                    label.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+                )
+                label.setSpan(
+                    ForegroundColorSpan(MINI_TEXT_COLOR),
+                    digit.length,
+                    label.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+                )
+                key.text = label
+            }
+            key.contentDescription = digit
+            key.onPress = { listener?.onText(digit) }
+        }
+        findViewById<KeyView>(R.id.key_ph_num_0).onLongPress = { listener?.onText(PH_ZERO_LONGPRESS) }
         SCAN_IDS.map { id -> findViewById<KeyView>(id) }.forEach { key ->
             key.onPress = { listener?.onScanRequested() }
         }
@@ -91,8 +120,6 @@ class KeyboardView @JvmOverloads constructor(
         findViewById<KeyView>(R.id.key_alt).onPress = { showLayer(KeyboardLayer.SYMBOLS_ALT) }
         findViewById<KeyView>(R.id.key_abc_alt).onPress = { showLayer(KeyboardLayer.LETTERS) }
         findViewById<KeyView>(R.id.key_numbers_back).onPress = { showLayer(KeyboardLayer.SYMBOLS) }
-        findViewById<KeyView>(R.id.key_abc_phone).onPress = { showLayer(KeyboardLayer.LETTERS) }
-        findViewById<KeyView>(R.id.key_abc_number).onPress = { showLayer(KeyboardLayer.LETTERS) }
         layers = LAYER_IDS.map { id -> findViewById<View>(id) }
         showLayer(KeyboardLayer.LETTERS)
     }
@@ -298,6 +325,16 @@ class KeyboardView @JvmOverloads constructor(
 
     companion object {
         private const val SPACE_TEXT = " "
+        private const val MINI_TEXT_SCALE = 0.55f
+        private val MINI_TEXT_COLOR = Color.argb(160, 255, 255, 255)
+        private const val PH_ZERO_LONGPRESS = "+"
+        private val PH_DIGIT_IDS = intArrayOf(
+            R.id.key_ph_num_1, R.id.key_ph_num_2, R.id.key_ph_num_3,
+            R.id.key_ph_num_4, R.id.key_ph_num_5, R.id.key_ph_num_6,
+            R.id.key_ph_num_7, R.id.key_ph_num_8, R.id.key_ph_num_9,
+            R.id.key_ph_num_0,
+        )
+        private val PH_MINIS = arrayOf("", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV", "WXYZ", "+")
         private const val ACCENT_HOLD_TIMEOUT_MS = 350L
         private const val MIN_CANDIDATE_WIDTH_DIVISOR = 2
         private val LETTER_IDS = intArrayOf(
@@ -343,16 +380,12 @@ class KeyboardView @JvmOverloads constructor(
             R.id.key_sym_colon, R.id.key_sym_semicolon, R.id.key_sym_comma, R.id.key_sym_period,
             R.id.key_sym_question, R.id.key_sym_exclamation, R.id.key_sym_slash,
             R.id.key_period_letters, R.id.key_period_symbols, R.id.key_period_alt,
-            R.id.key_ph_num_1, R.id.key_ph_num_2, R.id.key_ph_num_3, R.id.key_ph_num_4,
-            R.id.key_ph_num_5, R.id.key_ph_num_6, R.id.key_ph_num_7, R.id.key_ph_num_8,
-            R.id.key_ph_num_9, R.id.key_ph_num_0,
-            R.id.key_ph_open_paren, R.id.key_ph_close_paren, R.id.key_ph_plus,
-            R.id.key_ph_hyphen, R.id.key_ph_asterisk, R.id.key_ph_hash,
+            R.id.key_ph_period, R.id.key_ph_asterisk, R.id.key_ph_hash,
             R.id.key_nm_num_1, R.id.key_nm_num_2, R.id.key_nm_num_3, R.id.key_nm_num_4,
             R.id.key_nm_num_5, R.id.key_nm_num_6, R.id.key_nm_num_7, R.id.key_nm_num_8,
             R.id.key_nm_num_9, R.id.key_nm_num_0,
-            R.id.key_nm_period, R.id.key_nm_comma, R.id.key_nm_hyphen, R.id.key_nm_slash,
-            R.id.key_nm_colon, R.id.key_nm_open_paren, R.id.key_nm_close_paren,
+            R.id.key_nm_hyphen, R.id.key_nm_period,
+            R.id.key_nm_comma, R.id.key_nm_plus,
             R.id.key_alt_num_1, R.id.key_alt_num_2, R.id.key_alt_num_3, R.id.key_alt_num_4,
             R.id.key_alt_num_5, R.id.key_alt_num_6, R.id.key_alt_num_7, R.id.key_alt_num_8,
             R.id.key_alt_num_9, R.id.key_alt_num_0,
