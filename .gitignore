@@ -15,3 +15,6 @@
 local.properties
 .superpowers/
 __pycache__/
+*.jks
+*.keystore
+keystore.properties

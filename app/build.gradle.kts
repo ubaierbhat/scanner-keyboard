@@ -1,5 +1,12 @@
+import java.util.Properties
+
 plugins {
   alias(libs.plugins.android.application)
+}
+
+val signingProps = Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.exists()) f.inputStream().use(::load)
 }
 
 android {
@@ -17,10 +24,23 @@ android {
         buildConfig = true
     }
 
+    signingConfigs {
+        if (signingProps.isNotEmpty()) {
+            create("upload") {
+                storeFile = project.file(signingProps.getProperty("storeFile"))
+                storePassword = signingProps.getProperty("storePassword")
+                keyAlias = signingProps.getProperty("keyAlias")
+                keyPassword = signingProps.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfigs.findByName("upload")?.let { signingConfig = it }
         }
     }
     compileOptions {
