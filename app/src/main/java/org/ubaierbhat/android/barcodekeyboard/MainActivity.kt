@@ -39,7 +39,16 @@ class MainActivity : AppCompatActivity() {
         if (BuildConfig.DEBUG) {
             testFieldsButton.visibility = android.view.View.VISIBLE
             testFieldsButton.setOnClickListener {
-                startActivity(android.content.Intent(this, TestFieldsActivity::class.java))
+                val intent = Intent().setComponent(
+                    android.content.ComponentName(
+                        packageName,
+                        "org.ubaierbhat.android.barcodekeyboard.TestFieldsActivity",
+                    ),
+                )
+                try {
+                    startActivity(intent)
+                } catch (e: android.content.ActivityNotFoundException) {
+                }
             }
         }
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <activity
+            android:name=".TestFieldsActivity"
+            android:exported="false"
+            android:label="@string/open_test_fields"
+            android:windowSoftInputMode="adjustResize" />
+    </application>
+</manifest>
