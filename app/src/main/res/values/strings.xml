@@ -122,7 +122,7 @@
     <string name="key_alt_less">&lt;</string>
     <string name="key_alt_greater">&gt;</string>
     <string name="key_alt_equals">=</string>
-    <string name="key_alt_euro" formatted="false">€</string>
+    <string name="key_alt_euro">€</string>
     <string name="key_alt_degree">°</string>
     <string name="test_fields_log_initial">LOG:</string>
     <string name="test_field_multiline">multiline</string>

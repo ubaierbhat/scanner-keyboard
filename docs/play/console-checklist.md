@@ -35,7 +35,7 @@ IME service BarcodeKeyboardService (protected by BIND_INPUT_METHOD).
 No other entry points exist.
 ```
 
-Evidence: `app/src/main/AndroidManifest.xml:18-38`; strings `app_name`/`ime_label` = "Scanner Keyboard" (`app/src/main/res/values/strings.xml:2,19`).
+Evidence: `app/src/main/AndroidManifest.xml:26-46`; strings `app_name`/`ime_label` = "Scanner Keyboard" (`app/src/main/res/values/strings.xml:2,19`).
 
 ## 2. Ads
 
@@ -71,13 +71,14 @@ The only interactive surface is the keyboard itself and a camera preview the use
 3. Paste justification note:
 
 ```text
-The app collects and shares no user data. It declares no INTERNET
+The app collects and shares no user data. It holds no INTERNET
 permission, so Android blocks every network call
-(app/src/main/AndroidManifest.xml:4 declares only CAMERA).
+(app/src/main/AndroidManifest.xml:5 declares only CAMERA; :7-12
+strip the network permissions merged in from libraries).
 Scan history and copied-text captures live only in app-private
 SharedPreferences with MODE_PRIVATE
 (app/src/main/java/org/ubaierbhat/android/barcodekeyboard/history/ScanHistoryStore.kt:10-11).
-Backup is disabled: allowBackup="false" (app/src/main/AndroidManifest.xml:11).
+Backup is disabled: allowBackup="false" (app/src/main/AndroidManifest.xml:19).
 The clipboard read happens only when the keyboard opens, and the text
 is stored on the same device
 (app/src/main/java/org/ubaierbhat/android/barcodekeyboard/service/BarcodeKeyboardService.kt:84,309-330).
@@ -119,7 +120,7 @@ background. If the permission is missing, the app shows an inline
 prompt and never opens the camera.
 ```
 
-Evidence: camera bind/unbind in `app/src/main/java/org/ubaierbhat/android/barcodekeyboard/scanner/ScannerView.kt:85-142` (`unbindAll` at :118); rotation closes the camera (README "Rotation while the scanner is open closes the camera"); fresh-install permission gate verified on device (`.superpowers/sdd/2026-10-04-play-release-prep/task-3-report.md` row 3).
+Evidence: camera bind/unbind in `app/src/main/java/org/ubaierbhat/android/barcodekeyboard/scanner/ScannerView.kt:85-142` (`unbindAll` at :118); rotation closes the camera (README "Rotation while the scanner is open closes the camera"); fresh-install permission gate verified on device (`docs/security/masvs-compliance.md` Appendix A10).
 
 ## 6. Store listing
 
@@ -187,23 +188,23 @@ Rules for a personal developer account:
 2. Closed testing: create an email list with **at least 12 opted-in Gmail accounts**.
 3. Keep the build in closed testing for **14 continuous days** with the testers opted in. This also satisfies the personal-account policy gate for production access.
 4. After 14 days: press "Apply for production". Production review takes **≤7 days** (usually faster).
-5. The production form requires a published Privacy Policy URL — already satisfied (see Section 6 item 4; policy shipped by Task 4).
+5. The production form requires a published Privacy Policy URL. The Privacy Policy URL is required for closed testing as well as production. Production review already has its policy (see Section 6 item 4).
 
 Testing-readiness evidence (verified device QA):
 
-- 58 unit tests pass on the release configuration (`.superpowers/sdd/2026-10-04-play-release-prep/task-1-report.md`, task-3-report.md "Build results").
-- Signed R8 release QA passed on a physical Samsung Galaxy XCover5 (`R58RB1N07TD`, Android 14/API 34): typing, dialpad, accents, scanner open/close with camera lifecycle, history persist + re-insert, settings jump, zero FATAL entries (task-3-report.md QA matrix rows 1-9).
-- Known caveat: QA ran on API 34; targetSdk-36 runtime specifics are unverified there (task-1-report.md Concern 1).
-- One human step remains before release: aim the rear camera at `docs/acceptance/qr-SCAN-T9-QR-741258.png` and confirm decode → insert → buzz → close (task-3-report.md row 5).
+- Unit tests pass (debug variant, 61 green). Reproduce with `./gradlew testDebugUnitTest`; the post-fix rebuild and re-QA are recorded in `docs/security/masvs-compliance.md` (Appendix A1 after-strip badging, Appendix A10 device QA).
+- Signed R8 release QA passed on a physical Samsung Galaxy XCover5 (`R58RB1N07TD`, Android 14/API 34): typing, dialpad, accents, scanner open/close with camera lifecycle, history persist + re-insert, settings jump, zero FATAL entries (`docs/security/masvs-compliance.md` Appendix A10).
+- Known caveat: QA ran on API 34; targetSdk-36 runtime specifics are unverified there (`docs/security/masvs-compliance.md` Appendix A10 device header).
+- One human step remains before release: aim the rear camera at `docs/acceptance/qr-SCAN-T9-QR-741258.png` and confirm decode → insert → buzz → close (`docs/security/masvs-compliance.md` Appendix A10 closing note: decode-by-aim remains human-only).
 
 ## 8. Upload steps
 
 1. Build the AAB: run `./gradlew bundleRelease`.
 2. Artifact path: `app/build/outputs/bundle/release/app-release.aab`.
-   Current on-disk artifact: **13,427,613 bytes (12.8 MB)**, built 2026-10-04 with the final committed config (task-3-report.md "Build results"; matches this file). It is signed with the upload key. Never commit it (`build/` is gitignored).
+   Rebuild with `./gradlew bundleRelease` before upload; the uploaded AAB must equal tag `v1.0.0`. Current on-disk artifact measures 13,423,182 bytes (12.8 MB). It is signed with the upload key. Never commit it (`build/` is gitignored).
 3. In the Console: open your release track → "Create new release" → upload `app-release.aab` from "App bundle".
 4. First upload triggers **Play App Signing enrollment**. Keep Google-managed signing ("Play App Signing by Google").
-5. Register the existing upload key: keystore `upload-keystore.jks` (alias `upload`), repo root, untracked; wiring in `app/build.gradle.kts:7-10,27-36,43` reads `keystore.properties`. The password lives in task-3-report.md "Keystore passwords" — move it to a password manager.
+5. Register the existing upload key. The keystore `upload-keystore.jks` (alias `upload`) sits in the repo root and is untracked. The wiring in `app/build.gradle.kts:7-10,27-36,43` reads `keystore.properties`. Copy the upload-key passwords from `keystore.properties` into your password manager now. Never commit this file.
 6. **Do NOT select "Manage your own signing keys (app signing key management opt-out)".**
 7. Bump versionCode only on later uploads; this release ships versionCode 1 / versionName 1.0.0.
 

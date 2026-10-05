@@ -21,6 +21,9 @@ First public release.
   inserts a newline in multiline fields.
 - Long-press backspace auto-repeat and key-press haptics.
 - Long-press accent popups with drag-to-select on 17 letters.
+- Underscore and euro keys on the extended symbols layer.
+- Long-press popups: hyphen offers underscore; dollar offers euro, pound, yen;
+  percent offers per-mille, cent.
 - Phone and number field detection with a Samsung-style 4x4 dialpad.
 - Fully offline barcode and QR scanner inside the keyboard window. Uses
   CameraX and the bundled ML Kit model. Supports QR, EAN-8/13, UPC-A,
