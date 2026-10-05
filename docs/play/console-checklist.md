@@ -124,48 +124,9 @@ Evidence: camera bind/unbind in `app/src/main/java/org/ubaierbhat/android/barcod
 
 ## 6. Store listing
 
-1. Title (16/30 characters):
-
-   `Scanner Keyboard`
-
-2. Short description (56/80 characters):
-
-   `Offline barcode and QR scanner built into your keyboard.`
-
-3. Full description (STE wording, mirrors README Features + Privacy; keep ≤4000 characters):
-
-```text
-Scanner Keyboard puts a barcode and QR scanner inside your keyboard.
-Tap the scan key. The keyboard opens a live camera view. Point it at a code.
-The app inserts the decoded text at your cursor, then buzzes once.
-
-Features
-- Keyboard: full QWERTY with shift and caps lock, a numbers layer, and a
-  symbols layer. Smart Enter runs the field's action or adds a new line.
-  Long-press backspace repeats. Key presses vibrate.
-- Barcode scanner: a live camera view inside the keyboard window. It
-  detects QR, EAN-8, EAN-13, UPC-A, Code 39, Code 93, Code 128, ITF,
-  Codabar, PDF417, Aztec, and Data Matrix. A torch toggle helps in dark places.
-- Accents: long-press a letter. Slide to an accented variant and release.
-- History: the app keeps your last 20 scans and copies on your device.
-  Tap an entry to insert it again. Clear history with one tap.
-- Toolbar: scan, history, and settings keys sit above the letters.
-- Setup screen: the first-run wizard shows camera permission and
-  keyboard enable status live.
-
-Privacy
-- Scanning runs 100% on your device.
-- The app declares no INTERNET permission. Android blocks every network call.
-- Decoding uses the bundled ML Kit model. No image or text ever leaves your phone.
-- The camera opens only while you keep the scanner on screen. It releases the
-  camera when the scanner closes, the keyboard hides, or you rotate the device.
-- The app never saves camera images.
-- Scan history and copied text stay in the app's private storage. Cloud backup
-  is disabled. Uninstalling deletes everything.
-
-No ads. No in-app purchases. No account or login needed. The app works fully
-offline.
-```
+1-3. Title, short description, promo text, full description, and release notes:
+   paste from `docs/play/store-listing.md`. That file is the single source for
+   listing copy and carries verified character counts.
 
 4. Privacy Policy URL (all locations): `https://ubaierbhat.github.io/scanner-keyboard/privacy.html`
 5. Website (optional): `https://ubaierbhat.github.io/scanner-keyboard/index.html`
