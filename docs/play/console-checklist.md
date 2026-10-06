@@ -8,8 +8,8 @@ App facts (source: `app/build.gradle.kts:13-21`):
 | Field | Value |
 |---|---|
 | Application ID | `org.ubaierbhat.android.barcodekeyboard` |
-| Version code | 1 |
-| Version name | 1.0.0 |
+| Version code | 2 |
+| Version name | 1.0.1 |
 | minSdk | 24 (Android 7.0) |
 | targetSdk / compileSdk | 36 |
 | Privacy Policy URL | `https://ubaierbhat.github.io/scanner-keyboard/privacy.html` |
@@ -162,12 +162,14 @@ Testing-readiness evidence (verified device QA):
 
 1. Build the AAB: run `./gradlew bundleRelease`.
 2. Artifact path: `app/build/outputs/bundle/release/app-release.aab`.
-   Rebuild with `./gradlew bundleRelease` before upload; the uploaded AAB must be built from a tagged release commit. Current on-disk artifact measures 13,423,564 bytes (12.8 MB), SHA-256 `73fb5fd771e272ebd4c1f345f48f8064dca68d45f4dceaf7e0adf4a0191e1ee9`. It is signed with the upload key. Never commit it (`build/` is gitignored).
+   Rebuild with `./gradlew bundleRelease` before upload; the uploaded AAB must be built from a tagged release commit. Current on-disk artifact (v1.0.1, versionCode 2) measures 13,423,562 bytes (12.8 MB), SHA-256 `2f82af1a22c797aacf8e5038d5c6454d128c3bb6f89ba26e970fe483dfca5c63`. It is signed with the upload key. Never commit it (`build/` is gitignored).
 3. In the Console: open your release track → "Create new release" → upload `app-release.aab` from "App bundle".
 4. First upload triggers **Play App Signing enrollment**. Keep Google-managed signing ("Play App Signing by Google").
 5. Register the existing upload key. The keystore `upload-keystore.jks` (alias `upload`) sits in the repo root and is untracked. The wiring in `app/build.gradle.kts:7-10,27-36,46` reads `keystore.properties`. Copy the upload-key passwords from `keystore.properties` into your password manager now. Never commit this file.
 6. **Do NOT select "Manage your own signing keys (app signing key management opt-out)".**
-7. Bump versionCode only on later uploads; this release ships versionCode 1 / versionName 1.0.0.
+7. versionCode 1 / versionName 1.0.0 was drafted to Play once; v1.0.1 (this upload,
+   versionCode 2) fixes the gear icon and the `#+=` symbols. Later uploads need
+   versionCode >= 3.
 8. Expected warning: "native debug symbols are missing" for ML Kit's `libbarhopper_v3.so`
    and JNI libs. They are Google binaries shipped fully stripped (verified: 0 `.symtab`
    / `.debug` sections). The build already requests `debugSymbolLevel = "SYMBOL_TABLE"`

@@ -105,6 +105,22 @@ truncated list view.)
 
 ## Release notes / What's new (≤ 500)
 
+### v1.0.1 (this upload)
+
+```
+Scanner Keyboard 1.0.1
+
+Fixes based on your early feedback:
+
+- Code typing: the #+= layer gains the backtick, caret, and closing
+  parenthesis keys, so markdown code blocks and formulas now work.
+- The settings key icon is now a clean, symmetric gear.
+
+Still 100% offline: no account, no ads, no data collection.
+```
+
+### v1.0.0 draft (superseded, do not reuse)
+
 ```
 Welcome to Scanner Keyboard 1.0.0!
 
