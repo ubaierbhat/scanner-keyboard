@@ -7,6 +7,10 @@ Version numbers use the form `MAJOR.MINOR.PATCH`.
 
 ## [Unreleased]
 
+No unreleased changes yet.
+
+## [1.0.2] - 2026-10-06
+
 ### Fixed
 
 - Last keyboard row hidden behind the on-screen navigation buttons on devices
@@ -78,6 +82,7 @@ First public release.
 - The field tester log no longer grows forever; it is capped to the current
   field.
 
-[Unreleased]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/ubaierbhat/scanner-keyboard/compare/cb647eb...v1.0.0
