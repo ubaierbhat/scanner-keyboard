@@ -7,7 +7,14 @@ Version numbers use the form `MAJOR.MINOR.PATCH`.
 
 ## [Unreleased]
 
-No changes yet.
+### Fixed
+- Settings gear icon was asymmetric (a broken tooth). Replaced with the standard
+  Material Design cog.
+- `#+=` layer was missing the backtick (`` ` ``) and caret (`^`) and the closing
+  parenthesis (`)`), so markdown code blocks could not be typed. Added them.
+
+### Added
+- Unit tests for the `#+=` symbol row (63 JVM tests total).
 
 ## [1.0.0] - 2026-10-04
 

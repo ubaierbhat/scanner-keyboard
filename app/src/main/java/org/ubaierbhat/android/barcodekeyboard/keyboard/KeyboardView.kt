@@ -405,8 +405,10 @@ class KeyboardView @JvmOverloads constructor(
             R.id.key_alt_num_1, R.id.key_alt_num_2, R.id.key_alt_num_3, R.id.key_alt_num_4,
             R.id.key_alt_num_5, R.id.key_alt_num_6, R.id.key_alt_num_7, R.id.key_alt_num_8,
             R.id.key_alt_num_9, R.id.key_alt_num_0,
-            R.id.key_alt_paren_open, R.id.key_alt_brace_open, R.id.key_alt_brace_close,
+            R.id.key_alt_paren_open, R.id.key_alt_paren_close,
+            R.id.key_alt_brace_open, R.id.key_alt_brace_close,
             R.id.key_alt_bracket_open, R.id.key_alt_bracket_close,
+            R.id.key_alt_backtick, R.id.key_alt_caret,
             R.id.key_alt_backslash, R.id.key_alt_pipe, R.id.key_alt_tilde, R.id.key_alt_less,
             R.id.key_alt_greater, R.id.key_alt_equals, R.id.key_alt_degree,
         )

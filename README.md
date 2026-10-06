@@ -77,7 +77,8 @@ No account, no network, no configuration — you're done.
 ## Usage
 
 - **Typing** — standard QWERTY. `123` switches to numbers/punctuation, `#+=` to
-  more symbols, and `ABC` returns to letters. The `_` and `€` keys sit on `#+=`.
+  more symbols, and `ABC` returns to letters. `#+=` carries `( ) { } [ ]` `` ` ``
+  `^ _ €` for code and markdown, so you can write code blocks.
   Long-press `-` for `_`, or `$` for `€ £ ¥`. Phone and number fields
   automatically get a Samsung-style dialpad instead of the letter grid.
 - **Shift / caps** — tap ⇧ to capitalize the next letter. Long-press ⇧ to lock

@@ -388,7 +388,7 @@
 
   <h2>5 · Testing summary</h2>
   <p>
-    <strong>61 JVM unit tests</strong> (Robolectric + JUnit) run green under
+    <strong>63 JVM unit tests</strong> (Robolectric + JUnit) run green under
     <code>./gradlew test</code>, covering the pure logic and the lifecycle edge cases:
   </p>
   <table>
@@ -453,7 +453,7 @@
   <div class="card">
     <h4>How this build was verified</h4>
     <ul>
-      <li><span class="ok">✓</span> <code>./gradlew test</code> — 61/61 unit tests green (see §5).</li>
+      <li><span class="ok">✓</span> <code>./gradlew test</code> — 63/63 unit tests green (see §5).</li>
       <li><span class="ok">✓</span> <code>./gradlew assembleDebug</code> + install on device R58RB1N07TD (Galaxy XCover5); IME re-enabled and selected via <code>ime enable</code>/<code>ime set</code>.</li>
       <li><span class="ok">✓</span> 9-field input matrix green on-device: per-field editor actions, phone/number dialpad commits, settings key opens the wizard and hides the keyboard, Back restores focus to the exact field.</li>
       <li><span class="ok">✓</span> Launcher icon observed in the app drawer — adaptive foreground vector + charcoal background color, system-masked to the device shape, no icon-load errors in logcat; legacy <code>ic_launcher_round</code> renders the same mark circular-masked.</li>

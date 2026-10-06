@@ -112,6 +112,9 @@
     <string name="key_sym_slash">/</string>
 
     <string name="key_alt_paren_open">(</string>
+    <string name="key_alt_paren_close">)</string>
+    <string name="key_alt_backtick">`</string>
+    <string name="key_alt_caret">^</string>
     <string name="key_alt_brace_open">{</string>
     <string name="key_alt_brace_close">}</string>
     <string name="key_alt_bracket_open">[</string>

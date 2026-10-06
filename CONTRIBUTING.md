@@ -47,7 +47,7 @@ Steps:
 
 This repository has no Android CI job. The only GitHub Actions workflow is
 `Pages`, and it just publishes the site in `public/`. Unit tests run on your
-machine. Run `./gradlew testDebugUnitTest` before you push. All 61 tests must
+machine. Run `./gradlew testDebugUnitTest` before you push. All 63 tests must
 pass.
 
 ## Project rules

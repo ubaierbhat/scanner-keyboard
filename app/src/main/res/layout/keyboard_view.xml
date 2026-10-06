@@ -1009,11 +1009,6 @@
             android:layout_marginTop="@dimen/keyboard_row_spacing"
             android:orientation="horizontal">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5" />
-
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
                 android:id="@+id/key_alt_paren_open"
                 style="@style/KeySymbol"
@@ -1024,6 +1019,17 @@
                 android:layout_weight="1"
                 android:contentDescription="@string/key_alt_paren_open"
                 android:text="@string/key_alt_paren_open" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_paren_close"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_paren_close"
+                android:text="@string/key_alt_paren_close" />
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
                 android:id="@+id/key_alt_brace_open"
@@ -1070,6 +1076,28 @@
                 android:text="@string/key_alt_bracket_close" />
 
             <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_backtick"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_backtick"
+                android:text="@string/key_alt_backtick" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
+                android:id="@+id/key_alt_caret"
+                style="@style/KeySymbol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/key_padding"
+                android:layout_marginEnd="@dimen/key_padding"
+                android:layout_weight="1"
+                android:contentDescription="@string/key_alt_caret"
+                android:text="@string/key_alt_caret" />
+
+            <org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
                 android:id="@+id/key_alt_underscore"
                 style="@style/KeySymbol"
                 android:layout_width="0dp"
@@ -1090,11 +1118,6 @@
                 android:layout_weight="1"
                 android:contentDescription="@string/key_alt_euro"
                 android:text="@string/key_alt_euro" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5" />
         </LinearLayout>
 
         <LinearLayout
