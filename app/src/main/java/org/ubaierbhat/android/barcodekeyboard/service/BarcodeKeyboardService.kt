@@ -16,6 +16,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import org.ubaierbhat.android.barcodekeyboard.MainActivity
 import org.ubaierbhat.android.barcodekeyboard.R
 import org.ubaierbhat.android.barcodekeyboard.history.HistoryPanelView
@@ -61,6 +63,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         historyPanelView = null
         mode = Mode.KEYBOARD
         val root = LayoutInflater.from(this).inflate(R.layout.input_view, null) as FrameLayout
+        attachNavigationBarInsets(root)
         inputContainer = root
         keyboardView = root.findViewById<KeyboardView>(R.id.keyboard_view).apply {
             setListener(this@BarcodeKeyboardService)
@@ -357,10 +360,27 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         startActivity(intent)
     }
 
-    private companion object {
+    internal companion object {
         const val SCANNER_HEIGHT_FRACTION = 0.45f
         const val HISTORY_HEIGHT_FRACTION = 0.45f
         const val SCANNER_ERROR_DISMISS_MS = 1500L
         const val MAX_CLIPBOARD_ENTRY_LENGTH = 500
+
+        internal fun attachNavigationBarInsets(view: View) {
+            val baseLeft = view.paddingLeft
+            val baseTop = view.paddingTop
+            val baseRight = view.paddingRight
+            val baseBottom = view.paddingBottom
+            ViewCompat.setOnApplyWindowInsetsListener(view) { target, insets ->
+                val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                target.setPadding(
+                    baseLeft + bars.left,
+                    baseTop,
+                    baseRight + bars.right,
+                    baseBottom + bars.bottom,
+                )
+                insets
+            }
+        }
     }
 }

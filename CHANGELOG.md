@@ -7,7 +7,11 @@ Version numbers use the form `MAJOR.MINOR.PATCH`.
 
 ## [Unreleased]
 
-No unreleased changes yet.
+### Fixed
+
+- Last keyboard row hidden behind the on-screen navigation buttons on devices
+  with forced edge-to-edge (Android 15+ with targetSdk 36). The input view now
+  consumes the system-bar insets as padding.
 
 ## [1.0.1] - 2026-10-06
 
