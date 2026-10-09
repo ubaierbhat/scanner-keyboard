@@ -104,25 +104,8 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
     }
 
     override fun onBackspace() {
-        val inputConnection = currentInputConnection ?: return
-        val selectedText = inputConnection.getSelectedText(0)
-        when (BackspaceDispatcher.plan(selectedText)) {
-            BackspaceDispatcher.Action.DeleteSelection -> {
-                val down = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)
-                inputConnection.sendKeyEvent(down)
-                inputConnection.sendKeyEvent(
-                    KeyEvent(
-                        down.downTime,
-                        SystemClock.uptimeMillis(),
-                        KeyEvent.ACTION_UP,
-                        KeyEvent.KEYCODE_DEL,
-                        0,
-                    ),
-                )
-            }
-            BackspaceDispatcher.Action.DeleteOneBeforeCursor ->
-                inputConnection.deleteSurroundingText(1, 0)
-        }
+        val ic = currentInputConnection ?: return
+        BackspaceDispatcher.dispatch(ic, ic.getSelectedText(0))
     }
 
     override fun onEnter() {
