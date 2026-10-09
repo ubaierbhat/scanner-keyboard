@@ -406,7 +406,7 @@
 
   <h2>5 · Testing summary</h2>
   <p>
-    <strong>63 JVM unit tests</strong> (Robolectric + JUnit) run green under
+    <strong>88 JVM unit tests</strong> (Robolectric + JUnit) run green under
     <code>./gradlew test</code>, covering the pure logic and the lifecycle edge cases:
   </p>
   <table>
@@ -417,9 +417,15 @@
     <tr><td><code>InputTypeLayoutsTest</code></td><td><code>app/src/test/.../keyboard/InputTypeLayoutsTest.kt</code></td><td>inputType class → letters / phone dialpad / number pad mapping</td></tr>
     <tr><td><code>AccentMapTest</code></td><td><code>app/src/test/.../keyboard/AccentMapTest.kt</code></td><td>variant tables, case-insensitive lookup, unknown letters empty</td></tr>
     <tr><td><code>ScaledKeyboardLayoutTest</code></td><td><code>app/src/test/.../keyboard/ScaledKeyboardLayoutTest.kt</code></td><td>height clamped to min(desired, window), rows keep weight ratios</td></tr>
+    <tr><td><code>BackspaceDispatcherTest</code></td><td><code>app/src/test/.../keyboard/BackspaceDispatcherTest.kt</code></td><td>selection → clear selected text; none → delete one char before cursor</td></tr>
     <tr><td><code>ScanThrottleTest</code></td><td><code>app/src/test/.../scanner/ScanThrottleTest.kt</code></td><td>first pass, 1000 ms window, expiry, reset (injected clock)</td></tr>
+    <tr><td><code>DuplicateSuppressorTest</code></td><td><code>app/src/test/.../scanner/DuplicateSuppressorTest.kt</code></td><td>first value emits, consecutive duplicate suppressed, different value re-arms, reset forgets</td></tr>
+    <tr><td><code>ScanTranslatorTest</code></td><td><code>app/src/test/.../scanner/ScanTranslatorTest.kt</code></td><td>newline → Enter, tab → Tab segments, literals kept, CR handling, collapse and edge rules</td></tr>
+    <tr><td><code>ScanSettingsTest</code></td><td><code>app/src/test/.../scanner/ScanSettingsTest.kt</code></td><td>both flags default off, values persist across instances</td></tr>
+    <tr><td><code>ScannerViewContinuousTest</code></td><td><code>app/src/test/.../scanner/ScannerViewContinuousTest.kt</code></td><td>switch reflects persisted state, toggling persists</td></tr>
     <tr><td><code>ScanHistoryStoreTest</code></td><td><code>app/src/test/.../history/ScanHistoryStoreTest.kt</code></td><td>newest-first, dedup move, cap 20, trim/blank rules, corrupt-data reset</td></tr>
     <tr><td><code>BarcodeKeyboardServiceRotationTest</code></td><td><code>app/src/test/.../service/BarcodeKeyboardServiceRotationTest.kt</code></td><td>scanner/history views reparent to the rebuilt input container, camera stopped</td></tr>
+    <tr><td><code>BackspaceConnectionTest</code></td><td><code>app/src/test/.../service/BackspaceConnectionTest.kt</code></td><td>cursor mid-text deletes only the left char; selection sends DEL key events instead of surrounding delete</td></tr>
   </table>
   <p>
     <strong>On-device sweeps</strong> ran on a Samsung Galaxy XCover5 (Android 11, 720×1480) — the
@@ -471,7 +477,7 @@
   <div class="card">
     <h4>How this build was verified</h4>
     <ul>
-      <li><span class="ok">✓</span> <code>./gradlew test</code> — 63/63 unit tests green (see §5).</li>
+      <li><span class="ok">✓</span> <code>./gradlew test</code> — 88/88 unit tests green (see §5).</li>
       <li><span class="ok">✓</span> <code>./gradlew assembleDebug</code> + install on device R58RB1N07TD (Galaxy XCover5); IME re-enabled and selected via <code>ime enable</code>/<code>ime set</code>.</li>
       <li><span class="ok">✓</span> 9-field input matrix green on-device: per-field editor actions, phone/number dialpad commits, settings key opens the wizard and hides the keyboard, Back restores focus to the exact field.</li>
       <li><span class="ok">✓</span> Launcher icon observed in the app drawer — adaptive foreground vector + charcoal background color, system-masked to the device shape, no icon-load errors in logcat; legacy <code>ic_launcher_round</code> renders the same mark circular-masked.</li>
