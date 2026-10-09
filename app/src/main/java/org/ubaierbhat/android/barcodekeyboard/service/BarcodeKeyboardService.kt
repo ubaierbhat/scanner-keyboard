@@ -22,6 +22,7 @@ import org.ubaierbhat.android.barcodekeyboard.MainActivity
 import org.ubaierbhat.android.barcodekeyboard.R
 import org.ubaierbhat.android.barcodekeyboard.history.HistoryPanelView
 import org.ubaierbhat.android.barcodekeyboard.history.ScanHistoryStore
+import org.ubaierbhat.android.barcodekeyboard.keyboard.BackspaceDispatcher
 import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterActionResolver
 import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterBehavior
 import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterDispatcher
@@ -105,20 +106,22 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
     override fun onBackspace() {
         val inputConnection = currentInputConnection ?: return
         val selectedText = inputConnection.getSelectedText(0)
-        if (!selectedText.isNullOrEmpty()) {
-            val down = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)
-            inputConnection.sendKeyEvent(down)
-            inputConnection.sendKeyEvent(
-                KeyEvent(
-                    down.downTime,
-                    SystemClock.uptimeMillis(),
-                    KeyEvent.ACTION_UP,
-                    KeyEvent.KEYCODE_DEL,
-                    0,
-                ),
-            )
-        } else {
-            inputConnection.deleteSurroundingText(1, 1)
+        when (BackspaceDispatcher.plan(selectedText)) {
+            BackspaceDispatcher.Action.DeleteSelection -> {
+                val down = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)
+                inputConnection.sendKeyEvent(down)
+                inputConnection.sendKeyEvent(
+                    KeyEvent(
+                        down.downTime,
+                        SystemClock.uptimeMillis(),
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_DEL,
+                        0,
+                    ),
+                )
+            }
+            BackspaceDispatcher.Action.DeleteOneBeforeCursor ->
+                inputConnection.deleteSurroundingText(1, 0)
         }
     }
 
