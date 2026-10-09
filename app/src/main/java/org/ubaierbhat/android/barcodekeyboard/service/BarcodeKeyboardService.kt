@@ -151,8 +151,9 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
             KeyEvent.KEYCODE_TAB,
             0,
         )
-        val handled = inputConnection.sendKeyEvent(down) || inputConnection.sendKeyEvent(up)
-        if (!handled) {
+        val downHandled = inputConnection.sendKeyEvent(down)
+        val upHandled = inputConnection.sendKeyEvent(up)
+        if (!downHandled && !upHandled) {
             inputConnection.commitText("\t", 1)
         }
     }

@@ -54,6 +54,7 @@ class ScannerView @JvmOverloads constructor(
     private var onBarcodeResult: ((String) -> Unit)? = null
 
     init {
+        // Material widgets in scanner_view.xml require a Material theme; the IME service context is unthemed (device-verified crash without this wrapper).
         val themedContext = ContextThemeWrapper(context, R.style.Theme_ScannerKeyboard)
         LayoutInflater.from(themedContext).inflate(R.layout.scanner_view, this)
         previewView = findViewById(R.id.scanner_preview)
