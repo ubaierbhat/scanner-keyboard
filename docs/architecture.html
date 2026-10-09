@@ -418,6 +418,7 @@
     <tr><td><code>AccentMapTest</code></td><td><code>app/src/test/.../keyboard/AccentMapTest.kt</code></td><td>variant tables, case-insensitive lookup, unknown letters empty</td></tr>
     <tr><td><code>ScaledKeyboardLayoutTest</code></td><td><code>app/src/test/.../keyboard/ScaledKeyboardLayoutTest.kt</code></td><td>height clamped to min(desired, window), rows keep weight ratios</td></tr>
     <tr><td><code>BackspaceDispatcherTest</code></td><td><code>app/src/test/.../keyboard/BackspaceDispatcherTest.kt</code></td><td>selection → clear selected text; none → delete one char before cursor</td></tr>
+    <tr><td><code>KeyboardViewAltLayerTest</code></td><td><code>app/src/test/.../keyboard/KeyboardViewAltLayerTest.kt</code></td><td>`#+=` row exposes code/currency symbols, backtick and caret commit text</td></tr>
     <tr><td><code>ScanThrottleTest</code></td><td><code>app/src/test/.../scanner/ScanThrottleTest.kt</code></td><td>first pass, 1000 ms window, expiry, reset (injected clock)</td></tr>
     <tr><td><code>DuplicateSuppressorTest</code></td><td><code>app/src/test/.../scanner/DuplicateSuppressorTest.kt</code></td><td>first value emits, consecutive duplicate suppressed, different value re-arms, reset forgets</td></tr>
     <tr><td><code>ScanTranslatorTest</code></td><td><code>app/src/test/.../scanner/ScanTranslatorTest.kt</code></td><td>newline → Enter, tab → Tab segments, literals kept, CR handling, collapse and edge rules</td></tr>
@@ -426,6 +427,7 @@
     <tr><td><code>ScanHistoryStoreTest</code></td><td><code>app/src/test/.../history/ScanHistoryStoreTest.kt</code></td><td>newest-first, dedup move, cap 20, trim/blank rules, corrupt-data reset</td></tr>
     <tr><td><code>BarcodeKeyboardServiceRotationTest</code></td><td><code>app/src/test/.../service/BarcodeKeyboardServiceRotationTest.kt</code></td><td>scanner/history views reparent to the rebuilt input container, camera stopped</td></tr>
     <tr><td><code>BackspaceConnectionTest</code></td><td><code>app/src/test/.../service/BackspaceConnectionTest.kt</code></td><td>cursor mid-text deletes only the left char; selection sends DEL key events instead of surrounding delete</td></tr>
+    <tr><td><code>NavigationBarInsetsTest</code></td><td><code>app/src/test/.../service/NavigationBarInsetsTest.kt</code></td><td>bottom nav-bar inset becomes root padding, zero inset keeps zero padding, side insets in landscape</td></tr>
   </table>
   <p>
     <strong>On-device sweeps</strong> ran on a Samsung Galaxy XCover5 (Android 11, 720×1480) — the
