@@ -27,6 +27,7 @@
     <string name="scanner_permission_message">Camera access is needed to scan. Open setup to grant it.</string>
     <string name="scanner_open_setup_label">Open setup</string>
     <string name="scanner_open_setup_description">Open setup screen</string>
+    <string name="scanner_continuous_label">Continuous</string>
 
     <string name="history_title">History</string>
     <string name="history_empty">No scanned or copied items yet</string>

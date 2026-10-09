@@ -212,6 +212,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
                 onClose = { closeScanner() },
                 onError = { scheduleScannerDismiss() },
                 onBarcodeResult = { text -> handleBarcodeResult(text) },
+                onContinuousChanged = { },
             )
         }.also { scannerView = it }
     }

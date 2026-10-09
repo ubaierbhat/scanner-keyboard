@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -15,6 +16,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import com.google.android.material.materialswitch.MaterialSwitch
 import org.ubaierbhat.android.barcodekeyboard.R
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
 import java.util.concurrent.ExecutionException
@@ -32,6 +34,9 @@ class ScannerView @JvmOverloads constructor(
     private val hintView: TextView
     private val closeKey: KeyView
     private val torchKey: KeyView
+    private val continuousSwitch: MaterialSwitch
+    private val settings = ScanSettings(context)
+    private var onContinuousChanged: ((Boolean) -> Unit)? = null
 
     private var cameraProvider: ProcessCameraProvider? = null
     private var camera: Camera? = null
@@ -49,7 +54,8 @@ class ScannerView @JvmOverloads constructor(
     private var onBarcodeResult: ((String) -> Unit)? = null
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.scanner_view, this)
+        val themedContext = ContextThemeWrapper(context, R.style.Theme_ScannerKeyboard)
+        LayoutInflater.from(themedContext).inflate(R.layout.scanner_view, this)
         previewView = findViewById(R.id.scanner_preview)
         errorView = findViewById(R.id.scanner_error)
         hintView = findViewById(R.id.scanner_hint)
@@ -57,21 +63,38 @@ class ScannerView @JvmOverloads constructor(
         torchKey = findViewById(R.id.scanner_torch_key)
         closeKey.onPress = { onClose?.invoke() }
         torchKey.onPress = { toggleTorch() }
+        continuousSwitch = findViewById(R.id.scanner_continuous_switch)
+        continuousSwitch.isChecked = settings.continuousScan
+        continuousSwitch.setOnCheckedChangeListener { _, checked ->
+            settings.continuousScan = checked
+            onContinuousChanged?.invoke(checked)
+        }
     }
 
     fun setCallbacks(
         onClose: () -> Unit,
         onError: (String) -> Unit,
         onBarcodeResult: (String) -> Unit,
+        onContinuousChanged: (Boolean) -> Unit,
     ) {
         this.onClose = onClose
         this.onError = onError
         this.onBarcodeResult = onBarcodeResult
+        this.onContinuousChanged = onContinuousChanged
     }
+
+    val isContinuousEnabled: Boolean
+        get() = settings.continuousScan
 
     fun start(context: Context) {
         if (running) {
             return
+        }
+        continuousSwitch.setOnCheckedChangeListener(null)
+        continuousSwitch.isChecked = settings.continuousScan
+        continuousSwitch.setOnCheckedChangeListener { _, checked ->
+            settings.continuousScan = checked
+            onContinuousChanged?.invoke(checked)
         }
         running = true
         session++

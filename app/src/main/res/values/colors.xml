@@ -15,4 +15,5 @@
     <color name="chip_background">#FFFFFF</color>
 
     <color name="scanner_preview_background">#000000</color>
+    <color name="scanner_pill_scrim">#B3000000</color>
 </resources>

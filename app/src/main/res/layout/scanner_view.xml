@@ -26,6 +26,32 @@
         android:text="@string/scanner_hint" />
 
     <LinearLayout
+        android:id="@+id/scanner_continuous_pill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="@dimen/scanner_pill_margin_top"
+        android:background="@drawable/scanner_pill_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/scanner_pill_padding"
+        android:paddingEnd="@dimen/scanner_pill_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scanner_continuous_label"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/scanner_continuous_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/scanner_continuous_label" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
