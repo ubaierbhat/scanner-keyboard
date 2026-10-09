@@ -125,7 +125,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         EnterDispatcher.dispatch(
             enterBehavior,
             { actionId -> inputConnection.performEditorAction(actionId) },
-            { inputConnection.commitText("\n", 1) },
+            { sendKeyChar('\n') },
             {
                 val down = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER)
                 inputConnection.sendKeyEvent(down)
