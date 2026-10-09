@@ -153,7 +153,7 @@
 
   <h2>2 · Component map</h2>
   <div class="svgbox">
-    <svg viewBox="0 0 1040 668" width="1040" height="668" role="img" aria-label="Component diagram">
+    <svg viewBox="0 0 1040 772" width="1040" height="772" role="img" aria-label="Component diagram">
       <defs>
         <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0 0L10 5L0 10z" fill="#9c9ca5"/>
@@ -208,37 +208,53 @@
       <text x="862" y="316" class="s">EditorInfo → action</text>
       <text x="862" y="332" class="s">/ newline / key event</text>
       <text x="862" y="346" class="s">EnterDispatcher fallback</text>
+      <rect x="20" y="364" width="220" height="68" rx="9" class="box"/>
+      <text x="36" y="388" class="t" font-weight="bold">BackspaceDispatcher.kt</text>
+      <text x="36" y="406" class="s">selected text → clear it</text>
+      <text x="36" y="422" class="s">else one char before cursor</text>
 
-      <text x="20" y="404" class="h">SCANNER — ....barcodekeyboard.scanner</text>
-      <rect x="20" y="414" width="220" height="76" rx="9" class="box"/>
-      <text x="36" y="438" class="t" font-weight="bold">ScannerView.kt</text>
-      <text x="36" y="456" class="s">CameraX bind · session</text>
-      <text x="36" y="472" class="s">guard · torch · close</text>
-      <rect x="260" y="414" width="220" height="76" rx="9" class="box"/>
-      <text x="276" y="438" class="t" font-weight="bold">ScannerLifecycleOwner.kt</text>
-      <text x="276" y="456" class="s">LifecycleRegistry:</text>
-      <text x="276" y="472" class="s">RESUMED ⇄ DESTROYED</text>
-      <rect x="500" y="414" width="240" height="76" rx="9" class="box"/>
-      <text x="516" y="438" class="t" font-weight="bold">BarcodeAnalyzer.kt</text>
-      <text x="516" y="456" class="s">ML Kit FORMAT_ALL_FORMATS</text>
-      <text x="516" y="472" class="s">KEEP_ONLY_LATEST frames</text>
-      <rect x="760" y="414" width="260" height="76" rx="9" class="box"/>
-      <text x="776" y="438" class="t" font-weight="bold">ScanThrottle.kt</text>
-      <text x="776" y="456" class="s">1000 ms cooldown guard</text>
-      <text x="776" y="472" class="s">(pure, injectable clock)</text>
+      <text x="20" y="444" class="h">SCANNER — ....barcodekeyboard.scanner</text>
+      <rect x="20" y="454" width="220" height="76" rx="9" class="box"/>
+      <text x="36" y="478" class="t" font-weight="bold">ScannerView.kt</text>
+      <text x="36" y="496" class="s">CameraX bind · session</text>
+      <text x="36" y="512" class="s">guard · torch · close</text>
+      <rect x="260" y="454" width="220" height="76" rx="9" class="box"/>
+      <text x="276" y="478" class="t" font-weight="bold">ScannerLifecycleOwner.kt</text>
+      <text x="276" y="496" class="s">LifecycleRegistry:</text>
+      <text x="276" y="512" class="s">RESUMED ⇄ DESTROYED</text>
+      <rect x="500" y="454" width="240" height="76" rx="9" class="box"/>
+      <text x="516" y="478" class="t" font-weight="bold">BarcodeAnalyzer.kt</text>
+      <text x="516" y="496" class="s">ML Kit FORMAT_ALL_FORMATS</text>
+      <text x="516" y="512" class="s">KEEP_ONLY_LATEST frames</text>
+      <rect x="760" y="454" width="260" height="76" rx="9" class="box"/>
+      <text x="776" y="478" class="t" font-weight="bold">ScanThrottle.kt</text>
+      <text x="776" y="496" class="s">1000 ms cooldown guard</text>
+      <text x="776" y="512" class="s">(pure, injectable clock)</text>
+      <rect x="20" y="544" width="220" height="76" rx="9" class="box"/>
+      <text x="36" y="568" class="t" font-weight="bold">DuplicateSuppressor.kt</text>
+      <text x="36" y="586" class="s">skip code == last code</text>
+      <text x="36" y="602" class="s">re-armed on new · reset on close</text>
+      <rect x="260" y="544" width="220" height="76" rx="9" class="box"/>
+      <text x="276" y="568" class="t" font-weight="bold">ScanTranslator.kt</text>
+      <text x="276" y="586" class="s">raw → ScanEvent segments</text>
+      <text x="276" y="602" class="s">newline → Enter · tab → Tab</text>
+      <rect x="500" y="544" width="240" height="76" rx="9" class="box"/>
+      <text x="516" y="568" class="t" font-weight="bold">ScanSettings.kt</text>
+      <text x="516" y="586" class="s">SharedPreferences flags</text>
+      <text x="516" y="602" class="s">continuousScan · translateScanActions</text>
 
-      <text x="20" y="544" class="h">HISTORY — ....barcodekeyboard.history</text>
-      <rect x="20" y="554" width="300" height="76" rx="9" class="box"/>
-      <text x="36" y="578" class="t" font-weight="bold">HistoryPanelView.kt</text>
-      <text x="36" y="596" class="s">RecyclerView · CLEAR · close</text>
-      <text x="36" y="612" class="s">empty state · tap to insert</text>
-      <rect x="340" y="554" width="300" height="76" rx="9" class="box"/>
-      <text x="356" y="578" class="t" font-weight="bold">ScanHistoryStore.kt</text>
-      <text x="356" y="596" class="s">SharedPreferences JSON array</text>
-      <text x="356" y="612" class="s">newest-first · dedup · cap 20</text>
-      <text x="664" y="580" class="s">scans + clipboard captures</text>
-      <text x="664" y="596" class="s">feed the store; the panel</text>
-      <text x="664" y="612" class="s">reads entries() via service</text>
+      <text x="20" y="648" class="h">HISTORY — ....barcodekeyboard.history</text>
+      <rect x="20" y="658" width="300" height="76" rx="9" class="box"/>
+      <text x="36" y="682" class="t" font-weight="bold">HistoryPanelView.kt</text>
+      <text x="36" y="700" class="s">RecyclerView · CLEAR · close</text>
+      <text x="36" y="716" class="s">empty state · tap to insert</text>
+      <rect x="340" y="658" width="300" height="76" rx="9" class="box"/>
+      <text x="356" y="682" class="t" font-weight="bold">ScanHistoryStore.kt</text>
+      <text x="356" y="700" class="s">SharedPreferences JSON array</text>
+      <text x="356" y="716" class="s">newest-first · dedup · cap 20</text>
+      <text x="664" y="684" class="s">scans + clipboard captures</text>
+      <text x="664" y="700" class="s">feed the store; the panel</text>
+      <text x="664" y="716" class="s">reads entries() via service</text>
 
       <path class="ln" d="M140 88 V138" marker-end="url(#arr)"/>
       <text x="148" y="118" class="lbl">commitText / sendKeyEvent</text>
@@ -248,12 +264,14 @@
       <path class="ln" d="M120 222 V274" marker-end="url(#arr)"/>
       <text x="128" y="252" class="lbl">implements KeyboardActionListener</text>
       <path class="ln" d="M60 274 V222" marker-end="url(#arr)"/>
-      <path class="ln" d="M460 414 V222" marker-end="url(#arr)"/>
+      <path class="ln" d="M460 454 V222" marker-end="url(#arr)"/>
       <text x="466" y="244" class="lbl">onScanRequested / throttled result → service</text>
-      <path class="ln" d="M480 452 H500" marker-end="url(#arr)"/>
-      <text x="482" y="446" class="lbl">bind</text>
-      <path class="ln" d="M740 452 H760" marker-end="url(#arr)"/>
-      <text x="704" y="446" class="lbl">allow?</text>
+      <path class="ln" d="M480 492 H500" marker-end="url(#arr)"/>
+      <text x="482" y="486" class="lbl">bind</text>
+      <path class="ln" d="M740 492 H760" marker-end="url(#arr)"/>
+      <text x="704" y="486" class="lbl">allow?</text>
+      <path class="ln" d="M130 544 V530" marker-end="url(#arr)"/>
+      <text x="138" y="542" class="lbl">result gate · opt-in translate</text>
     </svg>
   </div>
 
@@ -464,7 +482,7 @@
   </div>
 
   <footer>
-    Scanner Keyboard · architecture document · updated 2026-10-04 · current <code>main</code> head ·
+    Scanner Keyboard · architecture document · updated 2026-10-09 · current <code>main</code> head ·
     repo paths are relative to the project root.
   </footer>
 </div>

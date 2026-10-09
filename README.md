@@ -44,6 +44,13 @@ Scanning is 100% on-device:
   Detects QR, EAN-8/13, UPC-A, Code 39/93/128, ITF, Codabar, PDF417, Aztec, and
   Data Matrix. Auto-inserts the decoded text, buzzes, and closes. Includes a torch
   toggle for dark environments.
+- **Continuous scan** — a switch in the scanner preview keeps the camera rolling
+  and inserts every new code. Consecutive duplicate scans are ignored, and the
+  setting is remembered.
+- **Scan actions** — opt-in on the setup screen: newline and tab characters in
+  scanned data become Enter (the field's editor action, or a real newline in
+  multiline fields) and Tab focus moves, so multi-field forms can be filled with
+  a single scan.
 - **Accents** — long-press any supported letter (a, c, d, e, g, h, i, j, l, n, o,
   r, s, t, u, y, z) to pop up its accented variants. Slide to one and release
   to insert it (uppercase when shift/caps is active).

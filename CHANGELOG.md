@@ -7,7 +7,20 @@ Version numbers use the form `MAJOR.MINOR.PATCH`.
 
 ## [Unreleased]
 
-No unreleased changes yet.
+### Added
+
+- Continuous scanning: switch in the scanner preview keeps the camera rolling
+  and commits every new code; consecutive duplicate scans are ignored. State
+  is remembered.
+- Scan actions (opt-in, on the setup screen): newline and tab characters in
+  scanned data are translated into Enter (field's editor action, or a real
+  newline in multiline fields) and Tab focus moves, so multi-field forms can
+  be filled with a single scan.
+
+### Fixed
+
+- Backspace with the cursor in the middle of text deleted a character on both
+  sides of the cursor. It now deletes only the character before the cursor.
 
 ## [1.0.2] - 2026-10-06
 

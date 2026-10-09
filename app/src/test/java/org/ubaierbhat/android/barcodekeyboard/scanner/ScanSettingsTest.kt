@@ -1,6 +1,5 @@
 package org.ubaierbhat.android.barcodekeyboard.scanner
 
-import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
