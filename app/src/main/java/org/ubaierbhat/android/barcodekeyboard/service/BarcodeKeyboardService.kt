@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -29,6 +30,10 @@ import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterDispatcher
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyboardActionListener
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyboardView
+import org.ubaierbhat.android.barcodekeyboard.scanner.DuplicateSuppressor
+import org.ubaierbhat.android.barcodekeyboard.scanner.ScanEvent
+import org.ubaierbhat.android.barcodekeyboard.scanner.ScanSettings
+import org.ubaierbhat.android.barcodekeyboard.scanner.ScanTranslator
 import org.ubaierbhat.android.barcodekeyboard.scanner.ScannerView
 
 class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
@@ -52,10 +57,13 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
     private val dismissScannerRunnable = Runnable { closeScanner() }
 
     private var enterBehavior: EnterBehavior = EnterBehavior.SendKeyEvent
+    private val duplicateSuppressor = DuplicateSuppressor()
+    private var scanSettings: ScanSettings? = null
 
     override fun onCreate() {
         super.onCreate()
         historyStore = ScanHistoryStore(this)
+        scanSettings = ScanSettings(this)
     }
 
     override fun onCreateInputView(): View {
@@ -110,10 +118,14 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
 
     override fun onEnter() {
         val inputConnection = currentInputConnection ?: return
+        dispatchEnter(inputConnection)
+    }
+
+    private fun dispatchEnter(inputConnection: InputConnection) {
         EnterDispatcher.dispatch(
             enterBehavior,
             { actionId -> inputConnection.performEditorAction(actionId) },
-            { sendKeyChar('\n') },
+            { inputConnection.commitText("\n", 1) },
             {
                 val down = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER)
                 inputConnection.sendKeyEvent(down)
@@ -128,6 +140,21 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
                 )
             },
         )
+    }
+
+    private fun sendTab(inputConnection: InputConnection) {
+        val down = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_TAB)
+        val up = KeyEvent(
+            down.downTime,
+            SystemClock.uptimeMillis(),
+            KeyEvent.ACTION_UP,
+            KeyEvent.KEYCODE_TAB,
+            0,
+        )
+        val handled = inputConnection.sendKeyEvent(down) || inputConnection.sendKeyEvent(up)
+        if (!handled) {
+            inputConnection.commitText("\t", 1)
+        }
     }
 
     override fun onScanRequested() {
@@ -200,6 +227,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         scanner.visibility = View.VISIBLE
         mode = Mode.SCANNER
         scanner.start(this)
+        duplicateSuppressor.reset()
     }
 
     private fun obtainScannerView(): ScannerView? {
@@ -212,7 +240,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
                 onClose = { closeScanner() },
                 onError = { scheduleScannerDismiss() },
                 onBarcodeResult = { text -> handleBarcodeResult(text) },
-                onContinuousChanged = { },
+                onContinuousChanged = { duplicateSuppressor.reset() },
             )
         }.also { scannerView = it }
     }
@@ -221,10 +249,27 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         if (mode != Mode.SCANNER) {
             return
         }
-        currentInputConnection?.commitText(text, 1)
+        val continuous = scannerView?.isContinuousEnabled == true
+        if (continuous && !duplicateSuppressor.shouldEmit(text)) {
+            return
+        }
+        val inputConnection = currentInputConnection
+        if (inputConnection != null && scanSettings?.translateScanActions == true) {
+            for (event in ScanTranslator.translate(text)) {
+                when (event) {
+                    is ScanEvent.Type -> inputConnection.commitText(event.text, 1)
+                    ScanEvent.Enter -> dispatchEnter(inputConnection)
+                    ScanEvent.Tab -> sendTab(inputConnection)
+                }
+            }
+        } else {
+            inputConnection?.commitText(text, 1)
+        }
         inputContainer?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         recordScan(text)
-        closeScanner()
+        if (!continuous) {
+            closeScanner()
+        }
     }
 
     private fun recordScan(text: String) {
@@ -238,6 +283,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
 
     private fun closeScanner() {
         handler.removeCallbacks(dismissScannerRunnable)
+        duplicateSuppressor.reset()
         scannerView?.stop()
         showKeyboard()
     }
