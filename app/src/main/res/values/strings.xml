@@ -16,6 +16,10 @@
     <string name="setup_next_camera">Next: grant camera access</string>
     <string name="setup_next_ime">Next: enable Scanner Keyboard in settings</string>
 
+    <string name="setup_step_scan_title">Scanning</string>
+    <string name="setup_step_scan_description">Translate Enter and Tab keys in scanned data (form filling).</string>
+    <string name="setup_step_scan_switch_label">Scan actions</string>
+
     <string name="ime_label">Scanner Keyboard</string>
 
     <string name="scanner_hint">Point at a barcode</string>
