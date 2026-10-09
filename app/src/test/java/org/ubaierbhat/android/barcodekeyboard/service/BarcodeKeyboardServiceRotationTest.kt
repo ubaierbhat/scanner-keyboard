@@ -12,6 +12,7 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
+import org.ubaierbhat.android.barcodekeyboard.R
 import org.ubaierbhat.android.barcodekeyboard.history.HistoryPanelView
 import org.ubaierbhat.android.barcodekeyboard.scanner.ScannerView
 
@@ -23,6 +24,7 @@ class BarcodeKeyboardServiceRotationTest {
     @Before
     fun setUp() {
         val application = ApplicationProvider.getApplicationContext<Application>()
+        application.setTheme(R.style.Theme_ScannerKeyboard)
         shadowOf(application).grantPermissions(Manifest.permission.CAMERA)
         service = Robolectric.setupService(BarcodeKeyboardService::class.java)
     }

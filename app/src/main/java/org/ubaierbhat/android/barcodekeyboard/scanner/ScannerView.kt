@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -54,8 +53,7 @@ class ScannerView @JvmOverloads constructor(
     private var onBarcodeResult: ((String) -> Unit)? = null
 
     init {
-        val themedContext = ContextThemeWrapper(context, R.style.Theme_ScannerKeyboard)
-        LayoutInflater.from(themedContext).inflate(R.layout.scanner_view, this)
+        LayoutInflater.from(context).inflate(R.layout.scanner_view, this)
         previewView = findViewById(R.id.scanner_preview)
         errorView = findViewById(R.id.scanner_error)
         hintView = findViewById(R.id.scanner_hint)

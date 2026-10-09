@@ -1,6 +1,7 @@
 package org.ubaierbhat.android.barcodekeyboard.scanner
 
 import android.content.Context
+import android.view.ContextThemeWrapper
 import androidx.test.core.app.ApplicationProvider
 import com.google.android.material.materialswitch.MaterialSwitch
 import org.junit.Assert.assertEquals
@@ -16,7 +17,10 @@ class ScannerViewContinuousTest {
 
     @Test
     fun switchReflectsPersistedStateAndPersistsToggling() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
+        val context = ContextThemeWrapper(
+            ApplicationProvider.getApplicationContext<Context>(),
+            R.style.Theme_ScannerKeyboard,
+        )
         val settings = ScanSettings(context)
         settings.continuousScan = false
 
@@ -44,7 +48,6 @@ class ScannerViewContinuousTest {
             onBarcodeResult = {},
             onContinuousChanged = {},
         )
-        val secondSwitch = second.findViewById<MaterialSwitch>(R.id.scanner_continuous_switch)
         assertTrue("new scanner view restores persisted state on start-equivalent sync",
             second.isContinuousEnabled)
         settings.continuousScan = false
