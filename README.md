@@ -17,7 +17,7 @@ Built with Kotlin, the XML View system, CameraX, and ML Kit barcode scanning
 
 | Keyboard | Phone dialpad | Scanner | History panel |
 |:---:|:---:|:---:|:---:|
-| ![QWERTY keyboard](docs/images/keyboard.png) | ![Samsung-style dialpad](docs/images/phone-dialpad.png) | ![Scanner with options strip](docs/images/scanner.png) | ![History panel](docs/images/history-panel.png) |
+| ![QWERTY keyboard](docs/images/keyboard.png) | ![Samsung-style dialpad](docs/images/phone-dialpad.png) | ![Scanner with option strip](docs/images/scanner.png) | ![History panel](docs/images/history-panel.png) |
 
 ## Privacy
 
@@ -102,8 +102,9 @@ No account, no network, no configuration — you're done.
   inline prompt with an *Open setup* button.
 - **Scan options** — the strip at the top of the viewfinder: **Continuous** keeps
   the scanner open for batch scanning (repeat scans of the same code are
-  ignored until a different code is scanned); **Form** turns Enter/Tab characters
-  inside scanned data into real focus moves. Both remember their state. See
+  ignored until a different code is scanned); **Form** turns newline/tab characters
+  inside scanned data into real Enter (focus moves, or a line break in
+  multiline fields) and Tab key presses. Both remember their state. See
   [Try it — sample codes](#try-it--sample-codes).
 - **History** — tap the clipboard icon in the toolbar to browse recent scans and copies. Tap an entry to
   insert it (the panel closes). CLEAR empties the list; CLOSE returns to the
