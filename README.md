@@ -17,7 +17,7 @@ Built with Kotlin, the XML View system, CameraX, and ML Kit barcode scanning
 
 | Keyboard | Phone dialpad | Scanner | History panel |
 |:---:|:---:|:---:|:---:|
-| ![QWERTY keyboard](docs/images/keyboard.png) | ![Samsung-style dialpad](docs/images/phone-dialpad.png) | ![Barcode scanner viewfinder](docs/images/scanner.png) | ![History panel](docs/images/history-panel.png) |
+| ![QWERTY keyboard](docs/images/keyboard.png) | ![Samsung-style dialpad](docs/images/phone-dialpad.png) | ![Scanner with options strip](docs/images/scanner.png) | ![History panel](docs/images/history-panel.png) |
 
 ## Privacy
 
@@ -42,15 +42,16 @@ Scanning is 100% on-device:
   and key presses buzz.
 - **Barcode scanner** — real-time camera viewfinder inside the keyboard window.
   Detects QR, EAN-8/13, UPC-A, Code 39/93/128, ITF, Codabar, PDF417, Aztec, and
-  Data Matrix. Auto-inserts the decoded text, buzzes, and closes. Includes a torch
-  toggle for dark environments.
-- **Continuous scan** — a switch in the scanner preview keeps the camera rolling
-  and inserts every new code. Consecutive duplicate scans are ignored, and the
-  setting is remembered.
-- **Scan actions** — opt-in via the **Form** switch in the scanner: newline and tab characters in
-  scanned data become Enter (the field's editor action, or a real newline in
-  multiline fields) and Tab focus moves, so multi-field forms can be filled with
-  a single scan.
+  Data Matrix. Auto-inserts the decoded text, buzzes, and closes. A top strip
+  in the viewfinder holds scan options (**Continuous**, **Form** — below), and a
+  torch toggle helps in dark environments.
+- **Continuous scan** — a switch in the scanner's option strip keeps the camera
+  rolling and inserts every new code. Consecutive duplicate scans are ignored,
+  and the setting is remembered.
+- **Scan actions** — the **Form** switch in the scanner's option strip: newline
+  and tab characters in scanned data become Enter (the field's editor action,
+  or a real newline in multiline fields) and Tab focus moves, so multi-field
+  forms can be filled with a single scan.
 - **Accents** — long-press any supported letter (a, c, d, e, g, h, i, j, l, n, o,
   r, s, t, u, y, z) to pop up its accented variants. Slide to one and release
   to insert it (uppercase when shift/caps is active).
@@ -99,12 +100,39 @@ No account, no network, no configuration — you're done.
   in low light. On detection the code text is inserted and the view closes. Tap ✕ to
   close without scanning. If camera access was revoked, the scan key shows an
   inline prompt with an *Open setup* button.
+- **Scan options** — the strip at the top of the viewfinder: **Continuous** keeps
+  the scanner open for batch scanning (repeat scans of the same code are
+  ignored until a different code is scanned); **Form** turns Enter/Tab characters
+  inside scanned data into real focus moves. Both remember their state. See
+  [Try it — sample codes](#try-it--sample-codes).
 - **History** — tap the clipboard icon in the toolbar to browse recent scans and copies. Tap an entry to
   insert it (the panel closes). CLEAR empties the list; CLOSE returns to the
   keyboard.
 - **Settings** — tap the gear icon (toolbar, left corner) to open the app's setup
   screen. The keyboard closes. Pressing Back returns you to the text field you
   were typing in, with your place kept.
+
+## Try it — sample codes
+
+No barcode handy? Print or display these codes and scan them with the keyboard's
+scanner (show them on a laptop or second phone screen). The same codes — plus
+step-by-step recipes — are on the website:
+<https://ubaierbhat.com/scanner-keyboard/testing.html>
+
+| Code | Payload | What it tests |
+|:---:|:---|:---|
+| ![AAA111](docs/images/qr/qr-simple.png) | `AAA111` | Plain scan. With **Continuous** on, scanning this twice in a row inserts it once. |
+| ![BBB222](docs/images/qr/qr-other.png) | `BBB222` | A different code — after it, `AAA111` is accepted again (duplicate blocking only covers immediate repeats). |
+| ![A newline B](docs/images/qr/qr-newline.png) | `A`, newline, `B` | **Form** on: types `A`, presses Enter (editor action / next field), types `B`. |
+| ![A tab B](docs/images/qr/qr-tab.png) | `A`, tab, `B` | **Form** on: types `A`, Tabs to the next field, types `B`. |
+| ![TRAIL newline](docs/images/qr/qr-trailing.png) | `TRAIL`, newline | **Form** on: scans and submits (the trailing Enter triggers the field's Done/Go/Search action). |
+
+With **Form** off, the control characters stay literal — `A⇥B` lands as one
+value in one field, which is the default, chat-safe behavior.
+
+A filled two-field form after scanning the `A ⇥ B` code with **Form** on:
+
+![Form fill result](docs/images/form-fill.png)
 
 ## Build
 
@@ -159,6 +187,7 @@ tools/            icon generator scripts
 
 - Architecture: [docs/architecture.html](docs/architecture.html)
 - Security assessment (MASVS v2.1): [docs/security/masvs-compliance.md](docs/security/masvs-compliance.md)
+- Test codes: <https://ubaierbhat.com/scanner-keyboard/testing.html>
 - Privacy policy: <https://ubaierbhat.github.io/scanner-keyboard/privacy.html>
 - Third-party licenses: <https://ubaierbhat.github.io/scanner-keyboard/licenses.html>
 

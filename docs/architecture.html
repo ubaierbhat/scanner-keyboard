@@ -353,10 +353,13 @@
       (1000 ms) guards re-fires at the analyzer level.</p>
     </div>
     <div class="card">
-      <h4>Auto-insert + auto-close detection UX</h4>
-      <p>First non-null <code>rawValue</code> wins: <code>handleBarcodeResult()</code> commits the text
-      to the focused field, fires a <code>VIRTUAL_KEY</code> haptic, records history, and closes the
-      scanner — one code in, back to typing, no dialog, no confirmation tap.</p>
+      <h4>Scan-mode UX: one-shot default, two switches in the viewfinder</h4>
+      <p>By default the first non-null <code>rawValue</code> wins: the text is committed, the
+      keyboard buzzes, and the scanner closes — one code in, back to typing, no dialog. The
+      option strip at the top of the preview upgrades that: <strong>Continuous</strong> keeps the
+      camera rolling (consecutive duplicate codes are ignored), and <strong>Form</strong> turns
+      newline/tab characters inside scanned data into real Enter/Tab focus moves. Both persist
+      in <code>scanner_settings</code> and are re-read per scan, so no restart is needed.</p>
     </div>
     <div class="card">
       <h4>allowBackup=false privacy posture</h4>
@@ -389,13 +392,16 @@
       result before it is posted to the main thread
       (<code>scanner/ScanThrottle.kt</code>).</li>
     <li><strong>Insert</strong> — <code>BarcodeKeyboardService.handleBarcodeResult()</code> re-checks
-      <code>mode == SCANNER</code>, null-checks <code>currentInputConnection</code>, then
-      <code>commitText(text, 1)</code> + haptic buzz.</li>
-    <li><strong>History</strong> — the value is recorded into <code>ScanHistoryStore</code>
+      <code>mode == SCANNER</code>; in continuous mode <code>DuplicateSuppressor.shouldEmit()</code>
+      drops consecutive identical values. Then either a plain <code>commitText(text, 1)</code> or —
+      with the <strong>Form</strong> setting on — <code>ScanTranslator</code> events chained
+      through <code>emitScanEvents()</code> (150 ms settle after each Enter/Tab so the IME can hand
+      focus to the next field). Haptic buzz fires per accepted scan.</li>
+    <li><strong>History</strong> — the raw value is recorded into <code>ScanHistoryStore</code>
       (newest-first, deduped, capped at 20 — <code>history/ScanHistoryStore.kt</code>).</li>
-    <li><strong>Close</strong> — <code>closeScanner()</code> stops the camera
-      (<code>ScannerLifecycleOwner.destroy()</code> → <code>unbindAll()</code>) and the view swaps back
-      to the keyboard.</li>
+    <li><strong>Close</strong> — unless continuous mode is on, <code>closeScanner()</code> stops the
+      camera (<code>ScannerLifecycleOwner.destroy()</code> → <code>unbindAll()</code>) and the view
+      swaps back to the keyboard; the suppressor is reset on open, close, and toggle.</li>
   </ol>
   <p>
     The same <code>commitText</code> path serves history re-insertion
@@ -406,7 +412,7 @@
 
   <h2>5 · Testing summary</h2>
   <p>
-    <strong>88 JVM unit tests</strong> (Robolectric + JUnit) run green under
+    <strong>90 JVM unit tests</strong> (Robolectric + JUnit) run green under
     <code>./gradlew test</code>, covering the pure logic and the lifecycle edge cases:
   </p>
   <table>
@@ -423,7 +429,7 @@
     <tr><td><code>DuplicateSuppressorTest</code></td><td><code>app/src/test/.../scanner/DuplicateSuppressorTest.kt</code></td><td>first value emits, consecutive duplicate suppressed, different value re-arms, reset forgets</td></tr>
     <tr><td><code>ScanTranslatorTest</code></td><td><code>app/src/test/.../scanner/ScanTranslatorTest.kt</code></td><td>newline → Enter, tab → Tab segments, literals kept, CR handling, collapse and edge rules</td></tr>
     <tr><td><code>ScanSettingsTest</code></td><td><code>app/src/test/.../scanner/ScanSettingsTest.kt</code></td><td>both flags default off, values persist across instances</td></tr>
-    <tr><td><code>ScannerViewContinuousTest</code></td><td><code>app/src/test/.../scanner/ScannerViewContinuousTest.kt</code></td><td>switch reflects persisted state, toggling persists</td></tr>
+    <tr><td><code>ScannerViewSwitchesTest</code></td><td><code>app/src/test/.../scanner/ScannerViewSwitchesTest.kt</code></td><td>each strip switch reflects persisted state, toggling persists, both restored in a fresh view</td></tr>
     <tr><td><code>ScanHistoryStoreTest</code></td><td><code>app/src/test/.../history/ScanHistoryStoreTest.kt</code></td><td>newest-first, dedup move, cap 20, trim/blank rules, corrupt-data reset</td></tr>
     <tr><td><code>BarcodeKeyboardServiceRotationTest</code></td><td><code>app/src/test/.../service/BarcodeKeyboardServiceRotationTest.kt</code></td><td>scanner/history views reparent to the rebuilt input container, camera stopped</td></tr>
     <tr><td><code>BackspaceConnectionTest</code></td><td><code>app/src/test/.../service/BackspaceConnectionTest.kt</code></td><td>cursor mid-text deletes only the left char; selection sends DEL key events instead of surrounding delete</td></tr>
@@ -450,7 +456,7 @@
     <figure><img src="images/settings-key.png" alt="Setup wizard reached from the keyboard settings key"><figcaption>Toolbar gear → setup wizard (Back returns to the field being edited)</figcaption></figure>
     <figure><img src="images/symbols.png" alt="Numbers and symbols layer"><figcaption>Symbols layer (123 → #+=)</figcaption></figure>
     <figure><img src="images/keyboard-landscape.png" alt="Landscape keyboard with proportional rows"><figcaption>Landscape — proportional weighted rows inside the bounded total; under a window deficit the rows shrink instead of the toolbar cropping (verified with a forced-deficit build)</figcaption></figure>
-    <figure><img src="images/scanner.png" alt="Scanner viewfinder with hint, close and torch keys"><figcaption>Scanner viewfinder — “Point at a barcode”, ✕ and Torch (camera face-down here)</figcaption></figure>
+    <figure><img src="images/scanner.png" alt="Scanner viewfinder with the Continuous and Form option strip, hint, close and torch keys"><figcaption>Scanner viewfinder — <strong>Continuous</strong> and <strong>Form</strong> option strip, “Point at a barcode”, ✕ and Torch (camera face-down here)</figcaption></figure>
     <figure><img src="images/accent-popup.png" alt="Accent popup over the e key"><figcaption>Long-press accents — e è é ê ë ė ē, slide to select</figcaption></figure>
     <figure><img src="images/history-panel.png" alt="History panel with an entry"><figcaption>History — tap to insert, CLEAR, CLOSE</figcaption></figure>
     <figure><img src="images/wizard-pending.png" alt="Setup wizard with camera not granted"><figcaption>Setup wizard — pending state (Not granted)</figcaption></figure>
@@ -479,7 +485,7 @@
   <div class="card">
     <h4>How this build was verified</h4>
     <ul>
-      <li><span class="ok">✓</span> <code>./gradlew test</code> — 88/88 unit tests green (see §5).</li>
+      <li><span class="ok">✓</span> <code>./gradlew test</code> — 90/90 unit tests green (see §5).</li>
       <li><span class="ok">✓</span> <code>./gradlew assembleDebug</code> + install on device R58RB1N07TD (Galaxy XCover5); IME re-enabled and selected via <code>ime enable</code>/<code>ime set</code>.</li>
       <li><span class="ok">✓</span> 9-field input matrix green on-device: per-field editor actions, phone/number dialpad commits, settings key opens the wizard and hides the keyboard, Back restores focus to the exact field.</li>
       <li><span class="ok">✓</span> Launcher icon observed in the app drawer — adaptive foreground vector + charcoal background color, system-masked to the device shape, no icon-load errors in logcat; legacy <code>ic_launcher_round</code> renders the same mark circular-masked.</li>
