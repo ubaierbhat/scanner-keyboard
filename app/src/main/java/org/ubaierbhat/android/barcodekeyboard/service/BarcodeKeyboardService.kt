@@ -255,22 +255,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
             return
         }
         if (scanSettings?.translateScanActions == true) {
-            val events = ScanTranslator.translate(text)
-            val hasActions = events.any { it !is ScanEvent.Type }
-            for (event in events) {
-                when (event) {
-                    is ScanEvent.Type ->
-                        if (hasActions) {
-                            for (char in event.text) {
-                                sendKeyChar(char)
-                            }
-                        } else {
-                            currentInputConnection?.commitText(event.text, 1)
-                        }
-                    ScanEvent.Enter -> currentInputConnection?.let { dispatchEnter(it) }
-                    ScanEvent.Tab -> currentInputConnection?.let { sendTab(it) }
-                }
-            }
+            emitScanEvents(ScanTranslator.translate(text), 0)
         } else {
             currentInputConnection?.commitText(text, 1)
         }
@@ -278,6 +263,30 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         recordScan(text)
         if (!continuous) {
             closeScanner()
+        }
+    }
+
+    /**
+     * Sequenced emitter: IME sessions are view-bound and a focus switch completes
+     * asynchronously, so each action must settle before the chain re-resolves the connection.
+     */
+    private fun emitScanEvents(events: List<ScanEvent>, index: Int) {
+        if (index >= events.size) {
+            return
+        }
+        when (val event = events[index]) {
+            is ScanEvent.Type -> {
+                currentInputConnection?.commitText(event.text, 1)
+                emitScanEvents(events, index + 1)
+            }
+            ScanEvent.Enter -> {
+                currentInputConnection?.let { dispatchEnter(it) }
+                handler.postDelayed({ emitScanEvents(events, index + 1) }, SCAN_ACTION_SETTLE_MS)
+            }
+            ScanEvent.Tab -> {
+                currentInputConnection?.let { sendTab(it) }
+                handler.postDelayed({ emitScanEvents(events, index + 1) }, SCAN_ACTION_SETTLE_MS)
+            }
         }
     }
 
@@ -406,6 +415,7 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         const val SCANNER_HEIGHT_FRACTION = 0.45f
         const val HISTORY_HEIGHT_FRACTION = 0.45f
         const val SCANNER_ERROR_DISMISS_MS = 1500L
+        const val SCAN_ACTION_SETTLE_MS = 150L
         const val MAX_CLIPBOARD_ENTRY_LENGTH = 500
 
         internal fun attachNavigationBarInsets(view: View) {
