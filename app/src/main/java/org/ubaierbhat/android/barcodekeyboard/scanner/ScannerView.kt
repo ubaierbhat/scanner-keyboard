@@ -35,6 +35,7 @@ class ScannerView @JvmOverloads constructor(
     private val closeKey: KeyView
     private val torchKey: KeyView
     private val continuousSwitch: MaterialSwitch
+    private val formSwitch: MaterialSwitch
     private val settings = ScanSettings(context)
     private var onContinuousChanged: ((Boolean) -> Unit)? = null
 
@@ -65,11 +66,8 @@ class ScannerView @JvmOverloads constructor(
         closeKey.onPress = { onClose?.invoke() }
         torchKey.onPress = { toggleTorch() }
         continuousSwitch = findViewById(R.id.scanner_continuous_switch)
-        continuousSwitch.isChecked = settings.continuousScan
-        continuousSwitch.setOnCheckedChangeListener { _, checked ->
-            settings.continuousScan = checked
-            onContinuousChanged?.invoke(checked)
-        }
+        formSwitch = findViewById(R.id.scanner_form_switch)
+        bindSwitches()
     }
 
     fun setCallbacks(
@@ -84,6 +82,20 @@ class ScannerView @JvmOverloads constructor(
         this.onContinuousChanged = onContinuousChanged
     }
 
+    private fun bindSwitches() {
+        continuousSwitch.setOnCheckedChangeListener(null)
+        formSwitch.setOnCheckedChangeListener(null)
+        continuousSwitch.isChecked = settings.continuousScan
+        formSwitch.isChecked = settings.translateScanActions
+        continuousSwitch.setOnCheckedChangeListener { _, checked ->
+            settings.continuousScan = checked
+            onContinuousChanged?.invoke(checked)
+        }
+        formSwitch.setOnCheckedChangeListener { _, checked ->
+            settings.translateScanActions = checked
+        }
+    }
+
     val isContinuousEnabled: Boolean
         get() = settings.continuousScan
 
@@ -91,12 +103,7 @@ class ScannerView @JvmOverloads constructor(
         if (running) {
             return
         }
-        continuousSwitch.setOnCheckedChangeListener(null)
-        continuousSwitch.isChecked = settings.continuousScan
-        continuousSwitch.setOnCheckedChangeListener { _, checked ->
-            settings.continuousScan = checked
-            onContinuousChanged?.invoke(checked)
-        }
+        bindSwitches()
         running = true
         session++
         val currentSession = session
