@@ -1,4 +1,6 @@
-# Store Listing Copy — Scanner Keyboard (v1.0.0)
+# Store Listing Copy — Scanner Keyboard (v1.1.0)
+
+Play Store: https://play.google.com/store/apps/details?id=org.ubaierbhat.android.barcodekeyboard
 
 Paste targets map to Play Console: Main store listing (Title, Short description,
 Full description, Promo text is under Marketing materials in newer consoles) and
@@ -105,23 +107,21 @@ truncated list view.)
 
 ## Release notes / What's new (≤ 500)
 
-### v1.0.2 (this upload)
+### v1.1.0 (this upload)
 
 ```
-Scanner Keyboard 1.0.2
+Scanner Keyboard 1.1.0
 
-Fixes based on your early feedback:
+New scanner controls directly on the keyboard:
 
-- Code typing: the #+= layer gains the backtick, caret, and closing
-  parenthesis keys, so markdown code blocks and formulas now work.
-- The settings key icon is now a clean, symmetric gear.
-- The bottom keyboard row no longer sits behind the navigation buttons
-  on the latest Android phones.
+- Continuous scanning: keep the camera rolling and scan code after code — duplicate repeats are ignored.
+- Form filling: turn on Form mode to convert newlines and tabs in barcodes into Enter and Tab presses, filling multiple fields in one scan.
 
+Plus a fix for a Backspace issue when editing text.
 Still 100% offline: no account, no ads, no data collection.
 ```
 
-### v1.0.0 / v1.0.1 drafts (superseded, do not reuse)
+### v1.0.0 / v1.0.1 / v1.0.2 drafts (superseded, do not reuse)
 
 ```
 Welcome to Scanner Keyboard 1.0.0!

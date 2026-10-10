@@ -9,6 +9,7 @@ The phone buzzes, and the scanner closes back to the keyboard.
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![Android](https://img.shields.io/badge/Android-7.0%2B-blue)
 ![Network](https://img.shields.io/badge/network-none-brightgreen)
+[![Google Play](https://img.shields.io/badge/Google_Play-Scanner_Keyboard-414141?logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=org.ubaierbhat.android.barcodekeyboard)
 
 Built with Kotlin, the XML View system, CameraX, and ML Kit barcode scanning
 (bundled model). Package: `org.ubaierbhat.android.barcodekeyboard`.
@@ -66,7 +67,7 @@ Scanning is 100% on-device:
 
 ## Setup
 
-1. Install the app (see [Build](#build) for the debug APK, or sideload an APK file).
+1. Install the app from [Google Play](https://play.google.com/store/apps/details?id=org.ubaierbhat.android.barcodekeyboard), or build it from source (see [Build](#build)).
 2. Open **Scanner Keyboard** from your app drawer. The setup screen shows two steps
    with live status chips:
    - **Allow camera access** — tap *Grant camera permission* and accept the system
@@ -187,6 +188,7 @@ tools/            icon generator scripts
 ## Documentation
 
 - Architecture: [docs/architecture.html](docs/architecture.html)
+- Google Play: <https://play.google.com/store/apps/details?id=org.ubaierbhat.android.barcodekeyboard>
 - Security assessment (MASVS v2.1): [docs/security/masvs-compliance.md](docs/security/masvs-compliance.md)
 - Test codes: <https://ubaierbhat.com/scanner-keyboard/testing.html>
 - Privacy policy: <https://ubaierbhat.github.io/scanner-keyboard/privacy.html>

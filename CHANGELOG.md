@@ -7,15 +7,22 @@ Version numbers use the form `MAJOR.MINOR.PATCH`.
 
 ## [Unreleased]
 
+No unreleased changes yet.
+
+## [1.1.0] - 2026-10-10
+
 ### Added
 
-- Continuous scanning: switch in the scanner preview keeps the camera rolling
-  and commits every new code; consecutive duplicate scans are ignored. State
-  is remembered.
-- Scan actions (opt-in via the scanner's Form switch): newline and tab characters in
-  scanned data are translated into Enter (field's editor action, or a real
-  newline in multiline fields) and Tab focus moves, so multi-field forms can
-  be filled with a single scan.
+- Continuous scanning: a switch in the scanner's option strip keeps the camera
+  rolling and commits every new code; consecutive duplicate scans are ignored.
+  State is remembered.
+- Scan actions (opt-in via the scanner's Form switch): newline and tab
+  characters in scanned data are translated into Enter (the field's editor
+  action, or a real newline in multiline fields) and Tab focus moves, so
+  multi-field forms can be filled with a single scan.
+- Option strip in the scanner viewfinder holds the Continuous and Form
+  switches. The separate Scanning card on the setup screen was removed — scan
+  behavior now lives next to the viewfinder where it is used.
 
 ### Fixed
 
@@ -95,7 +102,8 @@ First public release.
 - The field tester log no longer grows forever; it is capped to the current
   field.
 
-[Unreleased]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/ubaierbhat/scanner-keyboard/compare/cb647eb...v1.0.0
