@@ -47,7 +47,7 @@ Scanning is 100% on-device:
 - **Continuous scan** — a switch in the scanner preview keeps the camera rolling
   and inserts every new code. Consecutive duplicate scans are ignored, and the
   setting is remembered.
-- **Scan actions** — opt-in on the setup screen: newline and tab characters in
+- **Scan actions** — opt-in via the **Form** switch in the scanner: newline and tab characters in
   scanned data become Enter (the field's editor action, or a real newline in
   multiline fields) and Tab focus moves, so multi-field forms can be filled with
   a single scan.

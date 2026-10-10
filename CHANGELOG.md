@@ -12,7 +12,7 @@ Version numbers use the form `MAJOR.MINOR.PATCH`.
 - Continuous scanning: switch in the scanner preview keeps the camera rolling
   and commits every new code; consecutive duplicate scans are ignored. State
   is remembered.
-- Scan actions (opt-in, on the setup screen): newline and tab characters in
+- Scan actions (opt-in via the scanner's Form switch): newline and tab characters in
   scanned data are translated into Enter (field's editor action, or a real
   newline in multiline fields) and Tab focus moves, so multi-field forms can
   be filled with a single scan.
