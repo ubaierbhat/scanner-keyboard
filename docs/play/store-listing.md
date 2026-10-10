@@ -107,7 +107,23 @@ truncated list view.)
 
 ## Release notes / What's new (≤ 500)
 
-### v1.1.0 (this upload)
+### v1.1.1 (this upload)
+
+```
+Scanner Keyboard 1.1.1
+
+Continuous scanning now works like a handheld barcode scanner: every scan
+ends with a separator — a line break in multi-line fields, or the field's
+Done / Go / Search action in single-line fields. Scan a whole stack of codes
+and they land one per line.
+
+Also new since 1.1.0: Continuous and Form switches in the viewfinder, form
+filling from newline/tab characters inside barcodes, and a Backspace fix.
+
+Still 100% offline: no account, no ads, no data collection.
+```
+
+### v1.1.0 (superseded by 1.1.1, do not reuse)
 
 ```
 Scanner Keyboard 1.1.0

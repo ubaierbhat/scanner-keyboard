@@ -9,6 +9,17 @@ Version numbers use the form `MAJOR.MINOR.PATCH`.
 
 No unreleased changes yet.
 
+## [1.1.1] - 2026-10-10
+
+### Fixed
+
+- Continuous scanning inserted successive codes back-to-back with no
+  separator. Every accepted scan is now terminated like a handheld scanner
+  wedge: a line break in multiline fields, or the field's editor action
+  (Done/Go/Search/Send/Next) in single-line fields, so codes stack one per
+  line. Payloads that already end with a newline are not double-entered, and
+  suppressed duplicate scans add nothing.
+
 ## [1.1.0] - 2026-10-10
 
 ### Added
@@ -102,7 +113,8 @@ First public release.
 - The field tester log no longer grows forever; it is capped to the current
   field.
 
-[Unreleased]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/ubaierbhat/scanner-keyboard/compare/v1.0.0...v1.0.1

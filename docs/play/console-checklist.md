@@ -8,8 +8,8 @@ App facts (source: `app/build.gradle.kts:13-21`):
 | Field | Value |
 |---|---|
 | Application ID | `org.ubaierbhat.android.barcodekeyboard` |
-| Version code | 4 |
-| Version name | 1.1.0 |
+| Version code | 5 |
+| Version name | 1.1.1 |
 | minSdk | 24 (Android 7.0) |
 | targetSdk / compileSdk | 36 |
 | Play Store URL | `https://play.google.com/store/apps/details?id=org.ubaierbhat.android.barcodekeyboard` |
@@ -163,14 +163,15 @@ Testing-readiness evidence (verified device QA):
 
 1. Build the AAB: run `./gradlew bundleRelease`.
 2. Artifact path: `app/build/outputs/bundle/release/app-release.aab`.
-   Rebuild with `./gradlew bundleRelease` before upload; the uploaded AAB must be built from a tagged release commit. Current on-disk artifact (v1.1.0, versionCode 4) measures 13,443,659 bytes (12.8 MB), SHA-256 `02c37838b8cf6e0748ac29ce0de98a643fa78ab81f0ada5e2da66dedc4dedf23`. It is signed with the upload key. Never commit it (`build/` is gitignored).
+   Rebuild with `./gradlew bundleRelease` before upload; the uploaded AAB must be built from a tagged release commit. Current on-disk artifact (v1.1.1, versionCode 5) measures 13,444,038 bytes (12.8 MB), SHA-256 `e87174f2f02cd917ebb2c15d0786b20eadb2ba96c6050ac59b82a6ba020c71a`. It is signed with the upload key. Never commit it (`build/` is gitignored).
 3. In the Console: open your release track → "Create new release" → upload `app-release.aab` from "App bundle".
 4. First upload triggers **Play App Signing enrollment**. Keep Google-managed signing ("Play App Signing by Google").
 5. Register the existing upload key. The keystore `upload-keystore.jks` (alias `upload`) sits in the repo root and is untracked. The wiring in `app/build.gradle.kts:7-10,27-36,46` reads `keystore.properties`. Copy the upload-key passwords from `keystore.properties` into your password manager now. Never commit this file.
 6. **Do NOT select "Manage your own signing keys (app signing key management opt-out)".**
-7. This upload is v1.1.0 (versionCode 4). Earlier drafts (v1.0.0,
-   v1.0.1, v1.0.2) are superseded; replace any existing draft with this AAB.
-   Later uploads need versionCode >= 5.
+7. This upload is v1.1.1 (versionCode 5). Earlier drafts (v1.0.0,
+   v1.0.1, v1.0.2) are superseded; replace any existing v1.1.0 (versionCode 4)
+   draft with this AAB — or roll it forward if 1.1.0 already shipped.
+   Later uploads need versionCode >= 6.
 8. Expected warning: "native debug symbols are missing" for ML Kit's `libbarhopper_v3.so`
    and JNI libs. They are Google binaries shipped fully stripped (verified: 0 `.symtab`
    / `.debug` sections). The build already requests `debugSymbolLevel = "SYMBOL_TABLE"`
