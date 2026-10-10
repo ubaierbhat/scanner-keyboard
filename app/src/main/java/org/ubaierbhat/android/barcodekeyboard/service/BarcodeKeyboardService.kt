@@ -254,17 +254,17 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         if (continuous && !duplicateSuppressor.shouldEmit(text)) {
             return
         }
-        val inputConnection = currentInputConnection
-        if (inputConnection != null && scanSettings?.translateScanActions == true) {
+        if (scanSettings?.translateScanActions == true) {
             for (event in ScanTranslator.translate(text)) {
+                val connection = currentInputConnection ?: break
                 when (event) {
-                    is ScanEvent.Type -> inputConnection.commitText(event.text, 1)
-                    ScanEvent.Enter -> dispatchEnter(inputConnection)
-                    ScanEvent.Tab -> sendTab(inputConnection)
+                    is ScanEvent.Type -> connection.commitText(event.text, 1)
+                    ScanEvent.Enter -> dispatchEnter(connection)
+                    ScanEvent.Tab -> sendTab(connection)
                 }
             }
         } else {
-            inputConnection?.commitText(text, 1)
+            currentInputConnection?.commitText(text, 1)
         }
         inputContainer?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         recordScan(text)
