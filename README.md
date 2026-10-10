@@ -47,8 +47,10 @@ Scanning is 100% on-device:
   in the viewfinder holds scan options (**Continuous**, **Form** — below), and a
   torch toggle helps in dark environments.
 - **Continuous scan** — a switch in the scanner's option strip keeps the camera
-  rolling and inserts every new code. Consecutive duplicate scans are ignored,
-  and the setting is remembered.
+  rolling and inserts every new code, each one terminated like a handheld
+  scanner: a line break in multiline fields, or the field's Done/Go/Search
+  action in single-line fields, so codes stack one per line. Consecutive
+  duplicate scans are ignored, and the setting is remembered.
 - **Scan actions** — the **Form** switch in the scanner's option strip: newline
   and tab characters in scanned data become Enter (the field's editor action,
   or a real newline in multiline fields) and Tab focus moves, so multi-field
@@ -123,7 +125,7 @@ step-by-step recipes — are on the website:
 
 | Code | Payload | What it tests |
 |:---:|:---|:---|
-| ![AAA111](docs/images/qr/qr-simple.png) | `AAA111` | Plain scan. With **Continuous** on, scanning this twice in a row inserts it once. |
+| ![AAA111](docs/images/qr/qr-simple.png) | `AAA111` | Plain scan. With **Continuous** on, each scan lands on its own line, and scanning this twice in a row inserts it once. |
 | ![BBB222](docs/images/qr/qr-other.png) | `BBB222` | A different code — after it, `AAA111` is accepted again (duplicate blocking only covers immediate repeats). |
 | ![A newline B](docs/images/qr/qr-newline.png) | `A`, newline, `B` | **Form** on: types `A`, presses Enter (editor action / next field), types `B`. |
 | ![A tab B](docs/images/qr/qr-tab.png) | `A`, tab, `B` | **Form** on: types `A`, Tabs to the next field, types `B`. |
@@ -131,6 +133,11 @@ step-by-step recipes — are on the website:
 
 With **Form** off, the control characters stay literal — `A⇥B` lands as one
 value in one field, which is the default, chat-safe behavior.
+
+With **Continuous** on, every accepted scan is followed by a separator even
+when **Form** is off — a line break in a multiline field, or the field's
+action (Done/Go/Search/Next/Send) elsewhere — so a stack of codes lands one
+per line.
 
 A filled two-field form after scanning the `A ⇥ B` code with **Form** on:
 

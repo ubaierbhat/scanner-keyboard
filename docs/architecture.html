@@ -393,10 +393,12 @@
       (<code>scanner/ScanThrottle.kt</code>).</li>
     <li><strong>Insert</strong> — <code>BarcodeKeyboardService.handleBarcodeResult()</code> re-checks
       <code>mode == SCANNER</code>; in continuous mode <code>DuplicateSuppressor.shouldEmit()</code>
-      drops consecutive identical values. Then either a plain <code>commitText(text, 1)</code> or —
-      with the <strong>Form</strong> setting on — <code>ScanTranslator</code> events chained
-      through <code>emitScanEvents()</code> (150 ms settle after each Enter/Tab so the IME can hand
-      focus to the next field). Haptic buzz fires per accepted scan.</li>
+      drops consecutive identical values. Then <code>ScanEventPlanner.plan()</code> builds the event
+      chain — a literal commit, or <code>ScanTranslator</code> segments with <strong>Form</strong> on —
+      and continuous mode appends a field-appropriate <code>Enter</code> terminator (a line break in
+      multiline fields, the editor action elsewhere; not doubled when the payload already ends with
+      one), chained through <code>emitScanEvents()</code> (150 ms settle after each Enter/Tab so the
+      IME can hand focus to the next field). Haptic buzz fires per accepted scan.</li>
     <li><strong>History</strong> — the raw value is recorded into <code>ScanHistoryStore</code>
       (newest-first, deduped, capped at 20 — <code>history/ScanHistoryStore.kt</code>).</li>
     <li><strong>Close</strong> — unless continuous mode is on, <code>closeScanner()</code> stops the
@@ -412,7 +414,7 @@
 
   <h2>5 · Testing summary</h2>
   <p>
-    <strong>90 JVM unit tests</strong> (Robolectric + JUnit) run green under
+    <strong>98 JVM unit tests</strong> (Robolectric + JUnit) run green under
     <code>./gradlew test</code>, covering the pure logic and the lifecycle edge cases:
   </p>
   <table>
@@ -428,6 +430,7 @@
     <tr><td><code>ScanThrottleTest</code></td><td><code>app/src/test/.../scanner/ScanThrottleTest.kt</code></td><td>first pass, 1000 ms window, expiry, reset (injected clock)</td></tr>
     <tr><td><code>DuplicateSuppressorTest</code></td><td><code>app/src/test/.../scanner/DuplicateSuppressorTest.kt</code></td><td>first value emits, consecutive duplicate suppressed, different value re-arms, reset forgets</td></tr>
     <tr><td><code>ScanTranslatorTest</code></td><td><code>app/src/test/.../scanner/ScanTranslatorTest.kt</code></td><td>newline → Enter, tab → Tab segments, literals kept, CR handling, collapse and edge rules</td></tr>
+    <tr><td><code>ScanEventPlannerTest</code></td><td><code>app/src/test/.../scanner/ScanEventPlannerTest.kt</code></td><td>one-shot plain commit, continuous appends the Enter terminator, no double-enter, empty payload</td></tr>
     <tr><td><code>ScanSettingsTest</code></td><td><code>app/src/test/.../scanner/ScanSettingsTest.kt</code></td><td>both flags default off, values persist across instances</td></tr>
     <tr><td><code>ScannerViewSwitchesTest</code></td><td><code>app/src/test/.../scanner/ScannerViewSwitchesTest.kt</code></td><td>each strip switch reflects persisted state, toggling persists, both restored in a fresh view</td></tr>
     <tr><td><code>ScanHistoryStoreTest</code></td><td><code>app/src/test/.../history/ScanHistoryStoreTest.kt</code></td><td>newest-first, dedup move, cap 20, trim/blank rules, corrupt-data reset</td></tr>
@@ -485,7 +488,7 @@
   <div class="card">
     <h4>How this build was verified</h4>
     <ul>
-      <li><span class="ok">✓</span> <code>./gradlew test</code> — 90/90 unit tests green (see §5).</li>
+      <li><span class="ok">✓</span> <code>./gradlew test</code> — 98/98 unit tests green (see §5).</li>
       <li><span class="ok">✓</span> <code>./gradlew assembleDebug</code> + install on device R58RB1N07TD (Galaxy XCover5); IME re-enabled and selected via <code>ime enable</code>/<code>ime set</code>.</li>
       <li><span class="ok">✓</span> 9-field input matrix green on-device: per-field editor actions, phone/number dialpad commits, settings key opens the wizard and hides the keyboard, Back restores focus to the exact field.</li>
       <li><span class="ok">✓</span> Launcher icon observed in the app drawer — adaptive foreground vector + charcoal background color, system-masked to the device shape, no icon-load errors in logcat; legacy <code>ic_launcher_round</code> renders the same mark circular-masked.</li>

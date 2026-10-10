@@ -33,7 +33,7 @@ import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyboardView
 import org.ubaierbhat.android.barcodekeyboard.scanner.DuplicateSuppressor
 import org.ubaierbhat.android.barcodekeyboard.scanner.ScanEvent
 import org.ubaierbhat.android.barcodekeyboard.scanner.ScanSettings
-import org.ubaierbhat.android.barcodekeyboard.scanner.ScanTranslator
+import org.ubaierbhat.android.barcodekeyboard.scanner.ScanEventPlanner
 import org.ubaierbhat.android.barcodekeyboard.scanner.ScannerView
 
 class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
@@ -254,10 +254,13 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
         if (continuous && !duplicateSuppressor.shouldEmit(text)) {
             return
         }
-        if (scanSettings?.translateScanActions == true) {
-            emitScanEvents(ScanTranslator.translate(text), 0)
-        } else {
-            currentInputConnection?.commitText(text, 1)
+        val events = ScanEventPlanner.plan(
+            raw = text,
+            continuous = continuous,
+            translateActions = scanSettings?.translateScanActions == true
+        )
+        if (events.isNotEmpty()) {
+            emitScanEvents(events, 0)
         }
         inputContainer?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         recordScan(text)

@@ -95,9 +95,12 @@ and <strong>Form</strong>. Both remember their state. The bottom bar has
     <td>Turn <strong>Continuous</strong> on. Scan <code>AAA111</code>, then
     <code>BBB222</code>, then <code>AAA111</code> again.</td>
     <td>Continuous <strong>on</strong></td>
-    <td>The scanner stays open and inserts each new code. Scanning the
-    <em>same</em> code twice in a row does nothing; once a different code is seen,
-    the first code counts again. Handy for inventory lists.</td>
+    <td>The scanner stays open and inserts each new code, followed by a
+    separator — a line break in a multi-line field, or the field's action
+    (Done / Go / Search / Next) in a single-line field — so codes stack one
+    per line like a handheld scanner. Scanning the <em>same</em> code twice in
+    a row does nothing (no text, no extra separator); once a different code is
+    seen, the first code counts again. Handy for inventory lists.</td>
   </tr>
   <tr>
     <td>Focus a single-line field that has a <em>Next</em> action (a sign-up form
