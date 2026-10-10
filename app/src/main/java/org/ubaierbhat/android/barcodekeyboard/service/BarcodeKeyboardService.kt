@@ -255,12 +255,20 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
             return
         }
         if (scanSettings?.translateScanActions == true) {
-            for (event in ScanTranslator.translate(text)) {
-                val connection = currentInputConnection ?: break
+            val events = ScanTranslator.translate(text)
+            val hasActions = events.any { it !is ScanEvent.Type }
+            for (event in events) {
                 when (event) {
-                    is ScanEvent.Type -> connection.commitText(event.text, 1)
-                    ScanEvent.Enter -> dispatchEnter(connection)
-                    ScanEvent.Tab -> sendTab(connection)
+                    is ScanEvent.Type ->
+                        if (hasActions) {
+                            for (char in event.text) {
+                                sendKeyChar(char)
+                            }
+                        } else {
+                            currentInputConnection?.commitText(event.text, 1)
+                        }
+                    ScanEvent.Enter -> currentInputConnection?.let { dispatchEnter(it) }
+                    ScanEvent.Tab -> currentInputConnection?.let { sendTab(it) }
                 }
             }
         } else {
