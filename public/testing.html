@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test Codes — Scanner Keyboard</title>
+<style>
+body{max-width:44rem;margin:2rem auto;padding:0 1rem;background:#ffffff;color:#1b1b1b;
+font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+h1{font-size:1.5rem}
+h2{font-size:1.15rem;margin-top:1.75rem}
+code{background:#f2f2f2;padding:0.1em 0.3em}
+a{color:#0b5cad}
+img{max-width:100%}
+.qrs{display:flex;flex-wrap:wrap;gap:1.25rem;margin:1rem 0}
+.qr{width:11rem;text-align:center}
+.qr img{width:10.5rem;height:10.5rem;image-rendering:pixelated;border:1px solid #ddd;padding:0.25rem}
+.qr p{margin:0.35rem 0 0;font-size:0.9rem}
+.qr code{font-size:0.85rem}
+table{border-collapse:collapse;width:100%;margin:0.75rem 0}
+th,td{border:1px solid #d0d0d0;padding:0.4rem 0.6rem;text-align:left;vertical-align:top}
+th{background:#f5f5f5}
+.note{background:#f2f7ff;border-left:4px solid #0b5cad;padding:0.6rem 0.9rem;font-size:0.95rem}
+.shot{background:#fafafa;border:1px solid #e2e2e2;border-radius:8px;padding:0.75rem}
+.shot img{max-width:20rem}
+</style>
+</head>
+<body>
+
+<h1>Test codes — Scanner Keyboard</h1>
+
+<p>These QR codes let you try Scanner Keyboard's scanning features without a
+product to scan. Show this page on a laptop or a second phone, then aim your
+phone's camera at it from the keyboard's scanner view.</p>
+
+<p class="note"><strong>Get the keyboard onto your screen:</strong> install the
+app, tap <em>Grant camera permission</em> and <em>Open keyboard settings</em> on
+its setup screen to enable it, then select <strong>Scanner Keyboard</strong> as
+your keyboard. Tap a text field, then the
+<span aria-label="scan">barcode</span> icon in the keyboard's toolbar.</p>
+
+<h2>The codes</h2>
+
+<div class="qrs">
+  <div class="qr">
+    <img src="images/qr-simple.png" alt="QR code for AAA111">
+    <p>Plain code<br><code>AAA111</code></p>
+  </div>
+  <div class="qr">
+    <img src="images/qr-other.png" alt="QR code for BBB222">
+    <p>A different code<br><code>BBB222</code></p>
+  </div>
+  <div class="qr">
+    <img src="images/qr-newline.png" alt="QR code for A newline B">
+    <p>Newline inside<br><code>A⏎B</code></p>
+  </div>
+  <div class="qr">
+    <img src="images/qr-tab.png" alt="QR code for A tab B">
+    <p>Tab inside<br><code>A⇥B</code></p>
+  </div>
+  <div class="qr">
+    <img src="images/qr-trailing.png" alt="QR code for TRAIL newline">
+    <p>Trailing newline<br><code>TRAIL⏎</code></p>
+  </div>
+</div>
+
+<p>The <code>⏎</code> and <code>⇥</code> symbols stand for real, invisible
+control characters — a newline and a tab — stored inside the code, not printed
+as text. The same codes live in the
+<a href="https://github.com/ubaierbhat/scanner-keyboard#try-it--sample-codes">project
+README</a> if you want to print them.</p>
+
+<h2>The scanner and its option strip</h2>
+
+<p>At the top of the viewfinder are two switches: <strong>Continuous</strong>
+and <strong>Form</strong>. Both remember their state. The bottom bar has
+<strong>✕</strong> (close) and <strong>Torch</strong>.</p>
+
+<div class="shot">
+  <img src="images/scanner.png" alt="Scanner viewfinder with the Continuous and Form option strip">
+</div>
+
+<h2>Recipes</h2>
+
+<table>
+  <tr><th>Try this</th><th>Switches</th><th>What happens</th></tr>
+  <tr>
+    <td>Scan <code>AAA111</code> once, in a notes app.</td>
+    <td>both <strong>off</strong></td>
+    <td>The text <code>AAA111</code> is typed, the camera buzzes, and the
+    scanner closes. This is the default one-shot behavior.</td>
+  </tr>
+  <tr>
+    <td>Turn <strong>Continuous</strong> on. Scan <code>AAA111</code>, then
+    <code>BBB222</code>, then <code>AAA111</code> again.</td>
+    <td>Continuous <strong>on</strong></td>
+    <td>The scanner stays open and inserts each new code. Scanning the
+    <em>same</em> code twice in a row does nothing; once a different code is seen,
+    the first code counts again. Handy for inventory lists.</td>
+  </tr>
+  <tr>
+    <td>Focus a single-line field that has a <em>Next</em> action (a sign-up form
+    with two boxes). Turn <strong>Form</strong> on. Scan <code>A⇥B</code>.</td>
+    <td>Form <strong>on</strong></td>
+    <td><code>A</code> is typed, focus moves to the next box, and <code>B</code>
+    is typed there — one scan fills two fields.</td>
+  </tr>
+  <tr>
+    <td>Same field, but scan <code>TRAIL⏎</code>.</td>
+    <td>Form <strong>on</strong></td>
+    <td><code>TRAIL</code> is typed and the field's Done / Go / Search action
+    fires automatically, because the code ends with a newline.</td>
+  </tr>
+  <tr>
+    <td>Scan <code>A⏎B</code> into a multi-line box (notes, a comment field).</td>
+    <td>Form <strong>on</strong></td>
+    <td>A real line break is inserted, so you get <code>A</code> and
+    <code>B</code> on separate lines — no jumping.</td>
+  </tr>
+  <tr>
+    <td>Turn <strong>Form</strong> off and scan <code>A⇥B</code> again.</td>
+    <td>Form <strong>off</strong></td>
+    <td>The value stays literal: a single field receives everything, so
+    usernames and codes that genuinely contain tabs are never split. This is
+    the safe default.</td>
+  </tr>
+</table>
+
+<div class="shot">
+  <p>A two-field form filled by scanning <code>A⇥B</code> with <strong>Form</strong>
+  on — <code>A</code> landed in the first box, <code>B</code> in the second:</p>
+  <img src="images/form-fill.png" alt="Field tester showing A in the first field and B in the second">
+</div>
+
+<p><a href="index.html">← Back to Scanner Keyboard</a></p>
+
+</body>
+</html>
