@@ -26,7 +26,7 @@
         android:text="@string/scanner_hint" />
 
     <LinearLayout
-        android:id="@+id/scanner_continuous_pill"
+        android:id="@+id/scanner_options_strip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
@@ -40,6 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
             android:text="@string/scanner_continuous_label"
             android:textColor="@color/key_text"
             android:textSize="14sp" />
@@ -48,7 +49,30 @@
             android:id="@+id/scanner_continuous_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="0dp"
             android:contentDescription="@string/scanner_continuous_label" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/scanner_divider" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:text="@string/scanner_form_label"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/scanner_form_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            android:contentDescription="@string/scanner_form_label" />
     </LinearLayout>
 
     <LinearLayout

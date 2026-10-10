@@ -16,4 +16,5 @@
 
     <color name="scanner_preview_background">#000000</color>
     <color name="scanner_pill_scrim">#B3000000</color>
+    <color name="scanner_divider">#33FFFFFF</color>
 </resources>

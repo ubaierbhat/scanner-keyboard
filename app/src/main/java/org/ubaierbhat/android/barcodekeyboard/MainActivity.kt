@@ -14,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.materialswitch.MaterialSwitch
-import org.ubaierbhat.android.barcodekeyboard.scanner.ScanSettings
 import org.ubaierbhat.android.barcodekeyboard.service.BarcodeKeyboardService
 
 class MainActivity : AppCompatActivity() {
@@ -25,8 +23,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imeStatusChip: TextView
     private lateinit var imeActionButton: MaterialButton
     private lateinit var overallStatus: TextView
-    private lateinit var scanActionsSwitch: MaterialSwitch
-    private lateinit var scanSettings: ScanSettings
     private var cameraPermissionRequested = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,13 +34,6 @@ class MainActivity : AppCompatActivity() {
         imeStatusChip = findViewById(R.id.ime_status_chip)
         imeActionButton = findViewById(R.id.ime_action_button)
         overallStatus = findViewById(R.id.overall_status)
-
-        scanSettings = ScanSettings(this)
-        scanActionsSwitch = findViewById(R.id.scan_actions_switch)
-        scanActionsSwitch.isChecked = scanSettings.translateScanActions
-        scanActionsSwitch.setOnCheckedChangeListener { _, checked ->
-            scanSettings.translateScanActions = checked
-        }
 
         val testFieldsButton = findViewById<MaterialButton>(R.id.open_test_fields_button)
         if (BuildConfig.DEBUG) {
