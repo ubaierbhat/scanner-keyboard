@@ -436,3 +436,11 @@ $ adb logcat -d | grep -E "SecurityException" | grep -v "at "        # no output
 Decode-by-aim remains the standing human-only caveat (unchanged from task-3): the
 insert-on-decode flow could not be aimed by automation; ML Kit client init, camera
 frame flow, and analyzer wiring are proven live here (post-R8, post-permission-strip).
+
+**Status addendum (2026-10-10, v1.1.1):** the decode-by-aim caveat is closed.
+The signed release passed full manual scanning verification on three physical
+devices — XCover5 and Fire 6 (API 34) and Galaxy S22 (API 36, Android 16) —
+covering one-shot insert + auto-close, continuous mode with the per-scan
+separator, duplicate suppression, and Form-mode newline/tab actions. See
+`docs/acceptance/manual-checklist.md` Results log. The API 36 device also
+closes the former "targetSdk-36 runtime unverified" caveat.

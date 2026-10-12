@@ -154,16 +154,29 @@ Rules for a personal developer account:
 
 Testing-readiness evidence (verified device QA):
 
-- Unit tests pass (debug variant, 63 green). Reproduce with `./gradlew testDebugUnitTest`; the post-fix rebuild and re-QA are recorded in `docs/security/masvs-compliance.md` (Appendix A1 after-strip badging, Appendix A10 device QA).
-- Signed R8 release QA passed on a physical Samsung Galaxy XCover5 (`R58RB1N07TD`, Android 14/API 34): typing, dialpad, accents, scanner open/close with camera lifecycle, history persist + re-insert, settings jump, zero FATAL entries (`docs/security/masvs-compliance.md` Appendix A10).
-- Known caveat: QA ran on API 34; targetSdk-36 runtime specifics are unverified there (`docs/security/masvs-compliance.md` Appendix A10 device header).
-- One human step remains before release: aim the rear camera at `docs/acceptance/qr-SCAN-T9-QR-741258.png` and confirm decode → insert → buzz → close (`docs/security/masvs-compliance.md` Appendix A10 closing note: decode-by-aim remains human-only).
+- Unit tests pass (debug variant, 98 green). Reproduce with
+  `./gradlew testDebugUnitTest`; per-release device QA is recorded in
+  `docs/acceptance/manual-checklist.md` (Results log) and
+  `docs/security/masvs-compliance.md` (Appendix A1 after-strip badging,
+  Appendix A10 device QA + 2026-10-10 addendum).
+- Signed R8 release QA passed on physical devices: typing, dialpad, accents,
+  scanner open/close with camera lifecycle, history persist + re-insert,
+  settings jump, zero FATAL entries (XCover5 release builds, earlier waves —
+  Appendix A10).
+- **v1.1.1 full device verification (2026-10-10): passed on all three test
+  devices** — XCover5 (API 34), Fire 6 (API 34), Galaxy S22 (API 36, Android
+  16) — covering one-shot scan, continuous mode with the per-scan separator,
+  duplicate suppression, and Form-mode actions. The targetSdk-36 runtime
+  caveat from earlier waves is closed by the S22 pass.
+- Decode-by-aim human acceptance (the former standing caveat): **completed
+  for v1.1.1** on all three devices (`docs/acceptance/manual-checklist.md`
+  Results log).
 
 ## 8. Upload steps
 
 1. Build the AAB: run `./gradlew bundleRelease`.
 2. Artifact path: `app/build/outputs/bundle/release/app-release.aab`.
-   Rebuild with `./gradlew bundleRelease` before upload; the uploaded AAB must be built from a tagged release commit. Current on-disk artifact (v1.1.1, versionCode 5) measures 13,444,038 bytes (12.8 MB), SHA-256 `e87174f2f02cd917ebb2c15d0786b20eadb2ba96c6050ac59b82a6ba020c71a`. It is signed with the upload key. Never commit it (`build/` is gitignored).
+   Rebuild with `./gradlew bundleRelease` before upload; the uploaded AAB must be built from a tagged release commit. Current on-disk artifact (v1.1.1, versionCode 5) measures 13,444,038 bytes (12.8 MB), SHA-256 `e8717f4e2f02cd917ebb2c15d0786b20eadb2ba96c6050ac59b82a6ba020c71a`. It is signed with the upload key. Never commit it (`build/` is gitignored).
 3. In the Console: open your release track → "Create new release" → upload `app-release.aab` from "App bundle".
 4. First upload triggers **Play App Signing enrollment**. Keep Google-managed signing ("Play App Signing by Google").
 5. Register the existing upload key. The keystore `upload-keystore.jks` (alias `upload`) sits in the repo root and is untracked. The wiring in `app/build.gradle.kts:7-10,27-36,46` reads `keystore.properties`. Copy the upload-key passwords from `keystore.properties` into your password manager now. Never commit this file.
@@ -189,5 +202,5 @@ Testing-readiness evidence (verified device QA):
 - [ ] Read the personal-account policy: the 12-tester / 14-day closed test in Section 7 unlocks production.
 - [ ] Create the feature graphic 1024×500 (Section 6 item 9).
 - [ ] Supply the contact email (Section 6 item 10).
-- [ ] Run the manual decode-by-aim check (Section 7) before applying for production.
+- [x] Run the manual decode-by-aim check (Section 7) before applying for production. — **done 2026-10-10, v1.1.1, passed on XCover5 + Fire 6 + S22** (`docs/acceptance/manual-checklist.md` Results log).
 - [ ] Back up `upload-keystore.jks`, `keystore.properties`, and its password off-device.

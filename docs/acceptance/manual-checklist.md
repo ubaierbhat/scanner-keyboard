@@ -47,3 +47,15 @@ Raise Mac screen brightness to max. Open both PNGs in Preview
    released, and the scanner cleanly re-openable after re-granting via the setup
    wizard). Then tap **SCAN** again → expect the inline "Camera access is needed to
    scan" prompt with an **Open setup** button.
+
+## Results log
+
+- **2026-10-10 — v1.1.1 (versionCode 5), signed release.** Manual scanning
+  verification passed on all three test devices after user testing: Samsung
+  Galaxy XCover5 (`R58RB1N07TD`, API 34), Amazon Fire 6
+  (`FIRE60000000005065`, API 34), Samsung Galaxy S22 (`RFCT71FS61W`, API 36 /
+  Android 16). Covered: live camera decode → insert → buzz → close (one-shot),
+  continuous mode with the per-scan separator (line break in multiline
+  editors, field action elsewhere), consecutive-duplicate suppression, and
+  Form-mode newline/tab routing. Decode-by-aim — the standing human-only
+  caveat — is hereby cleared for v1.1.1.
