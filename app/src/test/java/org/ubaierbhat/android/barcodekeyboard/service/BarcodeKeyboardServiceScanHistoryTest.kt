@@ -45,8 +45,14 @@ class BarcodeKeyboardServiceScanHistoryTest {
     private fun history(): JSONArray =
         JSONArray(prefs.getString("entries", "[]") ?: "[]")
 
-    private fun startInputWith(inputType: Int) {
+    private fun startInput(inputType: Int) {
         val info = EditorInfo().apply { this.inputType = inputType }
+        val field = InputMethodService::class.java.getDeclaredField("mInputEditorInfo")
+        field.isAccessible = true
+        field.set(service, info)
+    }
+
+    private fun startInput(info: EditorInfo?) {
         val field = InputMethodService::class.java.getDeclaredField("mInputEditorInfo")
         field.isAccessible = true
         field.set(service, info)
@@ -68,24 +74,38 @@ class BarcodeKeyboardServiceScanHistoryTest {
 
     @Test
     fun scanIntoTextFieldIsRecorded() {
-        startInputWith(InputType.TYPE_CLASS_TEXT)
+        startInput(InputType.TYPE_CLASS_TEXT)
         injectScan("normal123")
         assertEquals("normal123", history().getString(0))
     }
 
     @Test
+    fun scanWithNullEditorInfoIsRecorded() {
+        startInput(null as EditorInfo?)
+        injectScan("failOpen1")
+        assertEquals("failOpen1", history().getString(0))
+    }
+
+    @Test
+    fun scanWithNullInputTypeIsRecorded() {
+        startInput(InputType.TYPE_NULL)
+        injectScan("failOpen2")
+        assertEquals("failOpen2", history().getString(0))
+    }
+
+    @Test
     fun scanIntoPasswordFieldIsNotRecorded() {
-        startInputWith(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        startInput(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         injectScan("secretPass1")
         assertEquals(0, history().length())
     }
 
     @Test
     fun scanRecordFollowsFieldAtScanTime() {
-        startInputWith(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        startInput(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         injectScan("secretPass2")
         reopenScannerQuietly()
-        startInputWith(InputType.TYPE_CLASS_TEXT)
+        startInput(InputType.TYPE_CLASS_TEXT)
         injectScan("normal456")
         assertEquals(1, history().length())
         assertEquals("normal456", history().getString(0))
