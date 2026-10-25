@@ -30,6 +30,7 @@ import org.ubaierbhat.android.barcodekeyboard.keyboard.EnterDispatcher
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyView
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyboardActionListener
 import org.ubaierbhat.android.barcodekeyboard.keyboard.KeyboardView
+import org.ubaierbhat.android.barcodekeyboard.keyboard.PasswordFieldDetector
 import org.ubaierbhat.android.barcodekeyboard.scanner.DuplicateSuppressor
 import org.ubaierbhat.android.barcodekeyboard.scanner.ScanEvent
 import org.ubaierbhat.android.barcodekeyboard.scanner.ScanSettings
@@ -263,7 +264,9 @@ class BarcodeKeyboardService : InputMethodService(), KeyboardActionListener {
             emitScanEvents(events, 0)
         }
         inputContainer?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        recordScan(text)
+        if (!PasswordFieldDetector.isPasswordField(currentInputEditorInfo)) {
+            recordScan(text)
+        }
         if (!continuous) {
             closeScanner()
         }

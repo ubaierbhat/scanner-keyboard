@@ -176,7 +176,7 @@ git commit -m "feat: add password-field detection for scanned input targets"
 
 - [ ] **Step 1: Write the failing service test (Robolectric)**
 
-New file `BarcodeKeyboardServiceScanHistoryTest.kt`, modeled on `BarcodeKeyboardServiceRotationTest.kt`. Reflection reaches the private `handleBarcodeResult` and sets `InputMethodService.mInputFieldInfo` directly (the field behind `getCurrentInputEditorInfo`; invoking public `onStartInput` would not set it because the framework populates it in `doStartInput`). History is asserted through the `scan_history` prefs file, exactly what `ScanHistoryStore` writes. `openScanMode` wraps `onScanRequested` quietly, matching `requestQuietly` in the rotation test.
+New file `BarcodeKeyboardServiceScanHistoryTest.kt`, modeled on `BarcodeKeyboardServiceRotationTest.kt`. Reflection reaches the private `handleBarcodeResult` and sets `InputMethodService.mInputEditorInfo` directly (the field behind `getCurrentInputEditorInfo`). History is asserted through the `scan_history` prefs file, exactly what `ScanHistoryStore` writes. `openScanMode` wraps `onScanRequested` quietly, matching `requestQuietly` in the rotation test.
 
 ```kotlin
 package org.ubaierbhat.android.barcodekeyboard.service
