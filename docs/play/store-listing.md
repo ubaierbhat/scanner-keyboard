@@ -107,7 +107,20 @@ truncated list view.)
 
 ## Release notes / What's new (≤ 500)
 
-### v1.1.1 (this upload)
+### v1.2.0 (this upload)
+
+```
+Scanner Keyboard 1.2.0
+
+Privacy improvement for password fields. Scan a code into a password field
+and it is typed in, but not saved in the scan history. Scans into normal
+fields stay in the history as before.
+
+All keyboard and scanning features unchanged. Still 100% offline: no
+account, no ads, no data collection.
+```
+
+### v1.1.1 (superseded by 1.2.0, do not reuse)
 
 ```
 Scanner Keyboard 1.1.1

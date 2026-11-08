@@ -1,0 +1,16 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Scanner Keyboard v1.2.0 acceptance codes</title>
+<style>
+body { font-family: -apple-system, sans-serif; background: #fff; text-align: center; }
+img { max-width: 92vmin; display: block; margin: 1em auto; }
+label { display: inline-block; margin: 0.5em 1em; }
+</style>
+<h1>Scanner Keyboard v1.2.0 acceptance codes</h1>
+<label><input type="radio" name="c" checked onchange="show(this)"> QR &mdash; scan steps 1 &amp; 3</label>
+<label><input type="radio" name="c" onchange="show(this)"> EAN-13 &mdash; scan step 2</label>
+<img id="qr" src="qr-SCAN-T9-QR-741258.png" alt="QR Scan-T9-QR-741258">
+<img id="ean" src="ean13-5901234123457.png" alt="EAN-13 5901234123457" style="display:none">
+<script>
+function show(el) { document.getElementById('qr').style.display = el.value === 'qr' ? 'block' : 'none'; document.getElementById('ean').style.display = el.value === 'ean' ? 'block' : 'none'; }
+</script>

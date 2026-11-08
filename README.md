@@ -61,7 +61,9 @@ Scanning is 100% on-device:
 - **History** — the last 20 scanned and copied texts (newest first, deduplicated).
   While Scanner Keyboard is your default keyboard, copied text is picked up
   into history the next time the keyboard opens. Tap a history entry to
-  re-insert it at the cursor. Clearable with one tap.
+  re-insert it at the cursor. Clearable with one tap. Scans into password
+  fields are typed in but not saved: the history never shows a scanned
+  password.
 - **Function toolbar** — a row above the keys with the scanner, history, and
   settings keys. The settings key jumps straight to the app's setup screen.
 - **Setup wizard** — first-run screen with live status for camera permission and

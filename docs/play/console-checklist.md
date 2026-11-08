@@ -1,15 +1,16 @@
 # Google Play Console Checklist — Scanner Keyboard
 
 Use this sheet during one Console session. Copy each block verbatim.
-Every fact cites its source file in this repo (verified at commit `11786d4`, 2026-10-04).
+Every fact cites its source file in this repo (verified at the v1.2.0 release
+commit, 2026-11-08).
 
 App facts (source: `app/build.gradle.kts:13-21`):
 
 | Field | Value |
 |---|---|
 | Application ID | `org.ubaierbhat.android.barcodekeyboard` |
-| Version code | 5 |
-| Version name | 1.1.1 |
+| Version code | 6 |
+| Version name | 1.2.0 |
 | minSdk | 24 (Android 7.0) |
 | targetSdk / compileSdk | 36 |
 | Play Store URL | `https://play.google.com/store/apps/details?id=org.ubaierbhat.android.barcodekeyboard` |
@@ -154,7 +155,7 @@ Rules for a personal developer account:
 
 Testing-readiness evidence (verified device QA):
 
-- Unit tests pass (debug variant, 98 green). Reproduce with
+- Unit tests pass (debug variant, 112 green). Reproduce with
   `./gradlew testDebugUnitTest`; per-release device QA is recorded in
   `docs/acceptance/manual-checklist.md` (Results log) and
   `docs/security/masvs-compliance.md` (Appendix A1 after-strip badging,
@@ -168,23 +169,35 @@ Testing-readiness evidence (verified device QA):
   16) — covering one-shot scan, continuous mode with the per-scan separator,
   duplicate suppression, and Form-mode actions. The targetSdk-36 runtime
   caveat from earlier waves is closed by the S22 pass.
+- **v1.2.0 device verification (2026-11-08): passed on Fire 6 (API 34)** —
+  signed R8 release: one-shot QR + EAN-13 insert with history write, password
+  exclusion (Wi-Fi Add-network password field: scan typed in, no history
+  entry), history re-record on the next normal field, continuous mode with
+  the per-scan separator, and Form-mode Tab routing across three fields in
+  one scan. Zero FATAL entries in logcat. Details in the
+  `docs/acceptance/manual-checklist.md` Results log. XCover5/S22 repeats not
+  re-run for this release; the focused change is field-type detection only.
 - Decode-by-aim human acceptance (the former standing caveat): **completed
   for v1.1.1** on all three devices (`docs/acceptance/manual-checklist.md`
-  Results log).
+  Results log); v1.2.0 adds its own decode-by-aim passes on Fire 6.
 
 ## 8. Upload steps
 
 1. Build the AAB: run `./gradlew bundleRelease`.
 2. Artifact path: `app/build/outputs/bundle/release/app-release.aab`.
-   Rebuild with `./gradlew bundleRelease` before upload; the uploaded AAB must be built from a tagged release commit. Current on-disk artifact (v1.1.1, versionCode 5) measures 13,444,038 bytes (12.8 MB), SHA-256 `e8717f4e2f02cd917ebb2c15d0786b20eadb2ba96c6050ac59b82a6ba020c71a`. It is signed with the upload key. Never commit it (`build/` is gitignored).
+   Rebuild with `./gradlew bundleRelease` before upload; the uploaded AAB must be built from a tagged release commit. Current on-disk artifact (v1.2.0, versionCode 6) measures 13,444,672 bytes (12.8 MB), SHA-256 `617fcd3d8c04dd97c303ecb6356daa56683dec5c81d8378542295782e7369ded`. The signed release APK used for device QA measures 23,714,996 bytes (SHA-256 `521a2049f7ef23708d59f8a58c241079f824e1de822fc4cef622d751be34f4b2`). Both are signed with the upload key. Never commit them (`build/` is gitignored).
 3. In the Console: open your release track → "Create new release" → upload `app-release.aab` from "App bundle".
 4. First upload triggers **Play App Signing enrollment**. Keep Google-managed signing ("Play App Signing by Google").
 5. Register the existing upload key. The keystore `upload-keystore.jks` (alias `upload`) sits in the repo root and is untracked. The wiring in `app/build.gradle.kts:7-10,27-36,46` reads `keystore.properties`. Copy the upload-key passwords from `keystore.properties` into your password manager now. Never commit this file.
 6. **Do NOT select "Manage your own signing keys (app signing key management opt-out)".**
-7. This upload is v1.1.1 (versionCode 5). Earlier drafts (v1.0.0,
-   v1.0.1, v1.0.2) are superseded; replace any existing v1.1.0 (versionCode 4)
-   draft with this AAB — or roll it forward if 1.1.0 already shipped.
-   Later uploads need versionCode >= 6.
+7. This upload is v1.2.0 (versionCode 6). Earlier drafts (v1.0.0–v1.1.1) are
+   superseded; replace any existing v1.1.1 (versionCode 5) draft with this
+   AAB — or roll it forward if 1.1.1 already shipped. Later uploads need
+   versionCode >= 7.
+   This release adds the password-field history exclusion (new since 1.1.1);
+   the data-safety answers are unchanged: the scan history still never leaves
+   the device (`PasswordFieldDetector` only gates what `ScanHistoryStore`
+   appends). No new permissions, no new SDK.
 8. Expected warning: "native debug symbols are missing" for ML Kit's `libbarhopper_v3.so`
    and JNI libs. They are Google binaries shipped fully stripped (verified: 0 `.symtab`
    / `.debug` sections). The build already requests `debugSymbolLevel = "SYMBOL_TABLE"`

@@ -444,3 +444,15 @@ covering one-shot insert + auto-close, continuous mode with the per-scan
 separator, duplicate suppression, and Form-mode newline/tab actions. See
 `docs/acceptance/manual-checklist.md` Results log. The API 36 device also
 closes the former "targetSdk-36 runtime unverified" caveat.
+
+**Status addendum (2026-11-08, v1.2.0):** privacy behavior narrowed without
+any new data flow. A scan typed into a password field (text password,
+show-password, web password, or numeric PIN; `PasswordFieldDetector.kt` now
+classifies `EditorInfo.inputType`) is no longer appended to the scan
+history. The verdicts above stay unchanged: MASVS-STORAGE-3 keeps PASS (the
+skip removes a data path; the shipped features add none), and
+MASVS-PRIVACY-1 keeps PASS (history capture remains user-beneficial and
+visible; the password skip reduces on-screen exposure). Verified live on
+Fire 6: scan into the Wi-Fi "Add network" password box typed through, added
+no history entry, and the following normal-field scan recorded again (see
+`docs/acceptance/manual-checklist.md` Results log, 2026-11-08).

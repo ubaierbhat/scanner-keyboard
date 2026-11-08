@@ -9,6 +9,17 @@ Version numbers use the form `MAJOR.MINOR.PATCH`.
 
 No unreleased changes yet.
 
+## [1.2.0] - 2026-11-08
+
+### Added
+
+- Password-field privacy: when the field being filled is a password field
+  (standard password, show-password, web/WebView password, or numeric PIN),
+  a scanned code is still typed into the field but is no longer saved in the
+  scan history. Scans into normal fields are recorded as before. Scans are
+  recorded by the state of the focused field at the time of the scan, so
+  focus changes during continuous scanning stay correct.
+
 ## [1.1.1] - 2026-10-10
 
 ### Fixed
